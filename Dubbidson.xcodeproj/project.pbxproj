@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62246D259DCBEDBDDB6D2A12 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4ABA285C2C5B782DDC6701D /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A87F47001B820E9100A71E82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F46FF1B820E9100A71E82 /* AppDelegate.swift */; };
 		A87F47021B820E9100A71E82 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47011B820E9100A71E82 /* ViewController.swift */; };
 		A87F47051B820E9100A71E82 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87F47031B820E9100A71E82 /* Main.storyboard */; };
@@ -26,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4AF7E5E89765120C201C4C07 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A87F46FA1B820E9100A71E82 /* Dubbidson.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dubbidson.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A87F46FE1B820E9100A71E82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A87F46FF1B820E9100A71E82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -36,6 +38,8 @@
 		A87F470F1B820E9100A71E82 /* DubbidsonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DubbidsonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A87F47141B820E9100A71E82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A87F47151B820E9100A71E82 /* DubbidsonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DubbidsonTests.swift; sourceTree = "<group>"; };
+		B4ABA285C2C5B782DDC6701D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6335BED45FD80631594E4CB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62246D259DCBEDBDDB6D2A12 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,12 +61,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00CB7DD33FFD7A1B1154EB3D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B4ABA285C2C5B782DDC6701D /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A623F29F6C117ACCE7DBAA84 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4AF7E5E89765120C201C4C07 /* Pods.debug.xcconfig */,
+				F6335BED45FD80631594E4CB /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		A87F46F11B820E9100A71E82 = {
 			isa = PBXGroup;
 			children = (
 				A87F46FC1B820E9100A71E82 /* Dubbidson */,
 				A87F47121B820E9100A71E82 /* DubbidsonTests */,
 				A87F46FB1B820E9100A71E82 /* Products */,
+				A623F29F6C117ACCE7DBAA84 /* Pods */,
+				00CB7DD33FFD7A1B1154EB3D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -119,9 +143,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A87F47191B820E9100A71E82 /* Build configuration list for PBXNativeTarget "Dubbidson" */;
 			buildPhases = (
+				F9449794A20C90B0D91074DE /* Check Pods Manifest.lock */,
 				A87F46F61B820E9100A71E82 /* Sources */,
 				A87F46F71B820E9100A71E82 /* Frameworks */,
 				A87F46F81B820E9100A71E82 /* Resources */,
+				B13BBC352EAA461CF99F0242 /* Embed Pods Frameworks */,
+				36947115E6A5C8D3C7DC58AF /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -206,6 +233,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		36947115E6A5C8D3C7DC58AF /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B13BBC352EAA461CF99F0242 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F9449794A20C90B0D91074DE /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A87F46F61B820E9100A71E82 /* Sources */ = {
@@ -338,6 +413,7 @@
 		};
 		A87F471A1B820E9100A71E82 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4AF7E5E89765120C201C4C07 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Dubbidson/Info.plist;
@@ -348,6 +424,7 @@
 		};
 		A87F471B1B820E9100A71E82 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F6335BED45FD80631594E4CB /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Dubbidson/Info.plist;
@@ -409,6 +486,7 @@
 				A87F471B1B820E9100A71E82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A87F471C1B820E9100A71E82 /* Build configuration list for PBXNativeTarget "DubbidsonTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +495,7 @@
 				A87F471E1B820E9100A71E82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
