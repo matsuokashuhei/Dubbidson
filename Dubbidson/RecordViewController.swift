@@ -88,7 +88,7 @@ extension RecordViewController {
         squareFilter.addTarget(writer)
 
         // ボタンの画像の変更
-        recordButton.setImage(UIImage(named: "ic_lens_48px"), forState: .Normal)
+        recordButton.setImage(R.image.lensOn, forState: .Normal)
         // ビデオの書き込みと音楽の再生と開始
         writer.startRecording()
         audioPlayer.play()
@@ -100,7 +100,7 @@ extension RecordViewController {
         // 書き込むフィルターの終了
         squareFilter.removeTarget(writer)
         // ボタンの画像の変更
-        recordButton.setImage(UIImage(named: "ic_panorama_fish_eye_48px"), forState: .Normal)
+        recordButton.setImage(R.image.lensOff, forState: .Normal)
     }
 
 }
@@ -113,7 +113,7 @@ extension RecordViewController {
     }
 
     func filterButtonTapped() {
-        performSegueWithIdentifier("selectFilter", sender: nil)
+        performSegueWithIdentifier(R.segue.selectFilter, sender: nil)
     }
 
 }
@@ -122,19 +122,22 @@ extension RecordViewController {
 extension RecordViewController {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "selectSong" {
-            let controller = segue.destinationViewController as! SongsViewController
-            controller.delegate = self
-        }
-        if segue.identifier == "selectFilter" {
-            let controller = segue.destinationViewController as! FiltersViewController
-            controller.filterOperator = filterOperator
-            controller.artworkImage = songView.artworkImage
-            controller.delegate = self
-        }
-        if segue.identifier == "watchVideo" {
-            let controller = segue.destinationViewController as! AVPlayerViewController
-            controller.player = AVPlayer(URL: sender as! NSURL)
+        if let identifier = segue.identifier {
+            switch identifier {
+            case R.segue.selectSong:
+                let controller = segue.destinationViewController as! SongsViewController
+                controller.delegate = self
+            case R.segue.selectFilter:
+                let controller = segue.destinationViewController as! FiltersViewController
+                controller.filterOperator = filterOperator
+                controller.artworkImage = songView.artworkImage
+                controller.delegate = self
+            case R.segue.watchVideo:
+                let controller = segue.destinationViewController as! VideoViewController
+                controller.video = sender as! Video
+            default:
+                super.prepareForSegue(segue, sender: sender)
+            }
         }
     }
 
@@ -144,7 +147,7 @@ extension RecordViewController {
 extension RecordViewController: SongViewDelegate {
 
     func songViewTapped() {
-        performSegueWithIdentifier("selectSong", sender: nil)
+        performSegueWithIdentifier(R.segue.selectSong, sender: nil)
     }
 
 }
@@ -222,8 +225,8 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
                     case .Success(let box):
                         Async.main {
                             let fileURL = box.value
-                            Video.create(song, fileURL: fileURL)
-                            self.performSegueWithIdentifier("watchVideo", sender: fileURL)
+                            let video = Video.create(song, fileURL: fileURL)
+                            self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
                         }
                     case .Failure(let box):
                         let error = box.value

@@ -7,10 +7,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--WATCH-->
         <scene sceneID="1kI-Dm-suv">
             <objects>
-                <viewController id="XSA-qU-pSf" sceneMemberID="viewController">
+                <viewController id="XSA-qU-pSf" customClass="VideosViewController" customModule="Dubbidson" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="so9-eu-O3V"/>
                         <viewControllerLayoutGuide type="bottom" id="xz7-iT-8fG"/>
@@ -18,13 +18,63 @@
                     <view key="view" contentMode="scaleToFill" id="dLJ-lB-fte">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Yl2-gr-Smr">
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoTableViewCell" id="ycz-Re-WCs" customClass="VideoTableViewCell" customModule="Dubbidson" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ycz-Re-WCs" id="LF7-AZ-3H5">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="2ka-pn-ap4" kind="presentation" identifier="watchVideo" trigger="accessoryAction" id="2RX-a2-HfO"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xz7-iT-8fG" firstAttribute="top" secondItem="Yl2-gr-Smr" secondAttribute="bottom" id="CQJ-fm-cYS"/>
+                            <constraint firstItem="Yl2-gr-Smr" firstAttribute="top" secondItem="so9-eu-O3V" secondAttribute="bottom" id="CjD-eu-YFP"/>
+                            <constraint firstItem="Yl2-gr-Smr" firstAttribute="leading" secondItem="dLJ-lB-fte" secondAttribute="leading" id="Wkj-5A-cFo"/>
+                            <constraint firstAttribute="trailing" secondItem="Yl2-gr-Smr" secondAttribute="trailing" id="ikR-bO-9kL"/>
+                        </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="WATCH" image="tv" id="zQm-DI-f7L">
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    </tabBarItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="tableView" destination="Yl2-gr-Smr" id="rU3-Z2-ccz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fus-Mb-Cte" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1206.5" y="-273.5"/>
+            <point key="canvasLocation" x="1206.5" y="-318.5"/>
+        </scene>
+        <!--SETTINGS-->
+        <scene sceneID="VTj-V6-3vK">
+            <objects>
+                <viewController id="HSs-ve-07b" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wAy-Ri-0vf"/>
+                        <viewControllerLayoutGuide type="bottom" id="Jy8-Bm-GGr"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FQR-Wb-8r8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="SETTINGS" image="settings" id="jz8-8E-Ctg"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C2I-TC-Iaa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="642.5" y="1313.5"/>
         </scene>
         <!--REC-->
         <scene sceneID="5Vl-4z-e4p">
@@ -86,7 +136,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ae-Oi-41m">
                                                         <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
                                                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" image="ic_album_48px"/>
+                                                        <state key="normal" image="album"/>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -113,7 +163,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ylT-CY-CWK">
                                         <rect key="frame" x="163" y="35" width="48" height="48"/>
                                         <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <state key="normal" image="ic_panorama_fish_eye_48px"/>
+                                        <state key="normal" image="lens-off"/>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RJV-xN-EIX">
                                         <rect key="frame" x="219" y="8" width="148" height="102"/>
@@ -121,7 +171,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xVh-wX-BVj">
                                                 <rect key="frame" x="50" y="27" width="48" height="48"/>
                                                 <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                <state key="normal" image="ic_blur_circular_48px"/>
+                                                <state key="normal" image="filter"/>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -157,7 +207,7 @@
                             <constraint firstItem="tlf-ZK-4kk" firstAttribute="leading" secondItem="0f0-AA-lHe" secondAttribute="leading" id="gm7-vR-rZR"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="REC" image="ic_videocam_48px" id="M8t-WP-4w5"/>
+                    <tabBarItem key="tabBarItem" title="REC" image="videocam" id="M8t-WP-4w5"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="captureView" destination="tlf-ZK-4kk" id="Bhb-d1-Y6t"/>
@@ -166,12 +216,118 @@
                         <outlet property="songView" destination="efP-3P-ySA" id="pp1-uw-6Xp"/>
                         <segue destination="0ZM-dM-3Xj" kind="presentation" identifier="selectSong" id="rhM-fm-opL"/>
                         <segue destination="fa3-NX-ZYk" kind="presentation" identifier="selectFilter" id="FcM-JE-52d"/>
-                        <segue destination="h5b-No-5zG" kind="presentation" identifier="watchVideo" id="39A-qX-gVV"/>
+                        <segue destination="2ka-pn-ap4" kind="presentation" identifier="watchVideo" id="FSh-xl-w0p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lhj-Iw-JIl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1206.5" y="497.5"/>
+        </scene>
+        <!--Video View Controller-->
+        <scene sceneID="jxF-OK-A7R">
+            <objects>
+                <viewController id="2ka-pn-ap4" customClass="VideoViewController" customModule="Dubbidson" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UW2-Gr-mxy"/>
+                        <viewControllerLayoutGuide type="bottom" id="XHW-dp-xnX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3Qm-6w-6AC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5dc-kX-1ir">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="zFl-vH-YHh">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="extraLight"/>
+                            </visualEffectView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmQ-3A-lKu">
+                                <rect key="frame" x="0.0" y="62" width="375" height="375"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="kmQ-3A-lKu" secondAttribute="height" multiplier="1:1" id="dTy-Le-4dl"/>
+                                </constraints>
+                            </view>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ogs-kS-HqE">
+                                <rect key="frame" x="0.0" y="437" width="375" height="63"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="KIJ-kT-GAl">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="63"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="extraLight"/>
+                            </visualEffectView>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="282-4H-at4">
+                                <rect key="frame" x="0.0" y="603" width="375" height="64"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hmn-dg-KTD">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="blt-ku-l8T">
+                                            <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <state key="normal" image="close"/>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="blt-ku-l8T" secondAttribute="centerY" id="Chc-xH-RmY"/>
+                                        <constraint firstItem="blt-ku-l8T" firstAttribute="leading" secondItem="hmn-dg-KTD" secondAttribute="leading" constant="8" id="dY3-sI-MBS"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="JBX-ld-S0X"/>
+                                </constraints>
+                                <blurEffect style="extraLight"/>
+                            </visualEffectView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XmD-pg-reU">
+                                <rect key="frame" x="0.0" y="500" width="375" height="103"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iq7-Ti-g6Y">
+                                        <rect key="frame" x="163" y="28" width="48" height="48"/>
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" image="play"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="Iq7-Ti-g6Y" secondAttribute="centerY" id="4TA-9D-tdz"/>
+                                    <constraint firstAttribute="centerX" secondItem="Iq7-Ti-g6Y" secondAttribute="centerX" id="sOD-jk-cCD"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ogs-kS-HqE" firstAttribute="top" secondItem="kmQ-3A-lKu" secondAttribute="bottom" id="18R-k2-Qb7"/>
+                            <constraint firstItem="5dc-kX-1ir" firstAttribute="top" secondItem="3Qm-6w-6AC" secondAttribute="top" id="5BQ-Br-hJz"/>
+                            <constraint firstAttribute="trailing" secondItem="5dc-kX-1ir" secondAttribute="trailing" id="5bI-G3-UvC"/>
+                            <constraint firstItem="kmQ-3A-lKu" firstAttribute="height" secondItem="5dc-kX-1ir" secondAttribute="height" multiplier="6" id="6IR-Xd-jny"/>
+                            <constraint firstItem="XHW-dp-xnX" firstAttribute="top" secondItem="282-4H-at4" secondAttribute="bottom" id="A1s-RT-FEL"/>
+                            <constraint firstAttribute="trailing" secondItem="XmD-pg-reU" secondAttribute="trailing" id="ANI-nl-gOf"/>
+                            <constraint firstItem="5dc-kX-1ir" firstAttribute="leading" secondItem="3Qm-6w-6AC" secondAttribute="leading" id="Cdl-JS-g2I"/>
+                            <constraint firstAttribute="trailing" secondItem="Ogs-kS-HqE" secondAttribute="trailing" id="DdY-uR-hDb"/>
+                            <constraint firstItem="XmD-pg-reU" firstAttribute="top" secondItem="Ogs-kS-HqE" secondAttribute="bottom" id="EDj-bh-xsK"/>
+                            <constraint firstItem="XmD-pg-reU" firstAttribute="leading" secondItem="3Qm-6w-6AC" secondAttribute="leading" id="Fag-Wr-xg8"/>
+                            <constraint firstItem="kmQ-3A-lKu" firstAttribute="top" secondItem="5dc-kX-1ir" secondAttribute="bottom" id="KH6-2C-4AX"/>
+                            <constraint firstItem="kmQ-3A-lKu" firstAttribute="height" secondItem="Ogs-kS-HqE" secondAttribute="height" multiplier="6" id="N5d-o2-xjh"/>
+                            <constraint firstAttribute="trailing" secondItem="282-4H-at4" secondAttribute="trailing" id="Sgc-h5-EcP"/>
+                            <constraint firstItem="282-4H-at4" firstAttribute="leading" secondItem="3Qm-6w-6AC" secondAttribute="leading" id="Vjb-xi-8a9"/>
+                            <constraint firstItem="Ogs-kS-HqE" firstAttribute="leading" secondItem="3Qm-6w-6AC" secondAttribute="leading" id="fEZ-o0-AGg"/>
+                            <constraint firstItem="kmQ-3A-lKu" firstAttribute="leading" secondItem="3Qm-6w-6AC" secondAttribute="leading" id="i8k-fr-6Zd"/>
+                            <constraint firstAttribute="width" secondItem="kmQ-3A-lKu" secondAttribute="width" id="ory-KV-HVK"/>
+                            <constraint firstItem="282-4H-at4" firstAttribute="top" secondItem="XmD-pg-reU" secondAttribute="bottom" id="rVV-k4-tF7"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="closeButton" destination="blt-ku-l8T" id="atz-Es-Pcm"/>
+                        <outlet property="playButton" destination="Iq7-Ti-g6Y" id="RHl-rA-PgO"/>
+                        <outlet property="videoView" destination="kmQ-3A-lKu" id="wYc-Zg-WDX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pYF-DO-oHq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1741.5" y="497.5"/>
         </scene>
         <!--Songs View Controller-->
         <scene sceneID="rcu-y3-oQw">
@@ -253,12 +409,12 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Gf-qg-4fM">
                                             <rect key="frame" x="8" y="8" width="48" height="48"/>
                                             <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <state key="normal" image="ic_close_48px"/>
+                                            <state key="normal" image="close"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mzT-Jf-fan">
                                             <rect key="frame" x="163" y="8" width="48" height="48"/>
                                             <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <state key="normal" image="ic_check_48px"/>
+                                            <state key="normal" image="check"/>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -298,17 +454,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GNF-Pf-r8f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1206.5" y="1301.5"/>
-        </scene>
-        <!--AV Player View Controller-->
-        <scene sceneID="3lo-Wp-IME">
-            <objects>
-                <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="h5b-No-5zG" sceneMemberID="viewController">
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                </avPlayerViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="s5R-AO-Iib" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1741.5" y="497.5"/>
+            <point key="canvasLocation" x="1206.5" y="1313.5"/>
         </scene>
         <!--Filters View Controller-->
         <scene sceneID="pVH-o6-pDI">
@@ -385,22 +531,22 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cx8-57-kI3">
+                                            <rect key="frame" x="8" y="8" width="48" height="48"/>
+                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <state key="normal" image="close"/>
+                                        </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YnS-NQ-fZH">
                                             <rect key="frame" x="163" y="8" width="48" height="48"/>
                                             <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <state key="normal" image="ic_check_48px"/>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cx8-57-kI3">
-                                            <rect key="frame" x="319" y="8" width="48" height="48"/>
-                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <state key="normal" image="ic_close_48px"/>
+                                            <state key="normal" image="check"/>
                                         </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="centerY" secondItem="Cx8-57-kI3" secondAttribute="centerY" id="1v6-ne-GEB"/>
+                                        <constraint firstItem="Cx8-57-kI3" firstAttribute="leading" secondItem="PEc-U2-FHe" secondAttribute="leading" constant="8" id="hnT-8P-Hvz"/>
                                         <constraint firstAttribute="centerX" secondItem="YnS-NQ-fZH" secondAttribute="centerX" id="knH-zb-hfH"/>
                                         <constraint firstAttribute="centerY" secondItem="YnS-NQ-fZH" secondAttribute="centerY" id="sjn-9J-S87"/>
-                                        <constraint firstAttribute="trailing" secondItem="Cx8-57-kI3" secondAttribute="trailing" constant="8" id="vs0-Wm-LQT"/>
                                     </constraints>
                                 </view>
                                 <constraints>
@@ -453,7 +599,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dPk-s4-zw2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1741.5" y="1301.5"/>
+            <point key="canvasLocation" x="1741.5" y="1313.5"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="TXb-Nr-urH">
@@ -468,19 +614,27 @@
                     </tabBar>
                     <connections>
                         <segue destination="z5P-vj-OS1" kind="relationship" relationship="viewControllers" id="e2y-rA-N2Z"/>
+                        <segue destination="XSA-qU-pSf" kind="relationship" relationship="viewControllers" id="pY5-xA-QNY"/>
+                        <segue destination="HSs-ve-07b" kind="relationship" relationship="viewControllers" id="ZW4-Uc-Ilh"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iWP-zY-Y0e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="633" y="498"/>
+            <point key="canvasLocation" x="642.5" y="497.5"/>
         </scene>
     </scenes>
     <resources>
-        <image name="ic_album_48px" width="48" height="48"/>
-        <image name="ic_blur_circular_48px" width="48" height="48"/>
-        <image name="ic_check_48px" width="48" height="48"/>
-        <image name="ic_close_48px" width="48" height="48"/>
-        <image name="ic_panorama_fish_eye_48px" width="48" height="48"/>
-        <image name="ic_videocam_48px" width="48" height="48"/>
+        <image name="album" width="48" height="48"/>
+        <image name="check" width="48" height="48"/>
+        <image name="close" width="48" height="48"/>
+        <image name="filter" width="48" height="48"/>
+        <image name="lens-off" width="48" height="48"/>
+        <image name="play" width="48" height="48"/>
+        <image name="settings" width="48" height="48"/>
+        <image name="tv" width="48" height="48"/>
+        <image name="videocam" width="48" height="48"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="2RX-a2-HfO"/>
+    </inferredMetricsTieBreakers>
 </document>

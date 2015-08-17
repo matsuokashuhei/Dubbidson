@@ -31,6 +31,13 @@ class FileManager {
         }
     }
 
+    class func videoFileURL(video: Video) -> NSURL? {
+        if let directory = Directory.Documents.URL, let destinationURL = NSURL(string: video.fileName, relativeToURL: directory) {
+            return destinationURL
+        } else {
+            return nil
+        }
+    }
 }
 
 enum Directory {

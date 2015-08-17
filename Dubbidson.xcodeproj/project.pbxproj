@@ -33,6 +33,10 @@
 		A87F474A1B82130D00A71E82 /* lookup.png in Resources */ = {isa = PBXBuildFile; fileRef = A87F47451B82130D00A71E82 /* lookup.png */; };
 		A87F474E1B82137700A71E82 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F474C1B82137700A71E82 /* AudioPlayer.swift */; };
 		A87F474F1B82137700A71E82 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F474D1B82137700A71E82 /* Camera.swift */; };
+		A87F47511B822B4000A71E82 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47501B822B4000A71E82 /* VideoViewController.swift */; };
+		A87F47531B8232DE00A71E82 /* VideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47521B8232DE00A71E82 /* VideoPlayer.swift */; };
+		A87F47561B8236F600A71E82 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47551B8236F600A71E82 /* R.generated.swift */; };
+		A87F47581B824D7300A71E82 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47571B824D7300A71E82 /* VideosViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +80,10 @@
 		A87F47451B82130D00A71E82 /* lookup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lookup.png; sourceTree = "<group>"; };
 		A87F474C1B82137700A71E82 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		A87F474D1B82137700A71E82 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		A87F47501B822B4000A71E82 /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
+		A87F47521B8232DE00A71E82 /* VideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayer.swift; sourceTree = "<group>"; };
+		A87F47551B8236F600A71E82 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		A87F47571B824D7300A71E82 /* VideosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		B4ABA285C2C5B782DDC6701D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6335BED45FD80631594E4CB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -202,6 +210,8 @@
 				A87F47251B82125300A71E82 /* RecordViewController.swift */,
 				A87F47261B82125300A71E82 /* SongsViewController.swift */,
 				A87F47241B82125300A71E82 /* FiltersViewController.swift */,
+				A87F47501B822B4000A71E82 /* VideoViewController.swift */,
+				A87F47571B824D7300A71E82 /* VideosViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -234,6 +244,7 @@
 		A87F47311B82127100A71E82 /* AV */ = {
 			isa = PBXGroup;
 			children = (
+				A87F47521B8232DE00A71E82 /* VideoPlayer.swift */,
 				A87F474C1B82137700A71E82 /* AudioPlayer.swift */,
 				A87F474D1B82137700A71E82 /* Camera.swift */,
 				A87F47371B8212BB00A71E82 /* Filter.swift */,
@@ -249,6 +260,7 @@
 			children = (
 				A87F47331B8212A700A71E82 /* Downloader.swift */,
 				A87F47341B8212A700A71E82 /* FileManager.swift */,
+				A87F47551B8236F600A71E82 /* R.generated.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -272,6 +284,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A87F47191B820E9100A71E82 /* Build configuration list for PBXNativeTarget "Dubbidson" */;
 			buildPhases = (
+				A87F47541B82357500A71E82 /* ShellScript */,
 				F9449794A20C90B0D91074DE /* Check Pods Manifest.lock */,
 				A87F46F61B820E9100A71E82 /* Sources */,
 				A87F46F71B820E9100A71E82 /* Frameworks */,
@@ -384,6 +397,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A87F47541B82357500A71E82 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" \"$SRCROOT/Dubbidson\"";
+		};
 		B13BBC352EAA461CF99F0242 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -427,8 +453,12 @@
 				A87F474E1B82137700A71E82 /* AudioPlayer.swift in Sources */,
 				A87F473B1B8212BB00A71E82 /* Filter.swift in Sources */,
 				A87F47291B82125300A71E82 /* SongsViewController.swift in Sources */,
+				A87F47561B8236F600A71E82 /* R.generated.swift in Sources */,
 				A87F47351B8212A700A71E82 /* Downloader.swift in Sources */,
 				A87F47401B8212C400A71E82 /* Video.swift in Sources */,
+				A87F47531B8232DE00A71E82 /* VideoPlayer.swift in Sources */,
+				A87F47581B824D7300A71E82 /* VideosViewController.swift in Sources */,
+				A87F47511B822B4000A71E82 /* VideoViewController.swift in Sources */,
 				A87F47271B82125300A71E82 /* FiltersViewController.swift in Sources */,
 				A87F472F1B82126400A71E82 /* SongView.swift in Sources */,
 				A87F47001B820E9100A71E82 /* AppDelegate.swift in Sources */,

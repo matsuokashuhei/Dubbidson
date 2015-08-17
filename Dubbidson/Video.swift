@@ -14,7 +14,8 @@ class Video: Object {
     dynamic var name = ""
     dynamic var artist = ""
     dynamic var artworkImageURL = ""
-    dynamic var fileURL = ""
+    //dynamic var fileURL = ""
+    dynamic var fileName = ""
     dynamic var createdAt = NSDate()
 }
 
@@ -29,16 +30,18 @@ extension Video {
         return videos
     }
 
-    class func create(song: Song, fileURL: NSURL) -> () {
+    class func create(song: Song, fileURL: NSURL) -> Video {
         let video = Video()
         video.name = song.name
         video.artist = song.artist
         video.artworkImageURL = song.imageURL.absoluteString!
-        video.fileURL = fileURL.absoluteString!
+        //video.fileURL = fileURL.absoluteString!
+        video.fileName = fileURL.lastPathComponent!
         let realm = Realm()
         realm.write {
             realm.add(video)
         }
+        return video
     }
 
 }
