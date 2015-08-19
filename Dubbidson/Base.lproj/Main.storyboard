@@ -554,7 +554,7 @@
                                 </constraints>
                                 <blurEffect style="extraLight"/>
                             </visualEffectView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ah1-N4-JCK" customClass="FiltersView" customModule="Dubbidson" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ah1-N4-JCK" customClass="FilterSelectionView" customModule="Dubbidson" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="500" width="375" height="103"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8rd-jm-ZDW">
@@ -569,7 +569,7 @@
                                     <constraint firstAttribute="bottom" secondItem="8rd-jm-ZDW" secondAttribute="bottom" id="n9X-Je-pkE"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="scrollView" destination="8rd-jm-ZDW" id="Ldl-9d-gNR"/>
+                                    <outlet property="scrollView" destination="8rd-jm-ZDW" id="Bvh-Pg-26D"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -593,7 +593,7 @@
                         <outlet property="checkButton" destination="YnS-NQ-fZH" id="ddf-Us-Dsb"/>
                         <outlet property="closeButton" destination="Cx8-57-kI3" id="fpr-K3-z9o"/>
                         <outlet property="filterNameLabel" destination="J8Z-gJ-IOe" id="MCS-zm-bpm"/>
-                        <outlet property="filtersView" destination="ah1-N4-JCK" id="X8g-tZ-e0J"/>
+                        <outlet property="selectionView" destination="ah1-N4-JCK" id="UDW-WT-imr"/>
                         <outlet property="slider" destination="6Fe-4u-9jg" id="cbh-ZP-FFJ"/>
                     </connections>
                 </viewController>

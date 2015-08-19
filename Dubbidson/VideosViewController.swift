@@ -21,14 +21,15 @@ class VideosViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         fetch()
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 
@@ -78,7 +79,7 @@ extension VideosViewController: UITableViewDataSource {
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let video = videos[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.videoTableViewCell, forIndexPath: indexPath)!
+        let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.videoTableViewCell2, forIndexPath: indexPath)!
         cell.textLabel?.text = "\(video.name) - \(video.artist)"
         return cell
     }

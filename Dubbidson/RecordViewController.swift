@@ -20,9 +20,7 @@ class RecordViewController: UIViewController {
     @IBOutlet weak var captureView: GPUImageView!
 
     @IBOutlet weak var songView: SongView! {
-        didSet {
-            songView.delegate = self
-        }
+        didSet { songView.delegate = self }
     }
 
     @IBOutlet weak var recordButton: UIButton! {
@@ -37,16 +35,13 @@ class RecordViewController: UIViewController {
 
     let camera = Camera.sharedInstance
 
-    var filterOperator: FilterOperator! {
+    var filter: Filterable! {
         didSet {
-            if let oldValue = oldValue {
-                camera.removeTarget(oldValue.filter as! GPUImageInput)
-                oldValue.filter.removeTarget(captureView)
+            if let prevFilter = oldValue {
+                prevFilter.removeTarget(captureView)
             }
         }
     }
-
-    var squareFilter: GPUImageCropFilter!
 
     var writer: GPUImageMovieWriter!
 
@@ -61,9 +56,15 @@ extension RecordViewController {
         super.viewDidLoad()
 
         // カメラのセットアップ
+        /*
         filterOperator = filterOperators.first!
-        camera.addTarget(filterOperator.filter as! GPUImageInput)
-        filterOperator.filter.addTarget(captureView)
+        camera.addTarget(filterOperator)
+        filterOperator.addTarget(captureView)
+        camera.startCapture()
+        */
+        filter = filters.first!
+        camera.addTarget(filter)
+        filter.addTarget(captureView)
         camera.startCapture()
     }
 
@@ -81,12 +82,8 @@ extension RecordViewController {
         let fileURL = FileManager.videoFileURL()
         writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
         writer.delegate = self
-
-        // 書き込むフィルターの作成
-        squareFilter = GPUImageCropFilter(cropRegion: CGRect(x: 0.0, y: 0.125, width: 1.0, height: 0.75))
-        filterOperator.filter.addTarget(squareFilter)
-        squareFilter.addTarget(writer)
-
+        //filterOperator.addTarget(writer)
+        filter.addTarget(writer)
         // ボタンの画像の変更
         recordButton.setImage(R.image.lensOn, forState: .Normal)
         // ビデオの書き込みと音楽の再生と開始
@@ -97,8 +94,8 @@ extension RecordViewController {
     func finishRecording() {
         // Writeの終了
         writer.finishRecording()
-        // 書き込むフィルターの終了
-        squareFilter.removeTarget(writer)
+        //filterOperator.filter.removeTarget(writer)
+        filter.removeTarget(writer)
         // ボタンの画像の変更
         recordButton.setImage(R.image.lensOff, forState: .Normal)
     }
@@ -129,8 +126,8 @@ extension RecordViewController {
                 controller.delegate = self
             case R.segue.selectFilter:
                 let controller = segue.destinationViewController as! FiltersViewController
-                controller.filterOperator = filterOperator
-                controller.artworkImage = songView.artworkImage
+                controller.filter = filter
+                controller.blendImage = songView.artworkImage
                 controller.delegate = self
             case R.segue.watchVideo:
                 let controller = segue.destinationViewController as! VideoViewController
@@ -199,10 +196,10 @@ extension RecordViewController: AudioPlayerDelegate {
 // MARK: - Filters view controller delegate
 extension RecordViewController: FiltersViewControllerDeleage {
 
-    func selectFilter(filterOperator: FilterOperator) {
-        if self.filterOperator.name != filterOperator.name {
-            self.filterOperator = filterOperator
-            filterOperator.filter.addTarget(captureView)
+    func selectFilter(filter: Filterable) {
+        if self.filter.name != filter.name {
+            self.filter = filter
+            filter.addTarget(captureView)
         }
     }
 

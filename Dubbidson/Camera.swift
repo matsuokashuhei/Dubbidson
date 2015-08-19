@@ -23,20 +23,29 @@ class Camera: NSObject {
     let logger = XCGLogger.defaultInstance()
 
     let camera: GPUImageVideoCamera
+    let squareFilter: GPUImageCropFilter
 
     private override init() {
         camera = GPUImageVideoCamera(sessionPreset: AVCaptureSessionPreset640x480, cameraPosition: .Front)
         camera.outputImageOrientation = .Portrait
         camera.horizontallyMirrorFrontFacingCamera = true
+        squareFilter = GPUImageCropFilter(cropRegion: CGRect(x: 0.0, y: 0.125, width: 1.0, height: 0.75))
+        camera.addTarget(squareFilter)
         super.init()
     }
 
-    func addTarget(filter: GPUImageInput) {
-        camera.addTarget(filter)
+    func addTarget(target: GPUImageInput) {
+        squareFilter.addTarget(target)
     }
 
-    func removeTarget(filter: GPUImageInput) {
-        camera.removeTarget(filter)
+    func addTarget(filter: Filterable) {
+        //squareFilter.addTarget(filter.output as! GPUImageInput)
+        squareFilter.addTarget(filter.input)
+    }
+
+    func removeTarget(filter: Filterable) {
+        //squareFilter.removeTarget(filter.output as! GPUImageInput)
+        squareFilter.removeTarget(filter.input)
     }
 
     func startCapture() {

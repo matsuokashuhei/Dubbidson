@@ -9,6 +9,7 @@
 import Foundation
 
 import GPUImage
+import XCGLogger
 
 typealias Custom1SetupFunction = (camera: GPUImageVideoCamera, output: GPUImageInput) -> (filter: GPUImageOutput, secondOutput: GPUImageOutput?)
 typealias Custom2SetupFunction = (camera: GPUImageVideoCamera, output: GPUImageView) -> (filter: GPUImageOutput, secondOutput: GPUImageOutput?)
@@ -32,9 +33,13 @@ protocol FilterOperator {
     var sliderConfiguration: SliderSetting { get }
     func configureCustomFilter(input: (filter: GPUImageOutput, secondInput: GPUImageOutput?))
     func updateBasedOnSlider(#value: CGFloat)
+    func addTarget(newTarget: GPUImageInput)
+    func removeTarget(newTarget: GPUImageInput)
 }
 
 class FilterOperation<T: GPUImageOutput where T: GPUImageInput>: FilterOperator {
+
+    let logger = XCGLogger.defaultInstance()
 
     var internalFilter: T?
     var secondInput: GPUImageOutput?
@@ -75,6 +80,16 @@ class FilterOperation<T: GPUImageOutput where T: GPUImageInput>: FilterOperator 
         if let updateFunction = sliderUpdateCallback {
             updateFunction(filter: internalFilter!, value: value)
         }
+    }
+
+    func addTarget(newTarget: GPUImageInput) {
+        //logger.debug("newTarget: \(newTarget)")
+        filter.addTarget(newTarget)
+    }
+
+    func removeTarget(newTarget: GPUImageInput) {
+        //logger.debug("newTarget: \(newTarget)")
+        filter.removeTarget(newTarget)
     }
 
 }

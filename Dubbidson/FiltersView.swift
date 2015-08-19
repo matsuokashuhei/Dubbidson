@@ -9,46 +9,49 @@
 import GPUImage
 import XCGLogger
 
-protocol FiltersViewDelegate {
-    func filtersViewDidSelect(filterOperator: FilterOperator)
+protocol FilterSelectionViewDelegate {
+    func filtersViewDidSelect(filter: Filterable)
 }
 
-class FiltersView: UIView {
+class FilterSelectionView: UIView {
 
     @IBOutlet weak var scrollView: UIScrollView!
 
     let logger = XCGLogger.defaultInstance()
 
-    var filterOperators = [FilterOperator]()
+    var filters = [Filterable]()
     var filterViews = [FilterView]()
-    var artworkImage: UIImage?
+    var blendImage: UIImage?
 
-    var delegate: FiltersViewDelegate?
+    var delegate: FilterSelectionViewDelegate?
 
-    func setFilterOperators(filterOperators: [FilterOperator]) {
-        self.filterOperators = filterOperators
-        for filterOperator in self.filterOperators {
-            switch filterOperator.operationType {
+    func setFilters(filters: [Filterable]) {
+        self.filters = filters
+        for filter in filters {
+            switch filter.type {
+            case .Normal:
+                setFilter(filter)
             case .Blend:
-                if let artworkImage = self.artworkImage {
-                    setFilterOperator(filterOperator)
+                if let blendImage = self.blendImage {
+                    setFilter(filter)
                 }
-            default:
-                setFilterOperator(filterOperator)
+            case .Custom:
+                setFilter(filter)
             }
         }
     }
-    func setFilterOperator(filterOperator: FilterOperator) {
-        let filterView = FilterView(filterOperator: filterOperator)
-        filterView.image = artworkImage?.copy() as? UIImage
+
+    func setFilter(filter: Filterable) {
+        let filterView = FilterView(filter: filter)
+        filterView.image = blendImage?.copy() as? UIImage
         filterView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "filterViewTapped:"))
         scrollView.addSubview(filterView)
         filterViews.append(filterView)
     }
 
-    func setSelectedFilterOperator(filterOperator: FilterOperator) {
+    func setSelectedFilter(filter: Filterable) {
         let selectedFilterView = filterViews.filter { (filterView) -> Bool in
-            return filterView.filterOperator.name == filterOperator.name
+            return filterView.filter.name == filter.name
         }.first
         if let filterView = selectedFilterView {
             filterView.selected = true
@@ -87,7 +90,7 @@ class FiltersView: UIView {
         for view in filterViews {
             view.selected = view == selectedView
         }
-        delegate?.filtersViewDidSelect(selectedView.filterOperator)
+        delegate?.filtersViewDidSelect(selectedView.filter)
     }
 
 }

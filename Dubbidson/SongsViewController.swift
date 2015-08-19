@@ -29,8 +29,8 @@ class SongsViewController: UIViewController {
 
     @IBOutlet weak var songsTableView: UITableView! {
         didSet {
-            songsTableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 100.0, right: 0.0)
-            songsTableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 100.0, right: 0.0)
+            songsTableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 64.0, right: 0.0)
+            songsTableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 64.0, right: 0.0)
             songsTableView.delegate = self
             songsTableView.dataSource = self
             songsTableView.tableFooterView = UIView(frame: CGRectZero)
@@ -165,7 +165,7 @@ extension SongsViewController: UITableViewDataSource {
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let song = songs[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.songTableViewCell, forIndexPath: indexPath)!
+        let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.songTableViewCell2, forIndexPath: indexPath)!
         cell.configure(song)
         return cell
     }

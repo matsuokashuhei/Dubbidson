@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BrP-bp-atN">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Videos View Controller-->
@@ -21,14 +22,14 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="574"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoTableViewCell" id="ydc-ka-drv" customClass="VideoTableViewCell" customModule="Dubbidson" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoTableViewCell2" id="ydc-ka-drv" customClass="VideoTableViewCell" customModule="Dubbidson" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ydc-ka-drv" id="hPP-C9-RtH">
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="V9X-C6-JFk" kind="show" identifier="watchVideo" id="8sX-Mh-QNM"/>
+                                            <segue destination="V9X-C6-JFk" kind="show" identifier="watchVideo" trigger="accessoryAction" id="8RU-Ky-t1i"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -117,13 +118,17 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HzK-kG-aLC">
                                         <rect key="frame" x="219" y="8" width="148" height="183"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wW-3t-BeW">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wW-3t-BeW">
                                                 <rect key="frame" x="50" y="68" width="48" height="48"/>
                                                 <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <state key="normal" image="filter"/>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="centerX" secondItem="0wW-3t-BeW" secondAttribute="centerX" id="TFI-rB-uHJ"/>
+                                            <constraint firstAttribute="centerY" secondItem="0wW-3t-BeW" secondAttribute="centerY" id="Tx1-Zb-7XM"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -242,7 +247,7 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SongTableViewCell" rowHeight="80" id="NSZ-CR-Q4n" customClass="SongTableViewCell" customModule="Dubbidson" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SongTableViewCell2" rowHeight="80" id="NSZ-CR-Q4n" customClass="SongTableViewCell" customModule="Dubbidson" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NSZ-CR-Q4n" id="Lo7-aF-DDa">
@@ -276,7 +281,6 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="z6k-1T-dxE" secondAttribute="trailing" constant="8" id="2SU-bW-vJ3"/>
-                                                <constraint firstAttribute="bottom" secondItem="kh4-Nv-gBX" secondAttribute="bottom" constant="8" id="FIA-Vn-ID2"/>
                                                 <constraint firstItem="z6k-1T-dxE" firstAttribute="top" secondItem="cjG-Yh-cV3" secondAttribute="bottom" id="TL5-DM-im9"/>
                                                 <constraint firstItem="kh4-Nv-gBX" firstAttribute="top" secondItem="Lo7-aF-DDa" secondAttribute="top" constant="8" id="YMi-DQ-NiP"/>
                                                 <constraint firstItem="cjG-Yh-cV3" firstAttribute="leading" secondItem="kh4-Nv-gBX" secondAttribute="trailing" constant="8" id="ZOR-Ll-sKF"/>
@@ -388,17 +392,14 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dzm-im-xc9">
-                                <rect key="frame" x="0.0" y="419" width="375" height="81"/>
+                                <rect key="frame" x="0.0" y="419" width="375" height="62"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="81" id="kg9-zU-CiM"/>
-                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2wo-ZW-LEe" customClass="FiltersView" customModule="Dubbidson" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="500" width="375" height="103"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2wo-ZW-LEe" customClass="FilterSelectionView" customModule="Dubbidson" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="480" width="375" height="123"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AVc-dD-GTS">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="103"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="123"/>
                                     </scrollView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -445,6 +446,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2wo-ZW-LEe" firstAttribute="top" secondItem="Dzm-im-xc9" secondAttribute="bottom" id="10V-Py-bkS"/>
+                            <constraint firstItem="2wo-ZW-LEe" firstAttribute="height" secondItem="Dzm-im-xc9" secondAttribute="height" multiplier="2" id="5Lo-0M-94I"/>
                             <constraint firstItem="hUj-L2-4bH" firstAttribute="leading" secondItem="CkU-co-hdR" secondAttribute="leading" id="5b0-hI-THj"/>
                             <constraint firstAttribute="width" secondItem="ftD-Gt-78f" secondAttribute="width" id="83o-Uk-oNa"/>
                             <constraint firstItem="Dzm-im-xc9" firstAttribute="leading" secondItem="CkU-co-hdR" secondAttribute="leading" id="A2k-8e-m2O"/>
@@ -467,6 +469,7 @@
                         <outlet property="checkButton" destination="Gvn-8E-HtW" id="X6r-ky-YUc"/>
                         <outlet property="closeButton" destination="9Nn-Nr-BKP" id="OQQ-wZ-CUY"/>
                         <outlet property="filterNameLabel" destination="no4-zb-pxM" id="nmV-CI-Kax"/>
+                        <outlet property="selectionView" destination="2wo-ZW-LEe" id="rgx-0W-rao"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xad-vN-2rr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -514,11 +517,11 @@
             </objects>
             <point key="canvasLocation" x="1113.5" y="342.5"/>
         </scene>
-        <!--Item-->
+        <!--Navigation Controller-->
         <scene sceneID="Lgy-hK-uBl">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3YF-1z-R9g" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="WwM-qn-joI"/>
+                    <tabBarItem key="tabBarItem" title="" image="tv" id="WwM-qn-joI"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Xe2-Ts-0Ck">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -541,9 +544,10 @@
         <image name="filter" width="48" height="48"/>
         <image name="lens-off" width="48" height="48"/>
         <image name="play" width="48" height="48"/>
+        <image name="tv" width="48" height="48"/>
         <image name="videocam" width="48" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8sX-Mh-QNM"/>
+        <segue reference="8RU-Ky-t1i"/>
     </inferredMetricsTieBreakers>
 </document>

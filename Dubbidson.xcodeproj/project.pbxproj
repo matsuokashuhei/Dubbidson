@@ -38,6 +38,7 @@
 		A87F47561B8236F600A71E82 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47551B8236F600A71E82 /* R.generated.swift */; };
 		A87F47581B824D7300A71E82 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47571B824D7300A71E82 /* VideosViewController.swift */; };
 		A8C07C451B83812200CB244A /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8C07C441B83812200CB244A /* Storyboard.storyboard */; };
+		A8C07C4B1B84D9AD00CB244A /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C07C4A1B84D9AD00CB244A /* Filters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		A87F47551B8236F600A71E82 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		A87F47571B824D7300A71E82 /* VideosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		A8C07C441B83812200CB244A /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
+		A8C07C4A1B84D9AD00CB244A /* Filters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
 		B4ABA285C2C5B782DDC6701D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6335BED45FD80631594E4CB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -213,8 +215,8 @@
 				A87F47251B82125300A71E82 /* RecordViewController.swift */,
 				A87F47261B82125300A71E82 /* SongsViewController.swift */,
 				A87F47241B82125300A71E82 /* FiltersViewController.swift */,
-				A87F47501B822B4000A71E82 /* VideoViewController.swift */,
 				A87F47571B824D7300A71E82 /* VideosViewController.swift */,
+				A87F47501B822B4000A71E82 /* VideoViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -254,6 +256,7 @@
 				A87F47381B8212BB00A71E82 /* FilterOperator.swift */,
 				A87F47391B8212BB00A71E82 /* iTunes.swift */,
 				A87F473A1B8212BB00A71E82 /* Mixer.swift */,
+				A8C07C4A1B84D9AD00CB244A /* Filters.swift */,
 			);
 			name = AV;
 			sourceTree = "<group>";
@@ -451,6 +454,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8C07C4B1B84D9AD00CB244A /* Filters.swift in Sources */,
 				A87F474F1B82137700A71E82 /* Camera.swift in Sources */,
 				A87F47281B82125300A71E82 /* RecordViewController.swift in Sources */,
 				A87F473E1B8212BB00A71E82 /* Mixer.swift in Sources */,

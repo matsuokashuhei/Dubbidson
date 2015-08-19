@@ -12,24 +12,38 @@ import GPUImage
 import XCGLogger
 
 protocol FiltersViewControllerDeleage {
-    func selectFilter(filterOperator: FilterOperator)
+    func selectFilter(filter: Filterable)
 }
 
 class FiltersViewController: UIViewController {
 
-    @IBOutlet weak var filterNameLabel: UILabel!
+    @IBOutlet weak var filterNameLabel: UILabel! {
+        didSet {
+            if let filter = self.filter {
+                filterNameLabel.text = filter.name
+            }
+        }
+    }
 
-    @IBOutlet weak var captureView: GPUImageView!
+    @IBOutlet weak var captureView: GPUImageView! {
+        didSet {
+            filter.addTarget(captureView)
+        }
+    }
 
+    /*
     @IBOutlet weak var slider: UISlider! {
         didSet {
             slider.addTarget(self, action: "sliderValueChanged", forControlEvents: .ValueChanged)
             slider.hidden = true
         }
     }
+    */
 
-    @IBOutlet weak var filtersView: FiltersView! {
-        didSet { filtersView.delegate = self }
+    @IBOutlet weak var selectionView: FilterSelectionView! {
+        didSet {
+            selectionView.delegate = self
+        }
     }
 
     @IBOutlet weak var closeButton: UIButton! {
@@ -44,43 +58,37 @@ class FiltersViewController: UIViewController {
 
     var camera = Camera.sharedInstance
 
-    var filterOperator: FilterOperator! {
+    var filter: Filterable! {
         didSet {
-            if let oldValue = oldValue {
-                oldValue.filter.removeTarget(captureView)
+            if let prevFilter = oldValue {
+                prevFilter.removeTarget(captureView)
             }
             if let label = filterNameLabel {
-                label.text = filterOperator.name
+                label.text = filter.name
             }
         }
     }
 
-    var artworkImage: UIImage?
+    var blendImage: UIImage?
 
     var delegate: FiltersViewControllerDeleage?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        filterNameLabel.text = filterOperator.name
+        selectionView.blendImage = self.blendImage
+        selectionView.setFilters(filters)
+        selectionView.setSelectedFilter(filter)
+    }
 
-        filtersView.artworkImage = self.artworkImage
-        filtersView.setFilterOperators(filterOperators)
-        filtersView.setSelectedFilterOperator(filterOperator)
-        filtersView.startOutput()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        selectionView.startOutput()
+    }
 
-        camera.addTarget(filterOperator.filter as! GPUImageInput)
-        filterOperator.filter.addTarget(captureView)
-
-        switch filterOperator.sliderConfiguration {
-        case .Disabled:
-            slider.hidden = true
-        case let .Enabled(minimumValue, maximumValue, initialValue):
-            slider.minimumValue = minimumValue
-            slider.maximumValue = maximumValue
-            slider.value = initialValue
-            slider.hidden = false
-        }
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        selectionView.endOutput()
     }
 
     override func didReceiveMemoryWarning() {
@@ -93,7 +101,7 @@ class FiltersViewController: UIViewController {
 extension FiltersViewController {
 
     func checkButtonTapped() {
-        delegate?.selectFilter(filterOperator)
+        delegate?.selectFilter(filter)
         dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -101,6 +109,7 @@ extension FiltersViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
+    /*
     func sliderValueChanged() {
         switch filterOperator.sliderConfiguration {
         case let .Enabled(minimumValue, maximumValue, initialValue):
@@ -109,13 +118,15 @@ extension FiltersViewController {
             break
         }
     }
+    */
 
 }
 
 // MARK: - Filters view delegate
-extension FiltersViewController: FiltersViewDelegate {
+extension FiltersViewController: FilterSelectionViewDelegate {
 
-    func filtersViewDidSelect(filterOperator: FilterOperator) {
+    func filtersViewDidSelect(filter: Filterable) {
+        /*
         self.filterOperator = filterOperator
         switch filterOperator.sliderConfiguration {
         case .Disabled:
@@ -126,7 +137,10 @@ extension FiltersViewController: FiltersViewDelegate {
             slider.value = initialValue
             slider.hidden = false
         }
-        filterOperator.filter.addTarget(captureView)
+        */
+        self.filter = filter
+        camera.addTarget(filter)
+        filter.addTarget(captureView)
     }
 
 }
