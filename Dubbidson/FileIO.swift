@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FileManager {
+class FileIO {
 
     class func videoFileURL() -> NSURL? {
         let formatter = NSDateFormatter()

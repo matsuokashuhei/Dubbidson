@@ -40,7 +40,7 @@ class VideoViewController: UIViewController {
         super.viewDidLoad()
 
         //if let URL = NSURL(string: video.fileURL) {
-        if let URL = FileManager.videoFileURL(video) {
+        if let URL = FileIO.videoFileURL(video) {
             player.delegate = self
             player.prepareToPlay(URL)
         }

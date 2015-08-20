@@ -79,7 +79,7 @@ extension RecordViewController {
 
     func startRecording() {
         // Writerのの作成
-        let fileURL = FileManager.videoFileURL()
+        let fileURL = FileIO.videoFileURL()
         writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
         writer.delegate = self
         //filterOperator.addTarget(writer)
@@ -212,7 +212,7 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
         logger.verbose("")
         let song = songView.song
         if let videoURL = writer.assetWriter.outputURL {
-            if let audioURL = FileManager.audioFileURL(song) {
+            if let audioURL = FileIO.audioFileURL(song) {
                 SVProgressHUD.show()
                 Mixer.sharedInstance.mixdown(videoURL: videoURL, audioURL: audioURL) { (result) -> () in
                     Async.main {

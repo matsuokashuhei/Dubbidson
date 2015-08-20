@@ -44,7 +44,7 @@ class FilterView: UIView {
         case .Blend:
             if let image = self.image {
                 picture = GPUImagePicture(image: image)
-                picture?.addTarget(filter.output as! GPUImageInput)
+                picture?.addTarget(filter.input)
                 picture?.processImage()
             }
             filter.addTarget(view)
@@ -56,7 +56,7 @@ class FilterView: UIView {
             Camera.sharedInstance.removeTarget(filter)
         }
         if let picture = self.picture {
-            picture.removeTarget(filter.output as! GPUImageInput)
+            picture.removeTarget(filter.input)
         }
     }
 

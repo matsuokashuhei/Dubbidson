@@ -20,9 +20,7 @@
 		A87F472E1B82126400A71E82 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F472B1B82126400A71E82 /* FilterView.swift */; };
 		A87F472F1B82126400A71E82 /* SongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F472C1B82126400A71E82 /* SongView.swift */; };
 		A87F47351B8212A700A71E82 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47331B8212A700A71E82 /* Downloader.swift */; };
-		A87F47361B8212A700A71E82 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47341B8212A700A71E82 /* FileManager.swift */; };
-		A87F473B1B8212BB00A71E82 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47371B8212BB00A71E82 /* Filter.swift */; };
-		A87F473C1B8212BB00A71E82 /* FilterOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47381B8212BB00A71E82 /* FilterOperator.swift */; };
+		A87F47361B8212A700A71E82 /* FileIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47341B8212A700A71E82 /* FileIO.swift */; };
 		A87F473D1B8212BB00A71E82 /* iTunes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47391B8212BB00A71E82 /* iTunes.swift */; };
 		A87F473E1B8212BB00A71E82 /* Mixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F473A1B8212BB00A71E82 /* Mixer.swift */; };
 		A87F47401B8212C400A71E82 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F473F1B8212C400A71E82 /* Video.swift */; };
@@ -38,7 +36,7 @@
 		A87F47561B8236F600A71E82 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47551B8236F600A71E82 /* R.generated.swift */; };
 		A87F47581B824D7300A71E82 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47571B824D7300A71E82 /* VideosViewController.swift */; };
 		A8C07C451B83812200CB244A /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8C07C441B83812200CB244A /* Storyboard.storyboard */; };
-		A8C07C4B1B84D9AD00CB244A /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C07C4A1B84D9AD00CB244A /* Filters.swift */; };
+		A8C07C4B1B84D9AD00CB244A /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C07C4A1B84D9AD00CB244A /* Filter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,9 +67,7 @@
 		A87F472B1B82126400A71E82 /* FilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		A87F472C1B82126400A71E82 /* SongView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongView.swift; sourceTree = "<group>"; };
 		A87F47331B8212A700A71E82 /* Downloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
-		A87F47341B8212A700A71E82 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
-		A87F47371B8212BB00A71E82 /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
-		A87F47381B8212BB00A71E82 /* FilterOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterOperator.swift; sourceTree = "<group>"; };
+		A87F47341B8212A700A71E82 /* FileIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileIO.swift; sourceTree = "<group>"; };
 		A87F47391B8212BB00A71E82 /* iTunes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iTunes.swift; sourceTree = "<group>"; };
 		A87F473A1B8212BB00A71E82 /* Mixer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mixer.swift; sourceTree = "<group>"; };
 		A87F473F1B8212C400A71E82 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
@@ -87,7 +83,7 @@
 		A87F47551B8236F600A71E82 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		A87F47571B824D7300A71E82 /* VideosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		A8C07C441B83812200CB244A /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
-		A8C07C4A1B84D9AD00CB244A /* Filters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
+		A8C07C4A1B84D9AD00CB244A /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		B4ABA285C2C5B782DDC6701D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6335BED45FD80631594E4CB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -252,11 +248,9 @@
 				A87F47521B8232DE00A71E82 /* VideoPlayer.swift */,
 				A87F474C1B82137700A71E82 /* AudioPlayer.swift */,
 				A87F474D1B82137700A71E82 /* Camera.swift */,
-				A87F47371B8212BB00A71E82 /* Filter.swift */,
-				A87F47381B8212BB00A71E82 /* FilterOperator.swift */,
 				A87F47391B8212BB00A71E82 /* iTunes.swift */,
 				A87F473A1B8212BB00A71E82 /* Mixer.swift */,
-				A8C07C4A1B84D9AD00CB244A /* Filters.swift */,
+				A8C07C4A1B84D9AD00CB244A /* Filter.swift */,
 			);
 			name = AV;
 			sourceTree = "<group>";
@@ -265,7 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				A87F47331B8212A700A71E82 /* Downloader.swift */,
-				A87F47341B8212A700A71E82 /* FileManager.swift */,
+				A87F47341B8212A700A71E82 /* FileIO.swift */,
 				A87F47551B8236F600A71E82 /* R.generated.swift */,
 			);
 			name = Utils;
@@ -454,12 +448,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8C07C4B1B84D9AD00CB244A /* Filters.swift in Sources */,
+				A8C07C4B1B84D9AD00CB244A /* Filter.swift in Sources */,
 				A87F474F1B82137700A71E82 /* Camera.swift in Sources */,
 				A87F47281B82125300A71E82 /* RecordViewController.swift in Sources */,
 				A87F473E1B8212BB00A71E82 /* Mixer.swift in Sources */,
 				A87F474E1B82137700A71E82 /* AudioPlayer.swift in Sources */,
-				A87F473B1B8212BB00A71E82 /* Filter.swift in Sources */,
 				A87F47291B82125300A71E82 /* SongsViewController.swift in Sources */,
 				A87F47561B8236F600A71E82 /* R.generated.swift in Sources */,
 				A87F47351B8212A700A71E82 /* Downloader.swift in Sources */,
@@ -471,9 +464,8 @@
 				A87F472F1B82126400A71E82 /* SongView.swift in Sources */,
 				A87F47001B820E9100A71E82 /* AppDelegate.swift in Sources */,
 				A87F473D1B8212BB00A71E82 /* iTunes.swift in Sources */,
-				A87F47361B8212A700A71E82 /* FileManager.swift in Sources */,
+				A87F47361B8212A700A71E82 /* FileIO.swift in Sources */,
 				A87F472E1B82126400A71E82 /* FilterView.swift in Sources */,
-				A87F473C1B8212BB00A71E82 /* FilterOperator.swift in Sources */,
 				A87F472D1B82126400A71E82 /* FiltersView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
