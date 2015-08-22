@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		62246D259DCBEDBDDB6D2A12 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4ABA285C2C5B782DDC6701D /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A8237BD71B88700F00ED8BA1 /* NetworkIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */; };
 		A87F47001B820E9100A71E82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F46FF1B820E9100A71E82 /* AppDelegate.swift */; };
 		A87F47051B820E9100A71E82 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87F47031B820E9100A71E82 /* Main.storyboard */; };
 		A87F47071B820E9100A71E82 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A87F47061B820E9100A71E82 /* Images.xcassets */; };
@@ -37,6 +38,7 @@
 		A87F47581B824D7300A71E82 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47571B824D7300A71E82 /* VideosViewController.swift */; };
 		A8C07C451B83812200CB244A /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8C07C441B83812200CB244A /* Storyboard.storyboard */; };
 		A8C07C4B1B84D9AD00CB244A /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C07C4A1B84D9AD00CB244A /* Filter.swift */; };
+		A8F9C8011B88E34400A8244C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F9C8001B88E34400A8244C /* Error.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		4AF7E5E89765120C201C4C07 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkIndicator.swift; sourceTree = "<group>"; };
 		A87F46FA1B820E9100A71E82 /* Dubbidson.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dubbidson.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A87F46FE1B820E9100A71E82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A87F46FF1B820E9100A71E82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +87,7 @@
 		A87F47571B824D7300A71E82 /* VideosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		A8C07C441B83812200CB244A /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		A8C07C4A1B84D9AD00CB244A /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		A8F9C8001B88E34400A8244C /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		B4ABA285C2C5B782DDC6701D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6335BED45FD80631594E4CB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -223,6 +227,7 @@
 				A87F472A1B82126400A71E82 /* FiltersView.swift */,
 				A87F472B1B82126400A71E82 /* FilterView.swift */,
 				A87F472C1B82126400A71E82 /* SongView.swift */,
+				A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -261,6 +266,7 @@
 				A87F47331B8212A700A71E82 /* Downloader.swift */,
 				A87F47341B8212A700A71E82 /* FileIO.swift */,
 				A87F47551B8236F600A71E82 /* R.generated.swift */,
+				A8F9C8001B88E34400A8244C /* Error.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -460,12 +466,14 @@
 				A87F47531B8232DE00A71E82 /* VideoPlayer.swift in Sources */,
 				A87F47581B824D7300A71E82 /* VideosViewController.swift in Sources */,
 				A87F47511B822B4000A71E82 /* VideoViewController.swift in Sources */,
+				A8237BD71B88700F00ED8BA1 /* NetworkIndicator.swift in Sources */,
 				A87F47271B82125300A71E82 /* FiltersViewController.swift in Sources */,
 				A87F472F1B82126400A71E82 /* SongView.swift in Sources */,
 				A87F47001B820E9100A71E82 /* AppDelegate.swift in Sources */,
 				A87F473D1B8212BB00A71E82 /* iTunes.swift in Sources */,
 				A87F47361B8212A700A71E82 /* FileIO.swift in Sources */,
 				A87F472E1B82126400A71E82 /* FilterView.swift in Sources */,
+				A8F9C8011B88E34400A8244C /* Error.swift in Sources */,
 				A87F472D1B82126400A71E82 /* FiltersView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

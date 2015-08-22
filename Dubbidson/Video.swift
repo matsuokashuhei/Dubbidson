@@ -11,11 +11,14 @@ import Foundation
 import RealmSwift
 
 class Video: Object {
+    dynamic var id = ""
     dynamic var name = ""
     dynamic var artist = ""
     dynamic var artworkImageURL = ""
     //dynamic var fileURL = ""
-    dynamic var fileName = ""
+    //dynamic var fileName = ""
+    //dynamic var videlFileName = ""
+    //dynamic var thumbnailFileName = ""
     dynamic var createdAt = NSDate()
 }
 
@@ -30,13 +33,15 @@ extension Video {
         return videos
     }
 
-    class func create(song: Song, fileURL: NSURL) -> Video {
+    //class func create(song: Song, videoURL: NSURL, thumbnailURL: NSURL) -> Video {
+    class func create(id: String, song: Song) -> Video {
         let video = Video()
+        video.id = id
         video.name = song.name
         video.artist = song.artist
         video.artworkImageURL = song.imageURL.absoluteString!
         //video.fileURL = fileURL.absoluteString!
-        video.fileName = fileURL.lastPathComponent!
+        //video.fileName = fileURL.lastPathComponent!
         let realm = Realm()
         realm.write {
             realm.add(video)

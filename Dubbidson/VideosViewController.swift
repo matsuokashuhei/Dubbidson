@@ -79,12 +79,24 @@ extension VideosViewController: UITableViewDataSource {
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let video = videos[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.videoTableViewCell2, forIndexPath: indexPath)!
-        cell.textLabel?.text = "\(video.name) - \(video.artist)"
+        let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.videoTableViewCell, forIndexPath: indexPath)!
+        cell.configure(video)
         return cell
     }
 
 }
 
 class VideoTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var thumbnailImageView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var createdAtLabel: UILabel!
+
+    func configure(video: Video) {
+        thumbnailImageView.kf_setImageWithURL(FileIO.sharedInstace.thumbnailURL(video)!)
+        nameLabel.text = video.name
+        artistLabel.text = video.artist
+        createdAtLabel.text = "\(video.createdAt)"
+    }
 }

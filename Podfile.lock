@@ -5,6 +5,25 @@ PODS:
   - Cartography (0.5.0)
   - GPUImage (0.1.7)
   - Kingfisher (1.4.5)
+  - OMGHTTPURLRQ (2.1.3):
+    - OMGHTTPURLRQ/RQ (= 2.1.3)
+  - OMGHTTPURLRQ/FormURLEncode (2.1.3)
+  - OMGHTTPURLRQ/RQ (2.1.3):
+    - OMGHTTPURLRQ/FormURLEncode
+    - OMGHTTPURLRQ/UserAgent
+  - OMGHTTPURLRQ/UserAgent (2.1.3)
+  - PromiseKit (2.2.1):
+    - PromiseKit/Foundation (= 2.2.1)
+    - PromiseKit/QuartzCore (= 2.2.1)
+    - PromiseKit/UIKit (= 2.2.1)
+  - PromiseKit/CorePromise (2.2.1)
+  - PromiseKit/Foundation (2.2.1):
+    - OMGHTTPURLRQ (~> 2.1.3)
+    - PromiseKit/CorePromise
+  - PromiseKit/QuartzCore (2.2.1):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (2.2.1):
+    - PromiseKit/CorePromise
   - R.swift (0.8.5)
   - Realm (0.94.1):
     - Realm/Headers (= 0.94.1)
@@ -22,6 +41,7 @@ DEPENDENCIES:
   - Cartography
   - GPUImage
   - Kingfisher
+  - PromiseKit
   - R.swift
   - RealmSwift
   - Result
@@ -44,6 +64,8 @@ SPEC CHECKSUMS:
   Cartography: 774e5cc446f5a6bca5d4345c5aa6af9a1fe74dc6
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
   Kingfisher: 22fa7d41c83b214c19fbb82a77a9db52300b3719
+  OMGHTTPURLRQ: c4268dea4295b585d711055dbcd87bfa82badd5f
+  PromiseKit: 9c92257e39abf4b634533d44268592dfc6e4b5c2
   R.swift: 4c7af5fcc88e31dd862bdc92173aa59db1d77222
   Realm: d999a6cf0b41577a077349c9cc9d496cc62a7d17
   RealmSwift: 06b60ff5b1338755654d39aab44ac38001600f76

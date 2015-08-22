@@ -10,8 +10,11 @@ import AVKit
 import UIKit
 
 import Async
+import Box
 import GPUImage
+import PromiseKit
 import RealmSwift
+import Result
 import SVProgressHUD
 import XCGLogger
 
@@ -79,7 +82,7 @@ extension RecordViewController {
 
     func startRecording() {
         // Writerのの作成
-        let fileURL = FileIO.videoFileURL()
+        let fileURL = FileIO.recordingFileURL()
         writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
         writer.delegate = self
         //filterOperator.addTarget(writer)
@@ -211,29 +214,32 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
     func movieRecordingCompleted() {
         logger.verbose("")
         let song = songView.song
-        if let videoURL = writer.assetWriter.outputURL {
-            if let audioURL = FileIO.audioFileURL(song) {
-                SVProgressHUD.show()
-                Mixer.sharedInstance.mixdown(videoURL: videoURL, audioURL: audioURL) { (result) -> () in
-                    Async.main {
-                        SVProgressHUD.dismiss()
-                    }
-                    switch result {
-                    case .Success(let box):
-                        Async.main {
-                            let fileURL = box.value
-                            let video = Video.create(song, fileURL: fileURL)
-                            self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
-                        }
-                    case .Failure(let box):
-                        let error = box.value
-                        self.logger.error(error.localizedDescription)
-                        Async.main {
-                            SVProgressHUD.showErrorWithStatus(error.localizedDescription)
+        if let recordingURL = writer.assetWriter.outputURL, let audioURL = FileIO.audioFileURL(song) {
+            Mixer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL).then { (videoURL) in
+                let id = videoURL.lastPathComponent!.stringByDeletingPathExtension
+                return self.generateThumbnail(videoURL).then { (image) in
+                    return Promise<String> { (fulfill, reject) in
+                        let thumbnailURL = FileIO.fileURL(.Documents, filename: "\(id).png")!
+                        if UIImagePNGRepresentation(image).writeToFile(thumbnailURL.path!, atomically: true) {
+                            fulfill(id)
+                        } else {
+                            let error = Error.unknown()
+                            self.logger.error(error.localizedDescription)
+                            reject(error)
                         }
                     }
                 }
+            }.then { (id: String) -> () in
+                let video = Video.create(id, song: song)
+                self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
+            }.catch { error in
+                self.logger.error("error: \(error.localizedDescription)")
+                SVProgressHUD.showErrorWithStatus(error.localizedDescription)
             }
+        } else {
+            let error = Error.unknown()
+            self.logger.error(error.localizedDescription)
+            SVProgressHUD.showErrorWithStatus(error.localizedDescription)
         }
     }
 
@@ -242,4 +248,36 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
         SVProgressHUD.showErrorWithStatus(error.localizedDescription)
     }
 
+    func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
+        return Promise { (fulfill, reject) in
+            if let asset = AVAsset.assetWithURL(videoURL) as? AVAsset {
+                let generator = AVAssetImageGenerator(asset: asset)
+                generator.appliesPreferredTrackTransform = true
+                let time = CMTimeMake(1, 30)
+                var error: NSError?
+                if let image = generator.copyCGImageAtTime(time, actualTime: nil, error: &error) {
+                    if let thumbnail = UIImage(CGImage: image) {
+                        fulfill(thumbnail)
+                    } else {
+                        let error = Error.unknown()
+                        self.logger.error(error.localizedDescription)
+                        reject(error)
+                    }
+                } else {
+                    if let error = error {
+                        self.logger.error(error.localizedDescription)
+                        reject(error)
+                    } else {
+                        let error = Error.unknown()
+                        self.logger.error(error.localizedDescription)
+                        reject(error)
+                    }
+                }
+            } else {
+                let error = Error.unknown()
+                self.logger.error(error.localizedDescription)
+                reject(error)
+            }
+        }
+    }
 }

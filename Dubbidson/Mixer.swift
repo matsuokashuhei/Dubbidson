@@ -11,6 +11,7 @@ import Foundation
 
 import Result
 import Box
+import PromiseKit
 import XCGLogger
 
 class Mixer: NSObject {
@@ -19,14 +20,21 @@ class Mixer: NSObject {
 
     static let sharedInstance = Mixer()
 
-    var outputURL: NSURL {
-        let directory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first as! NSURL
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyyMMddHHmmss"
-        let stringFromDate = formatter.stringFromDate(NSDate())
-        //return directory.URLByAppendingPathComponent("\(stringFromDate).m4v")
-        return directory.URLByAppendingPathComponent("\(stringFromDate).mov")
+    /*
+    func mixdown(#videoURL: NSURL, audioURL: NSURL) -> Promise<(videoURL: NSURL, thumbnailURL: NSURL)> {
+        return Promise { (filfull, reject) in
+            mixdown(videoURL: videoURL, audioURL: audioURL).then { (outputURL: NSURL) in
+                self.saveThumbnail(outputURL).then { (thumbnailURL) in
+                    filfull(videoURL: outputURL, thumbnailURL: thumbnailURL)
+                }.catch { error in
+                    reject(error)
+                }
+            }.catch { error in
+                reject(error)
+            }
+        }
     }
+    */
 
     func mixdown(#videoURL: NSURL, audioURL: NSURL, handler: (Result<NSURL, NSError>) ->()) {
         logger.verbose("videoURL: \(videoURL.path!), audioURL: \(audioURL.path!)")
@@ -78,21 +86,116 @@ class Mixer: NSObject {
         videoComposition.instructions = [instruction]
         videoComposition.frameDuration = CMTimeMake(1, 30)
 
+        let URL = FileIO.videoFileURL()
         let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)
-        session.outputURL = outputURL
+        session.outputURL = URL
         session.outputFileType = AVFileTypeQuickTimeMovie
         session.videoComposition = videoComposition
         session.exportAsynchronouslyWithCompletionHandler { () -> Void in
             if session.status == AVAssetExportSessionStatus.Completed {
                 handler(.Success(Box(session.outputURL)))
-                //handler(.Success(Box(self.outputURL)))
             } else {
                 if let error = session.error {
                     self.logger.error(error.localizedDescription)
                     handler(.Failure(Box(error)))
+                } else {
+                    handler(.Failure(Box(NSError())))
                 }
             }
         }
     }
+
+    func mixdown(#videoURL: NSURL, audioURL: NSURL) -> Promise<NSURL> {
+        return Promise { fulfill, reject in
+            self.mixdown(videoURL: videoURL, audioURL: audioURL) { (result) in
+                switch result {
+                case .Success(let box):
+                    fulfill(box.value)
+                case .Failure(let box):
+                    reject(box.value)
+                }
+            }
+        }
+    }
+
+    /*
+    private func generateThumbnail(videoURL: NSURL) -> Result<UIImage, NSError> {
+        if let asset = AVAsset.assetWithURL(videoURL) as? AVAsset {
+            let generator = AVAssetImageGenerator(asset: asset)
+            generator.appliesPreferredTrackTransform = true
+            let time = CMTimeMake(1, 30)
+            var error: NSError?
+            if let image = generator.copyCGImageAtTime(time, actualTime: nil, error: &error) {
+                if let thumbnail = UIImage(CGImage: image) {
+                    return .Success(Box(thumbnail))
+                } else {
+                    return .Failure(Box(NSError()))
+                }
+            } else {
+                return .Failure(Box(NSError()))
+            }
+        } else {
+            return .Failure(Box(NSError()))
+        }
+    }
+
+    private func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
+        return Promise { (filfull, reject) in
+            let result: Result<UIImage, NSError> = self.generateThumbnail(videoURL)
+            switch result {
+            case .Success(let box):
+                filfull(box.value)
+            case .Failure(let box):
+                reject(box.value)
+            }
+        }
+    }
+
+    func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
+        return Promise { (fulfill, reject) in
+            if let asset = AVAsset.assetWithURL(videoURL) as? AVAsset {
+                let generator = AVAssetImageGenerator(asset: asset)
+                generator.appliesPreferredTrackTransform = true
+                let time = CMTimeMake(1, 30)
+                var error: NSError?
+                if let error = error {
+                    reject(NSError())
+                }
+                if let image = generator.copyCGImageAtTime(time, actualTime: nil, error: &error) {
+                    if let thumbnail = UIImage(CGImage: image) {
+                        fulfill(thumbnail)
+                    } else {
+                        reject(NSError())
+                    }
+                } else {
+                    reject(NSError())
+                }
+            } else {
+                reject(NSError())
+            }
+        }
+    }
+
+    func saveThumbnail(videoURL: NSURL) -> Promise<NSURL> {
+        return Promise { (fulfill, reject) in
+            if let videoFilename = videoURL.lastPathComponent {
+                let timestamp = videoFilename.stringByDeletingPathExtension
+                let thumbnailFilename = timestamp.stringByAppendingPathExtension("png")
+                self.generateThumbnail(videoURL).then { (image) -> () in
+                    let thumbnailURL = FileIO.fileURL(.Documents, filename: thumbnailFilename)!
+                    if UIImagePNGRepresentation(image).writeToFile(thumbnailURL.absoluteString!, atomically: true) {
+                        fulfill(thumbnailURL)
+                    } else {
+                        reject(NSError())
+                    }
+                }.catch { error in
+                    reject(error)
+                }
+            } else {
+                reject(NSError())
+            }
+        }
+    }
+    */
 
 }

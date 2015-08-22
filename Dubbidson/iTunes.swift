@@ -9,8 +9,9 @@
 import Foundation
 
 import Alamofire
-import Result
 import Box
+import PromiseKit
+import Result
 
 class iTunes {
 
@@ -21,7 +22,15 @@ class iTunes {
 
     init() {
         limit = 100
+        if let country = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) as? String {
+            self.country = country
+        } else {
+            country = "us"
+        }
+        /*
+        limit = 100
         country = "us"
+        */
     }
 
     func configure(#limit: Int, country: String) {
@@ -32,6 +41,7 @@ class iTunes {
     func topsongs(#handler: (Result<[Song], NSError>) -> ()) {
         let URL = NSURL(string: "https://itunes.apple.com/\(country)/rss/topsongs/limit=\(limit)/explicit=true/json")!
         let request = Alamofire.request(.GET, URL, parameters: nil)
+        debugPrintln(request)
         request.responseJSON() { (_, _, object, error) in
             if let error = error {
                 handler(.Failure(Box(error)))
@@ -44,10 +54,24 @@ class iTunes {
                     } else {
                         return []
                     }
+
                 }
                 handler(.Success(Box(songs)))
             } else {
                 handler(.Failure(Box(NSError())))
+            }
+        }
+    }
+
+    func topsongs() -> Promise<[Song]> {
+        return Promise { (fulfill, reject) in
+            topsongs { (result) -> () in
+                switch result {
+                case .Success(let box):
+                    fulfill(box.value)
+                case .Failure(let box):
+                    reject(box.value)
+                }
             }
         }
     }
@@ -81,6 +105,19 @@ class iTunes {
             }
         }
     }
+
+    func search(#keyword: String) -> Promise<[Song]> {
+        return Promise { (fulfill, reject) in
+            search(keyword: keyword) { (result) -> () in
+                switch result {
+                case .Success(let box):
+                    fulfill(box.value)
+                case .Failure(let box):
+                    reject(box.value)
+                }
+            }
+        }
+    }
 }
 
 
@@ -92,12 +129,14 @@ public struct Song {
     public let artist: String!
     public let previewURL: NSURL!
 
+    /*
     public var fileURL: NSURL {
         if let directory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0] as? NSURL {
             return directory.URLByAppendingPathComponent("\(id).m4a")
         }
         return previewURL
     }
+    */
 
     public init?(entry: NSDictionary) {
         if let id = entry["id"] as? NSDictionary, let idattributes = id["attributes"] as? NSDictionary, let imid = idattributes["im:id"] as? String,

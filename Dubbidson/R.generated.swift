@@ -32,9 +32,7 @@ struct R {
   
   struct reuseIdentifier {
     static var songTableViewCell: ReuseIdentifier<Dubbidson.SongTableViewCell> { return ReuseIdentifier(identifier: "SongTableViewCell") }
-    static var songTableViewCell2: ReuseIdentifier<Dubbidson.SongTableViewCell> { return ReuseIdentifier(identifier: "SongTableViewCell2") }
     static var videoTableViewCell: ReuseIdentifier<Dubbidson.VideoTableViewCell> { return ReuseIdentifier(identifier: "VideoTableViewCell") }
-    static var videoTableViewCell2: ReuseIdentifier<Dubbidson.VideoTableViewCell> { return ReuseIdentifier(identifier: "VideoTableViewCell2") }
   }
   
   struct segue {

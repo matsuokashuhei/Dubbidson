@@ -58,12 +58,7 @@ class SongsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         player.delegate = self
-
-        if let country = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) as? String {
-            iTunes.sharedInstance.configure(limit: 100, country: country)
-        }
         fetch()
     }
 
@@ -82,6 +77,7 @@ class SongsViewController: UIViewController {
 extension SongsViewController {
 
     func fetch() {
+        /*
         iTunes.sharedInstance.topsongs { (result) -> () in
             switch result {
             case .Success(let box):
@@ -94,9 +90,20 @@ extension SongsViewController {
                 self.logger.error(box.value.localizedDescription)
             }
         }
+        */
+        NetworkIndicator.sharedInstance.show()
+        iTunes.sharedInstance.topsongs().then { songs -> () in
+            self.songs = songs
+            self.songsTableView.reloadData()
+        }.finally {
+            NetworkIndicator.sharedInstance.dissmiss()
+        }.catch { error in
+            self.logger.error(error.localizedDescription)
+        }
     }
 
     func search(keyword: String) {
+        /*
         iTunes.sharedInstance.search(keyword: keyword) { (result) -> () in
             switch result {
             case .Success(let box):
@@ -109,7 +116,18 @@ extension SongsViewController {
                 self.logger.error(box.value.localizedDescription)
             }
         }
+        */
+        NetworkIndicator.sharedInstance.show()
+        iTunes.sharedInstance.search(keyword: keyword).then { songs -> () in
+            self.songs = songs
+            self.songsTableView.reloadData()
+        }.finally {
+            NetworkIndicator.sharedInstance.dissmiss()
+        }.catch { error in
+            self.logger.error(error.localizedDescription)
+        }
     }
+
 }
 
 // MARK: - Actions
@@ -165,7 +183,7 @@ extension SongsViewController: UITableViewDataSource {
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let song = songs[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.songTableViewCell2, forIndexPath: indexPath)!
+        let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.songTableViewCell, forIndexPath: indexPath)!
         cell.configure(song)
         return cell
     }
