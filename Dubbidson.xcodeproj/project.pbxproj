@@ -227,7 +227,6 @@
 				A87F472A1B82126400A71E82 /* FiltersView.swift */,
 				A87F472B1B82126400A71E82 /* FilterView.swift */,
 				A87F472C1B82126400A71E82 /* SongView.swift */,
-				A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -263,6 +262,7 @@
 		A87F47321B82129100A71E82 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */,
 				A87F47331B8212A700A71E82 /* Downloader.swift */,
 				A87F47341B8212A700A71E82 /* FileIO.swift */,
 				A87F47551B8236F600A71E82 /* R.generated.swift */,

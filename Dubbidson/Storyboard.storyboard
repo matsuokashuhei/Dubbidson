@@ -293,13 +293,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="w55-n7-RYU">
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="w55-n7-RYU">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="N3j-vJ-BS9">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SongTableViewCell" rowHeight="80" id="NSZ-CR-Q4n" customClass="SongTableViewCell" customModule="Dubbidson" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -598,10 +598,10 @@
         <image name="filter" width="48" height="48"/>
         <image name="lens-off" width="48" height="48"/>
         <image name="play" width="48" height="48"/>
-        <image name="tv" width="48" height="48"/>
-        <image name="videocam" width="48" height="48"/>
+        <image name="tv" width="36" height="36"/>
+        <image name="videocam" width="36" height="36"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Vvc-ph-e8x"/>
+        <segue reference="Jaw-8Y-1WH"/>
     </inferredMetricsTieBreakers>
 </document>

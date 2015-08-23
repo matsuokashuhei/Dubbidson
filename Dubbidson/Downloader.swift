@@ -23,9 +23,11 @@ class Downloader: NSObject {
         if let destinationURL = FileIO.audioFileURL(song) {
             switch FileIO.delete(destinationURL) {
             case .Success(let box):
+                NetworkIndicator.sharedInstance.show()
                 Alamofire.download(.GET, song.previewURL) { (_, _) -> NSURL in
                     return destinationURL
                 }.response{ (_, _, _, error) -> () in
+                    NetworkIndicator.sharedInstance.dismiss()
                     if let error = error {
                         self.logger.error(error.localizedDescription)
                         handler(.Failure(Box(error)))
@@ -35,34 +37,11 @@ class Downloader: NSObject {
                     }
                 }
             case .Failure(let box):
-                handler(.Failure(Box(NSError())))
+                handler(.Failure(box))
+                //handler(.Failure(Box(Error.unknown())))
             }
-            /*
-            delete(destinationURL, handler: { (result) -> () in
-                switch result {
-                case .Success(let box):
-                    if box.value {
-                        Alamofire.download(.GET, song.previewURL) { (_, _) -> NSURL in
-                            return destinationURL
-                        }.response{ (_, _, _, error) -> () in
-                            if let error = error {
-                                self.logger.error(error.localizedDescription)
-                                handler(.Failure(Box(error)))
-                            } else {
-                                self.logger.verbose("destinationURL: \(destinationURL)")
-                                handler(.Success(Box(destinationURL)))
-                            }
-                        }
-                    } else {
-                        handler(.Failure(Box(NSError())))
-                    }
-                case .Failure(let box):
-                    handler(.Failure(box))
-                }
-            })
-            */
         } else {
-            handler(.Failure(Box(NSError())))
+            handler(.Failure(Box(Error.unknown())))
         }
     }
 

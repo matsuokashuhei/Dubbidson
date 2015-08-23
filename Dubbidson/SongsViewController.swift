@@ -91,12 +91,9 @@ extension SongsViewController {
             }
         }
         */
-        NetworkIndicator.sharedInstance.show()
         iTunes.sharedInstance.topsongs().then { songs -> () in
             self.songs = songs
             self.songsTableView.reloadData()
-        }.finally {
-            NetworkIndicator.sharedInstance.dissmiss()
         }.catch { error in
             self.logger.error(error.localizedDescription)
         }
@@ -117,12 +114,9 @@ extension SongsViewController {
             }
         }
         */
-        NetworkIndicator.sharedInstance.show()
         iTunes.sharedInstance.search(keyword: keyword).then { songs -> () in
             self.songs = songs
             self.songsTableView.reloadData()
-        }.finally {
-            NetworkIndicator.sharedInstance.dissmiss()
         }.catch { error in
             self.logger.error(error.localizedDescription)
         }

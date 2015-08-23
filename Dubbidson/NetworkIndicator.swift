@@ -20,8 +20,8 @@ class NetworkIndicator {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
     }
 
-    func dissmiss() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    func dismiss() {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
     }
 
 }

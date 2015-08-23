@@ -42,7 +42,9 @@ class iTunes {
         let URL = NSURL(string: "https://itunes.apple.com/\(country)/rss/topsongs/limit=\(limit)/explicit=true/json")!
         let request = Alamofire.request(.GET, URL, parameters: nil)
         debugPrintln(request)
+        NetworkIndicator.sharedInstance.show()
         request.responseJSON() { (_, _, object, error) in
+            NetworkIndicator.sharedInstance.dismiss()
             if let error = error {
                 handler(.Failure(Box(error)))
                 return
@@ -80,7 +82,9 @@ class iTunes {
         let URL = NSURL(string: "https://itunes.apple.com/search")!
         let request = Alamofire.request(.GET, "https://itunes.apple.com/search", parameters: ["term": keyword, "entity": "song", "limit": "\(limit)", "country": country])
         debugPrintln(request)
+        NetworkIndicator.sharedInstance.show()
         request.responseJSON { (_, _, object, error) in
+            NetworkIndicator.sharedInstance.dismiss()
             if let error = error {
                 handler(.Failure(Box(error)))
                 return
@@ -128,15 +132,6 @@ public struct Song {
     public let imageURL: NSURL!
     public let artist: String!
     public let previewURL: NSURL!
-
-    /*
-    public var fileURL: NSURL {
-        if let directory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0] as? NSURL {
-            return directory.URLByAppendingPathComponent("\(id).m4a")
-        }
-        return previewURL
-    }
-    */
 
     public init?(entry: NSDictionary) {
         if let id = entry["id"] as? NSDictionary, let idattributes = id["attributes"] as? NSDictionary, let imid = idattributes["im:id"] as? String,
