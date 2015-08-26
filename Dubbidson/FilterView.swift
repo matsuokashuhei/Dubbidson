@@ -38,6 +38,7 @@ class FilterView: UIView {
         if selected == false {
             camera.addTarget(filter)
         }
+        /*
         switch filter.type {
         case .Normal, .Custom:
             filter.addTarget(view)
@@ -49,6 +50,19 @@ class FilterView: UIView {
             }
             filter.addTarget(view)
         }
+        */
+        switch filter.type {
+        case .Blend:
+            if let image = self.image {
+                picture = GPUImagePicture(image: image)
+                picture?.addTarget(filter.input)
+                picture?.processImage()
+            }
+        default:
+            break
+        }
+        filter.addTarget(view)
+        filter.output.forceProcessingAtSize(view.sizeInPixels)
     }
 
     func endOutput() {

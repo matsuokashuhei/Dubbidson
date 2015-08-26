@@ -11,15 +11,17 @@ import Foundation
 import RealmSwift
 
 class Video: Object {
+
     dynamic var id = ""
     dynamic var name = ""
     dynamic var artist = ""
     dynamic var artworkImageURL = ""
-    //dynamic var fileURL = ""
-    //dynamic var fileName = ""
-    //dynamic var videlFileName = ""
-    //dynamic var thumbnailFileName = ""
     dynamic var createdAt = NSDate()
+
+    override class func primaryKey() -> String {
+        return "id"
+    }
+
 }
 
 extension Video {

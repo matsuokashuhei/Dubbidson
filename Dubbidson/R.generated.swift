@@ -7,8 +7,6 @@ struct R {
   static func validate() {
     storyboard.main.validateImages()
     storyboard.main.validateViewControllers()
-    storyboard.storyboard.validateImages()
-    storyboard.storyboard.validateViewControllers()
   }
   
   struct image {
@@ -53,29 +51,8 @@ struct R {
         assert(UIImage(named: "filter") != nil, "[R.swift] Image named 'filter' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "lens-off") != nil, "[R.swift] Image named 'lens-off' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "play") != nil, "[R.swift] Image named 'play' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "settings") != nil, "[R.swift] Image named 'settings' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "tv") != nil, "[R.swift] Image named 'tv' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "videocam") != nil, "[R.swift] Image named 'videocam' is used in storyboard 'Main', but couldn't be loaded.")
-      }
-      
-      static func validateViewControllers() {
-        
-      }
-    }
-    
-    struct storyboard {
-      static var initialViewController: UITabBarController? { return instance.instantiateInitialViewController() as? UITabBarController }
-      static var instance: UIStoryboard { return UIStoryboard(name: "Storyboard", bundle: nil) }
-      
-      static func validateImages() {
-        assert(UIImage(named: "album") != nil, "[R.swift] Image named 'album' is used in storyboard 'Storyboard', but couldn't be loaded.")
-        assert(UIImage(named: "check") != nil, "[R.swift] Image named 'check' is used in storyboard 'Storyboard', but couldn't be loaded.")
-        assert(UIImage(named: "close") != nil, "[R.swift] Image named 'close' is used in storyboard 'Storyboard', but couldn't be loaded.")
-        assert(UIImage(named: "filter") != nil, "[R.swift] Image named 'filter' is used in storyboard 'Storyboard', but couldn't be loaded.")
-        assert(UIImage(named: "lens-off") != nil, "[R.swift] Image named 'lens-off' is used in storyboard 'Storyboard', but couldn't be loaded.")
-        assert(UIImage(named: "play") != nil, "[R.swift] Image named 'play' is used in storyboard 'Storyboard', but couldn't be loaded.")
-        assert(UIImage(named: "tv") != nil, "[R.swift] Image named 'tv' is used in storyboard 'Storyboard', but couldn't be loaded.")
-        assert(UIImage(named: "videocam") != nil, "[R.swift] Image named 'videocam' is used in storyboard 'Storyboard', but couldn't be loaded.")
       }
       
       static func validateViewControllers() {

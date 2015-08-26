@@ -17,8 +17,10 @@ import XCGLogger
 protocol AudioPlayerDelegate {
     func readyToPlay(item: AVPlayerItem)
     func endTimeToPlay(item: AVPlayerItem)
-    func playAtTime(item: AVPlayerItem)
+    func playAtTime(time: CMTime, duration: CMTime)
 }
+
+private var KVOContext = 0
 
 class AudioPlayer: NSObject {
 
@@ -26,7 +28,30 @@ class AudioPlayer: NSObject {
 
     static let sharedInstance = AudioPlayer()
 
-    var player: AVPlayer!
+    var player: AVPlayer! {
+        didSet {
+            player.addObserver(self, forKeyPath: "status", options: .Initial | .New, context: &KVOContext)
+            player.addObserver(self, forKeyPath: "rate", options: .Initial | .New, context: &KVOContext)
+        }
+    }
+
+    var item: AVPlayerItem! {
+        didSet {
+            let keyPaths = ["status", "duration"]
+            if let prevItem = oldValue {
+                for keyPath in keyPaths {
+                    prevItem.removeObserver(self, forKeyPath: keyPath, context: &KVOContext)
+                }
+                if let periodicTimeObserver: AnyObject = self.periodicTimeObserver {
+                    player.removeTimeObserver(periodicTimeObserver)
+                }
+            }
+            for keyPath in keyPaths {
+                item.addObserver(self, forKeyPath: keyPath, options: .Initial | .New, context: &KVOContext)
+            }
+        }
+    }
+
     var periodicTimeObserver: AnyObject?
 
     var delegate: AudioPlayerDelegate?
@@ -40,20 +65,15 @@ class AudioPlayer: NSObject {
 
     func prepareToPlay(URL: NSURL) {
         logger.debug("URL: \(URL)")
-        let item = AVPlayerItem(URL: URL)
+        item = AVPlayerItem(URL: URL)
         if let player = self.player {
-            player.currentItem.removeObserver(self, forKeyPath: "status")
-            player.removeObserver(self, forKeyPath: "status")
             player.replaceCurrentItemWithPlayerItem(item)
         } else {
             self.player = AVPlayer(playerItem: item)
         }
-        player.addObserver(self, forKeyPath: "status", options: .Initial | .New, context: nil)
-        item.addObserver(self, forKeyPath: "status", options: .Initial | .New, context: nil)
     }
 
     func readyToPlay(item: AVPlayerItem) {
-        logger.verbose("delegate.readyToPlay(item)")
         delegate?.readyToPlay(item)
         startToPlay(item)
     }
@@ -92,51 +112,71 @@ class AudioPlayer: NSObject {
 extension AudioPlayer {
 
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+        if context != &KVOContext {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+            return
+        }
         if let player = object as? AVPlayer {
             if keyPath == "status" {
                 switch player.status {
                 case .ReadyToPlay:
-                    self.logger.verbose("")
-                    if let item = player.currentItem {
-                        readyToPlay(item)
-                    }
+                    logger.verbose("ReadyToPlay")
                 case .Failed:
+                    logger.verbose("Failed")
                     // TODO:
                     break
                 case .Unknown:
+                    logger.verbose("Unknown")
                     // TODO:
                     break
                 }
                 return
+            }
+            if keyPath == "rate" {
+                logger.verbose("rate: \(player.rate)")
             }
         }
         if let item = object as? AVPlayerItem {
             if keyPath == "status" {
                 switch item.status {
                 case .ReadyToPlay:
-                    self.logger.verbose("")
+                    logger.verbose("ReadyToPlay")
+                    if let item = player.currentItem {
+                        readyToPlay(item)
+                    }
                 case .Failed:
+                    logger.verbose("Failed")
                     break
                 case .Unknown:
+                    logger.verbose("Unknown")
                     break
                 }
                 return
             }
+            if keyPath == "duration" {
+                let duration: CMTime
+                if let value = change[NSKeyValueChangeNewKey] as? NSValue {
+                    duration = value.CMTimeValue
+                } else {
+                    duration = kCMTimeZero
+                }
+                let seconds = CMTimeGetSeconds(duration)
+                logger.verbose("seconds: \(seconds)")
+            }
         }
-        super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
     }
 
     func playAtTime(item: AVPlayerItem) {
-        delegate?.playAtTime(item)
+        delegate?.playAtTime(item.currentTime(), duration: item.duration)
     }
 
     func itemDidPlayToEndTime(notification: NSNotification) {
         if let item = notification.object as? AVPlayerItem {
             logger.debug("")
-            player.removeTimeObserver(periodicTimeObserver)
+            //player.removeTimeObserver(periodicTimeObserver)
             NSNotificationCenter.defaultCenter().removeObserver(self, name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
-            player.seekToTime(kCMTimeZero)
             delegate?.endTimeToPlay(item)
+            player.seekToTime(kCMTimeZero)
         }
     }
     

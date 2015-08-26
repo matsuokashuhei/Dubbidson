@@ -163,3 +163,8 @@ public struct Song {
     }
 
 }
+
+extension Song: Equatable {}
+public func ==(lhs: Song, rhs: Song) -> Bool {
+    return lhs.id == rhs.id
+}

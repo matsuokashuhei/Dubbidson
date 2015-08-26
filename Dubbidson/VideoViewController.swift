@@ -47,6 +47,11 @@ class VideoViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBarHidden = false
+    }
+
     override func viewWillDisappear(animated: Bool) {
         logger.verbose("")
         super.viewWillDisappear(animated)

@@ -20,6 +20,7 @@ class Downloader: NSObject {
     static let sharedInstance = Downloader()
 
     func download(song: Song, handler: (Result<NSURL, NSError>) ->()) {
+        logger.debug("song: name: \(song.name), title: \(song.artist) をダウンロードします。")
         if let destinationURL = FileIO.audioFileURL(song) {
             switch FileIO.delete(destinationURL) {
             case .Success(let box):
@@ -38,7 +39,6 @@ class Downloader: NSObject {
                 }
             case .Failure(let box):
                 handler(.Failure(box))
-                //handler(.Failure(Box(Error.unknown())))
             }
         } else {
             handler(.Failure(Box(Error.unknown())))

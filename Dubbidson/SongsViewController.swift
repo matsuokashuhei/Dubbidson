@@ -213,7 +213,7 @@ extension SongsViewController: AudioPlayerDelegate {
     func endTimeToPlay(item: AVPlayerItem) {
     }
 
-    func playAtTime(item: AVPlayerItem) {
+    func playAtTime(time: CMTime, duration: CMTime) {
     }
 
 }

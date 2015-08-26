@@ -12,14 +12,14 @@ import GPUImage
 import XCGLogger
 
 protocol FiltersViewControllerDeleage {
-    func selectFilter(filter: Filterable)
+    func didSelectFilter(filter: Filterable)
 }
 
 class FiltersViewController: UIViewController {
 
     @IBOutlet weak var filterNameLabel: UILabel! {
         didSet {
-            if let filter = self.filter {
+            if let filter = self.capturedFilter {
                 filterNameLabel.text = filter.name
             }
         }
@@ -27,7 +27,7 @@ class FiltersViewController: UIViewController {
 
     @IBOutlet weak var captureView: GPUImageView! {
         didSet {
-            filter.addTarget(captureView)
+            capturedFilter.addTarget(captureView)
         }
     }
 
@@ -58,6 +58,23 @@ class FiltersViewController: UIViewController {
 
     var camera = Camera.sharedInstance
 
+    var selectedFilter: Filterable! {
+        didSet {
+            capturedFilter = selectedFilter
+        }
+    }
+    var capturedFilter: Filterable! {
+        didSet {
+            if let prevFilter = oldValue {
+                prevFilter.removeTarget(captureView)
+            }
+            if let label = filterNameLabel {
+                label.text = capturedFilter.name
+            }
+        }
+    }
+
+    /*
     var filter: Filterable! {
         didSet {
             if let prevFilter = oldValue {
@@ -68,6 +85,7 @@ class FiltersViewController: UIViewController {
             }
         }
     }
+    */
 
     var blendImage: UIImage?
 
@@ -78,7 +96,7 @@ class FiltersViewController: UIViewController {
 
         selectionView.blendImage = self.blendImage
         selectionView.setFilters(filters)
-        selectionView.setSelectedFilter(filter)
+        selectionView.setSelectedFilter(capturedFilter)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -101,11 +119,12 @@ class FiltersViewController: UIViewController {
 extension FiltersViewController {
 
     func checkButtonTapped() {
-        delegate?.selectFilter(filter)
+        delegate?.didSelectFilter(capturedFilter)
         dismissViewControllerAnimated(true, completion: nil)
     }
 
     func closeButtonTapped() {
+        selectionView.setSelectedFilter(selectedFilter)
         dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -138,7 +157,8 @@ extension FiltersViewController: FilterSelectionViewDelegate {
             slider.hidden = false
         }
         */
-        self.filter = filter
+        //self.filter = filter
+        self.capturedFilter = filter
         camera.addTarget(filter)
         filter.addTarget(captureView)
     }
