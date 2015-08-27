@@ -10,7 +10,7 @@ import Foundation
 
 import RealmSwift
 
-class Video: Object {
+final class Video: Object {
 
     dynamic var id = ""
     dynamic var name = ""
@@ -27,7 +27,7 @@ class Video: Object {
 extension Video {
 
     class func all() -> [Video] {
-        let results = Realm().objects(Video)
+        let results = Realm().objects(Video).sorted("createdAt", ascending: false)
         var videos = [Video]()
         for video in results {
             videos.append(video)

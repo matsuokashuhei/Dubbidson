@@ -86,7 +86,7 @@ class Mixer: NSObject {
         videoComposition.instructions = [instruction]
         videoComposition.frameDuration = CMTimeMake(1, 30)
 
-        let URL = FileIO.videoFileURL()
+        let URL = FileIO.sharedInstance.videoFileURL()
         let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)
         session.outputURL = URL
         session.outputFileType = AVFileTypeQuickTimeMovie

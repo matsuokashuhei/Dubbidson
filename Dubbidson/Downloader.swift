@@ -21,8 +21,8 @@ class Downloader: NSObject {
 
     func download(song: Song, handler: (Result<NSURL, NSError>) ->()) {
         logger.debug("song: name: \(song.name), title: \(song.artist) をダウンロードします。")
-        if let destinationURL = FileIO.audioFileURL(song) {
-            switch FileIO.delete(destinationURL) {
+        if let destinationURL = FileIO.sharedInstance.audioFileURL(song) {
+            switch FileIO.sharedInstance.delete(destinationURL) {
             case .Success(let box):
                 NetworkIndicator.sharedInstance.show()
                 Alamofire.download(.GET, song.previewURL) { (_, _) -> NSURL in

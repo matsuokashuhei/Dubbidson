@@ -15,13 +15,27 @@ import Result
 
 class FileIO {
 
-    static let sharedInstace = FileIO()
+    static let sharedInstance = FileIO()
 
-    class func audioFileURL(song: Song) -> NSURL? {
+    func isVideoFile(fileName: String) -> Bool {
+        return fileName.pathExtension == "m4v"
+    }
+
+    func isVideoURL(URL: NSURL) -> Bool {
+        return URL.lastPathComponent?.pathExtension == "m4v"
+        /*
+        if let pathExtension = URL.lastPathComponent?.pathExtension {
+            return pathExtension == "m4v"
+        }
+        return false
+        */
+    }
+
+    func audioFileURL(song: Song) -> NSURL? {
         return fileURL(.Temporary, filename: song.previewURL.lastPathComponent)
     }
 
-    class func audioFileURL(song: Song) -> Promise<NSURL> {
+    func audioFileURL(song: Song) -> Promise<NSURL> {
         return Promise { (filfull, reject) in
             if let URL = audioFileURL(song) {
                 filfull(URL)
@@ -31,12 +45,12 @@ class FileIO {
         }
     }
 
-    class func recordingFileURL() -> NSURL? {
+    func recordingFileURL() -> NSURL? {
         let filename = String(format: "%@.m4v", arguments:[timestamp()]) 
         return fileURL(.Temporary, filename: filename)
     }
 
-    class func videoFileURL() -> NSURL? {
+    func videoFileURL() -> NSURL? {
         let filename = String(format: "%@.m4v", arguments: [timestamp()])
         return fileURL(.Documents, filename: filename)
     }
@@ -57,7 +71,7 @@ class FileIO {
         }
     }
 
-    class func fileURL(directory: Directory, filename: String?) -> NSURL? {
+    func fileURL(directory: Directory, filename: String?) -> NSURL? {
         if let directory = directory.URL, let filename = filename, let destinationURL = NSURL(string: filename, relativeToURL: directory) {
             return destinationURL
         } else {
@@ -65,7 +79,7 @@ class FileIO {
         }
     }
 
-    class func delete(fileURL: NSURL) -> Result<Bool, NSError> {
+    func delete(fileURL: NSURL) -> Result<Bool, NSError> {
         if let path = fileURL.path {
             if NSFileManager.defaultManager().fileExistsAtPath(path) {
                 var error: NSError?
@@ -82,7 +96,7 @@ class FileIO {
         }
     }
 
-    class func timestamp(format: String = "yyyyMMddHHmmss") -> String {
+    func timestamp(format: String = "yyyyMMddHHmmss") -> String {
         let formatter = NSDateFormatter()
         formatter.dateFormat = format
         return formatter.stringFromDate(NSDate())

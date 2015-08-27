@@ -94,7 +94,7 @@ let filters: [Filterable] = [
     Filter<GPUImageFilterGroup>(name: "Grayscale + Amatorka", type: .Custom(configurationFunction: { () -> GPUImageOutput in
         return groupFilters([GPUImageGrayscaleFilter(), GPUImageAmatorkaFilter()])
     })),
-    Filter<GPUImageFilterGroup>(name: "Sepia + Miss Etikate", type: .Custom(configurationFunction: { () -> GPUImageOutput in
+    Filter<GPUImageFilterGroup>(name: "Grayscale + Miss Etikate", type: .Custom(configurationFunction: { () -> GPUImageOutput in
         return groupFilters([GPUImageGrayscaleFilter(), GPUImageMissEtikateFilter()])
     })),
     Filter<GPUImageFilterGroup>(name: "Grayscale + Soft elegance", type: .Custom(configurationFunction: { () -> GPUImageOutput in

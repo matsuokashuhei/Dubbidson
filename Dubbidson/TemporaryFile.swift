@@ -59,7 +59,7 @@ extension TemporaryFile {
         if let fileName = fileURL.lastPathComponent {
             let file = TemporaryFile()
             file.name = fileName
-            if fileName.pathExtension == "m4v" {
+            if FileIO.sharedInstance.isVideoFile(fileName) {
                 file.mediaType = MediaType.Video.rawValue
             } else {
                 file.mediaType = MediaType.Audio.rawValue

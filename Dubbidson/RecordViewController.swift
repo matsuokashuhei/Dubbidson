@@ -94,7 +94,7 @@ extension RecordViewController {
 
     func startRecording() {
         // Writerのの作成
-        let fileURL = FileIO.recordingFileURL()
+        let fileURL = FileIO.sharedInstance.recordingFileURL()
         writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
         writer.delegate = self
         //filterOperator.addTarget(writer)
@@ -171,7 +171,8 @@ extension RecordViewController: SongsViewControllerDelegate {
     func selectedSong(song: Song) {
         songView.song = song
         if TemporaryFile.exists(song.previewURL) {
-            prepareToRecord(audioURL: FileIO.audioFileURL(song)!)
+            prepareToRecord(audioURL: FileIO.sharedInstance.audioFileURL(song)!)
+            return
         }
         Downloader.sharedInstance.download(song) { (result) -> () in
             switch result {
@@ -266,12 +267,12 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
         logger.verbose("")
         let song = songView.song
         if let recordingURL = writer.assetWriter.outputURL {
-            if let audioURL = FileIO.audioFileURL(song) {
+            if let audioURL = FileIO.sharedInstance.audioFileURL(song) {
                 Mixer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL).then { (videoURL) in
                     let id = videoURL.lastPathComponent!.stringByDeletingPathExtension
                     return self.generateThumbnail(videoURL).then { (image) in
                         return Promise<String> { (fulfill, reject) in
-                            let thumbnailURL = FileIO.fileURL(.Documents, filename: "\(id).png")!
+                            let thumbnailURL = FileIO.sharedInstance.fileURL(.Documents, filename: "\(id).png")!
                             if UIImagePNGRepresentation(image).writeToFile(thumbnailURL.path!, atomically: true) {
                                 fulfill(id)
                             } else {
@@ -284,7 +285,7 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
                 }.then { (id: String) -> () in
                     let video = Video.create(id, song: song)
                     self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
-                    FileIO.delete(recordingURL)
+                    FileIO.sharedInstance.delete(recordingURL)
                 }.catch { error in
                     self.logger.error("error: \(error.localizedDescription)")
                     SVProgressHUD.showErrorWithStatus(error.localizedDescription)

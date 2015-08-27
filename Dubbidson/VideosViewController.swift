@@ -17,7 +17,11 @@ class VideosViewController: UIViewController {
         }
     }
 
-    var videos = [Video]()
+    var videos = [Video]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +29,7 @@ class VideosViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBarHidden = true
         fetch()
     }
 
@@ -94,9 +99,16 @@ class VideoTableViewCell: UITableViewCell {
     @IBOutlet weak var createdAtLabel: UILabel!
 
     func configure(video: Video) {
-        thumbnailImageView.kf_setImageWithURL(FileIO.sharedInstace.thumbnailURL(video)!)
+        thumbnailImageView.kf_setImageWithURL(FileIO.sharedInstance.thumbnailURL(video)!)
         nameLabel.text = video.name
         artistLabel.text = video.artist
-        createdAtLabel.text = "\(video.createdAt)"
+        createdAtLabel.text = formatDate(video.createdAt)
+    }
+
+    func formatDate(date: NSDate) -> String {
+        let formatter = NSDateFormatter()
+        formatter.dateStyle = .MediumStyle
+        formatter.timeStyle = .MediumStyle
+        return formatter.stringFromDate(date)
     }
 }
