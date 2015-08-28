@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 matsuosh. All rights reserved.
 //
 
+import AVFoundation
 import UIKit
 import MediaPlayer
 
@@ -16,6 +17,18 @@ class VideoViewController: UIViewController {
 
     @IBOutlet weak var videoView: UIView!
 
+    @IBOutlet weak var slider: UISlider! {
+        didSet {
+            slider.addTarget(self, action: "beginSeeking:", forControlEvents: .TouchDown)
+            slider.addTarget(self, action: "seekPositionChanged:", forControlEvents: .ValueChanged)
+            slider.addTarget(self, action: "endSeeking:", forControlEvents: .TouchUpInside | .TouchUpOutside | .TouchCancel)
+        }
+    }
+
+    @IBOutlet weak var backButton: UIButton! {
+        didSet { backButton.addTarget(self, action: "backButtonTapped", forControlEvents: .TouchUpInside) }
+    }
+
     @IBOutlet weak var playButton: UIButton! {
         didSet {
             playButton.enabled = false
@@ -23,11 +36,14 @@ class VideoViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var closeButton: UIButton! {
-        didSet {
-            closeButton.addTarget(self, action: "closeButtonTapped", forControlEvents: .TouchUpInside)
-        }
+    @IBOutlet weak var actionButton: UIButton! {
+        didSet { actionButton.addTarget(self, action: "actionButtonTapped", forControlEvents: .TouchUpInside) }
     }
+//    @IBOutlet weak var closeButton: UIButton! {
+//        didSet {
+//            closeButton.addTarget(self, action: "closeButtonTapped", forControlEvents: .TouchUpInside)
+//        }
+//    }
 
     let logger = XCGLogger.defaultInstance()
 
@@ -49,7 +65,6 @@ class VideoViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBarHidden = false
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -90,8 +105,40 @@ extension VideoViewController {
         }
     }
 
+    func actionButtonTapped() {
+        let message = "\(video.name) - \(video.artist)"
+        if let fileURL = FileIO.sharedInstance.videoFileURL(video) {
+            //let asset = AVURLAsset(URL: URL, options: nil)
+            /*
+            if let data = NSData(contentsOfURL: URL) {
+                let items = [data]
+                let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
+                presentViewController(controller, animated: true, completion: nil)
+            }
+            */
+            let controller = UIActivityViewController(activityItems: [message, fileURL], applicationActivities: nil)
+            presentViewController(controller, animated: true, completion: nil)
+        }
+    }
+
     func closeButtonTapped() {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func backButtonTapped() {
+        navigationController?.popViewControllerAnimated(true)
+    }
+
+    func beginSeeking(sender: UISlider) {
+        player.pause()
+    }
+
+    func seekPositionChanged(sender: UISlider) {
+        player.seekToTime(Double(sender.value))
+    }
+
+    func endSeeking(sender: UISlider) {
+        player.play()
     }
 
 }
@@ -117,22 +164,15 @@ extension VideoViewController: VideoPlayerDelegate {
         }
     }
 
-    func duration(player: VideoPlayer) {
+    func durationAvailable(duration: Double) {
+        slider.minimumValue = 0.0
+        slider.maximumValue = Float(duration)
     }
 
     func readyForDisplay(player: VideoPlayer) {
         videoView.addSubview(player.view)
         player.view.frame = videoView.bounds
-        //player.view.contentMode = UIViewContentMode.ScaleAspectFit
         player.view.setTranslatesAutoresizingMaskIntoConstraints(false)
-        /*
-        layout(videoView, player.view) { (view1, view2) in
-            view1.width == view2.width
-            view1.height == view2.height
-            view1.top == view2.top
-            view1.left == view2.left
-        }
-        */
         videoView.addConstraints([
             NSLayoutConstraint(item: player.view, attribute: .Top, relatedBy: .Equal, toItem: videoView, attribute: .Top, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: player.view, attribute: .Leading, relatedBy: .Equal, toItem: videoView, attribute: .Leading, multiplier: 1, constant: 0),
@@ -143,10 +183,16 @@ extension VideoViewController: VideoPlayerDelegate {
 
     func readyToPlay(player: VideoPlayer) {
         playButton.enabled = true
-        /*
-        show(closeButton)
-        show(playButton)
-        */
+    }
+
+    func playbackTime(time: Double, duration: Double) {
+        if isnan(time) {
+            return
+        }
+        if isnan(duration) {
+            return
+        }
+        slider.value = Float(time)
     }
 
     func endToPlay(player: VideoPlayer) {

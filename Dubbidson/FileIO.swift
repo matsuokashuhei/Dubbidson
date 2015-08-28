@@ -15,14 +15,19 @@ import Result
 
 class FileIO {
 
+    enum Extension: String {
+        case Video = "mp4"
+        case Image = "png"
+    }
+
     static let sharedInstance = FileIO()
 
     func isVideoFile(fileName: String) -> Bool {
-        return fileName.pathExtension == "m4v"
+        return fileName.pathExtension == Extension.Video.rawValue
     }
 
     func isVideoURL(URL: NSURL) -> Bool {
-        return URL.lastPathComponent?.pathExtension == "m4v"
+        return URL.lastPathComponent?.pathExtension == Extension.Video.rawValue
         /*
         if let pathExtension = URL.lastPathComponent?.pathExtension {
             return pathExtension == "m4v"
@@ -46,17 +51,17 @@ class FileIO {
     }
 
     func recordingFileURL() -> NSURL? {
-        let filename = String(format: "%@.m4v", arguments:[timestamp()]) 
+        let filename = String(format: "%@.\(Extension.Video.rawValue)", arguments:[timestamp()])
         return fileURL(.Temporary, filename: filename)
     }
 
     func videoFileURL() -> NSURL? {
-        let filename = String(format: "%@.m4v", arguments: [timestamp()])
+        let filename = String(format: "%@.\(Extension.Video.rawValue)", arguments: [timestamp()])
         return fileURL(.Documents, filename: filename)
     }
 
     func videoFileURL(video: Video) -> NSURL? {
-        if let directory = Directory.Documents.URL, let destinationURL = NSURL(string: "\(video.id).m4v", relativeToURL: directory) {
+        if let directory = Directory.Documents.URL, let destinationURL = NSURL(string: "\(video.id).\(Extension.Video.rawValue)", relativeToURL: directory) {
             return destinationURL
         } else {
             return nil
@@ -64,7 +69,7 @@ class FileIO {
     }
 
     func thumbnailURL(video: Video) -> NSURL? {
-        if let directory = Directory.Documents.URL, let destinationURL = NSURL(string: "\(video.id).png", relativeToURL: directory) {
+        if let directory = Directory.Documents.URL, let destinationURL = NSURL(string: "\(video.id).\(Extension.Image.rawValue)", relativeToURL: directory) {
             return destinationURL
         } else {
             return nil

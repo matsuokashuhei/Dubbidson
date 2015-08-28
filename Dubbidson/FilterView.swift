@@ -62,7 +62,6 @@ class FilterView: UIView {
             break
         }
         filter.addTarget(view)
-        filter.output.forceProcessingAtSize(view.sizeInPixels)
     }
 
     func endOutput() {

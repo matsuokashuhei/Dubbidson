@@ -17,7 +17,7 @@ import XCGLogger
 protocol AudioPlayerDelegate {
     func readyToPlay(item: AVPlayerItem)
     func endTimeToPlay(item: AVPlayerItem)
-    func playAtTime(time: CMTime, duration: CMTime)
+    func playbackTime(time: CMTime, duration: CMTime)
 }
 
 private var KVOContext = 0
@@ -79,9 +79,10 @@ class AudioPlayer: NSObject {
     }
 
     func startToPlay(item: AVPlayerItem) {
-        let second = CMTimeMakeWithSeconds(1, Int32(NSEC_PER_SEC))
-        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(second, queue: nil) { (time: CMTime) in
-            self.playAtTime(item)
+        //let second = CMTimeMakeWithSeconds(1, Int32(NSEC_PER_SEC))
+        let second = CMTimeMakeWithSeconds(0.1, 60)
+        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(second, queue: nil) { [weak self] (time: CMTime) in
+            self?.playbackTime(item)
         }
     }
 
@@ -166,8 +167,8 @@ extension AudioPlayer {
         }
     }
 
-    func playAtTime(item: AVPlayerItem) {
-        delegate?.playAtTime(item.currentTime(), duration: item.duration)
+    func playbackTime(item: AVPlayerItem) {
+        delegate?.playbackTime(item.currentTime(), duration: item.duration)
     }
 
     func itemDidPlayToEndTime(notification: NSNotification) {

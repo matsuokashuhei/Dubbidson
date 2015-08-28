@@ -10,16 +10,22 @@ struct R {
   }
   
   struct image {
+    static var action: UIImage? { return UIImage(named: "action") }
     static var album: UIImage? { return UIImage(named: "album") }
     static var appIcon: UIImage? { return UIImage(named: "AppIcon") }
+    static var bar: UIImage? { return UIImage(named: "bar") }
     static var check: UIImage? { return UIImage(named: "check") }
+    static var chevron_left: UIImage? { return UIImage(named: "chevron_left") }
     static var close: UIImage? { return UIImage(named: "close") }
     static var filter: UIImage? { return UIImage(named: "filter") }
     static var lensOff: UIImage? { return UIImage(named: "lens-off") }
     static var lensOn: UIImage? { return UIImage(named: "lens-on") }
+    static var maximum_track: UIImage? { return UIImage(named: "maximum_track") }
+    static var minimum_track: UIImage? { return UIImage(named: "minimum_track") }
     static var pause: UIImage? { return UIImage(named: "pause") }
     static var play: UIImage? { return UIImage(named: "play") }
     static var settings: UIImage? { return UIImage(named: "settings") }
+    static var thumb_track: UIImage? { return UIImage(named: "thumb_track") }
     static var tv: UIImage? { return UIImage(named: "tv") }
     static var videocam: UIImage? { return UIImage(named: "videocam") }
   }
@@ -45,6 +51,7 @@ struct R {
       static var instance: UIStoryboard { return UIStoryboard(name: "Main", bundle: nil) }
       
       static func validateImages() {
+        assert(UIImage(named: "action") != nil, "[R.swift] Image named 'action' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "album") != nil, "[R.swift] Image named 'album' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "check") != nil, "[R.swift] Image named 'check' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "close") != nil, "[R.swift] Image named 'close' is used in storyboard 'Main', but couldn't be loaded.")

@@ -80,7 +80,7 @@ extension RecordViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBarHidden = true
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -213,27 +213,13 @@ extension RecordViewController: AudioPlayerDelegate {
         finishRecording()
     }
 
-    func playAtTime(time: CMTime, duration: CMTime) {
+    func playbackTime(time: CMTime, duration: CMTime) {
         let remainingTime = CMTimeGetSeconds(duration) - CMTimeGetSeconds(time)
         durationLabel.text = formatTime(CMTimeMakeWithSeconds(remainingTime, Int32(NSEC_PER_SEC)))
         progressView.progress = Float(CMTimeGetSeconds(time)) / Float(CMTimeGetSeconds(duration))
     }
 
     func formatTime(time: CMTime) -> String {
-        /*
-        let components = NSDateComponents()
-        let seconds = CMTimeGetSeconds(time)
-        if isnormal(seconds) {
-            //components.second = Int(seconds)
-            components.second = Int(round(seconds))
-        } else {
-            components.second = 0
-        }
-        let formatter = NSDateComponentsFormatter()
-        formatter.zeroFormattingBehavior = .Pad
-        formatter.allowedUnits = NSCalendarUnit.CalendarUnitSecond
-        return formatter.stringFromDateComponents(components) ?? "0"
-        */
         let seconds = CMTimeGetSeconds(time)
         logger.debug("seconds: \(seconds)")
         if isnormal(seconds) {
@@ -268,6 +254,7 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
         let song = songView.song
         if let recordingURL = writer.assetWriter.outputURL {
             if let audioURL = FileIO.sharedInstance.audioFileURL(song) {
+                SVProgressHUD.show()
                 Mixer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL).then { (videoURL) in
                     let id = videoURL.lastPathComponent!.stringByDeletingPathExtension
                     return self.generateThumbnail(videoURL).then { (image) in
@@ -286,6 +273,8 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
                     let video = Video.create(id, song: song)
                     self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
                     FileIO.sharedInstance.delete(recordingURL)
+                }.finally {
+                    SVProgressHUD.dismiss()
                 }.catch { error in
                     self.logger.error("error: \(error.localizedDescription)")
                     SVProgressHUD.showErrorWithStatus(error.localizedDescription)

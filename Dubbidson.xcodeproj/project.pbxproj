@@ -36,6 +36,10 @@
 		A87F47561B8236F600A71E82 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47551B8236F600A71E82 /* R.generated.swift */; };
 		A87F47581B824D7300A71E82 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47571B824D7300A71E82 /* VideosViewController.swift */; };
 		A8895F801B8E1A3F00AFC153 /* TemporaryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8895F7F1B8E1A3F00AFC153 /* TemporaryFile.swift */; };
+		A8895F861B8F6B7E00AFC153 /* texgyreadventor-bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F821B8F6B3C00AFC153 /* texgyreadventor-bold.otf */; };
+		A8895F871B8F6B7E00AFC153 /* texgyreadventor-bolditalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F831B8F6B3C00AFC153 /* texgyreadventor-bolditalic.otf */; };
+		A8895F881B8F6B7E00AFC153 /* texgyreadventor-italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F841B8F6B3C00AFC153 /* texgyreadventor-italic.otf */; };
+		A8895F891B8F6B7E00AFC153 /* texgyreadventor-regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F851B8F6B3C00AFC153 /* texgyreadventor-regular.otf */; };
 		A8C07C451B83812200CB244A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8C07C441B83812200CB244A /* Main.storyboard */; };
 		A8C07C4B1B84D9AD00CB244A /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C07C4A1B84D9AD00CB244A /* Filter.swift */; };
 		A8F9C8011B88E34400A8244C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F9C8001B88E34400A8244C /* Error.swift */; };
@@ -86,6 +90,10 @@
 		A87F47571B824D7300A71E82 /* VideosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		A8895F7E1B8CB10400AFC153 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		A8895F7F1B8E1A3F00AFC153 /* TemporaryFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryFile.swift; sourceTree = "<group>"; };
+		A8895F821B8F6B3C00AFC153 /* texgyreadventor-bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-bold.otf"; sourceTree = "<group>"; };
+		A8895F831B8F6B3C00AFC153 /* texgyreadventor-bolditalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-bolditalic.otf"; sourceTree = "<group>"; };
+		A8895F841B8F6B3C00AFC153 /* texgyreadventor-italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-italic.otf"; sourceTree = "<group>"; };
+		A8895F851B8F6B3C00AFC153 /* texgyreadventor-regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-regular.otf"; sourceTree = "<group>"; };
 		A8C07C441B83812200CB244A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		A8C07C4A1B84D9AD00CB244A /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		A8F9C8001B88E34400A8244C /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -201,6 +209,7 @@
 		A87F47201B8211DD00A71E82 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A8895F811B8F6B2C00AFC153 /* Fonts */,
 				A87F474B1B82131200A71E82 /* Filter Images */,
 				A8C07C441B83812200CB244A /* Main.storyboard */,
 				A87F47061B820E9100A71E82 /* Images.xcassets */,
@@ -283,6 +292,17 @@
 				A87F47451B82130D00A71E82 /* lookup.png */,
 			);
 			name = "Filter Images";
+			sourceTree = "<group>";
+		};
+		A8895F811B8F6B2C00AFC153 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A8895F821B8F6B3C00AFC153 /* texgyreadventor-bold.otf */,
+				A8895F831B8F6B3C00AFC153 /* texgyreadventor-bolditalic.otf */,
+				A8895F841B8F6B3C00AFC153 /* texgyreadventor-italic.otf */,
+				A8895F851B8F6B3C00AFC153 /* texgyreadventor-regular.otf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -369,6 +389,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8895F861B8F6B7E00AFC153 /* texgyreadventor-bold.otf in Resources */,
+				A8895F871B8F6B7E00AFC153 /* texgyreadventor-bolditalic.otf in Resources */,
+				A8895F881B8F6B7E00AFC153 /* texgyreadventor-italic.otf in Resources */,
+				A8895F891B8F6B7E00AFC153 /* texgyreadventor-regular.otf in Resources */,
 				A87F470A1B820E9100A71E82 /* LaunchScreen.xib in Resources */,
 				A8C07C451B83812200CB244A /* Main.storyboard in Resources */,
 				A87F47071B820E9100A71E82 /* Images.xcassets in Resources */,

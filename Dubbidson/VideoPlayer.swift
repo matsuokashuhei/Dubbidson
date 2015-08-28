@@ -14,9 +14,10 @@ import XCGLogger
 protocol VideoPlayerDelegate {
     func loadState(state: MPMovieLoadState)
     func playbackState(state: MPMoviePlaybackState)
-    func duration(player: VideoPlayer)
+    func durationAvailable(duration: Double)
     func readyForDisplay(player: VideoPlayer)
     func readyToPlay(player: VideoPlayer)
+    func playbackTime(time: Double, duration: Double)
     func endToPlay(player: VideoPlayer)
 }
 
@@ -59,6 +60,7 @@ class VideoPlayer: NSObject {
 
     func play() {
         player.play()
+        Timer.start(target: self, selector: "playbackTime")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "playbackDidFinish:", name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
     }
 
@@ -68,6 +70,10 @@ class VideoPlayer: NSObject {
 
     func stop() {
         player.stop()
+    }
+
+    func seekToTime(seconds: Double) {
+        player.currentPlaybackTime = seconds
     }
 
 }
@@ -111,7 +117,7 @@ extension VideoPlayer {
     func durationAvailable(notification: NSNotification) {
         logger.verbose("")
         NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMovieDurationAvailableNotification, object: nil)
-        delegate?.duration(self)
+        delegate?.durationAvailable(player.duration)
     }
 
     func readyForDisplay(notification: NSNotification) {
@@ -126,10 +132,44 @@ extension VideoPlayer {
         delegate?.readyToPlay(self)
     }
 
+    func playbackTime() {
+        delegate?.playbackTime(player.currentPlaybackTime, duration: player.duration)
+    }
+
     func playbackDidFinish(notification: NSNotification) {
         logger.verbose("")
         NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
         delegate?.endToPlay(self)
+    }
+
+}
+
+class Timer {
+
+    class func start(#target: AnyObject, selector: Selector) {
+        sharedInstance.start(target: target, selector: selector)
+    }
+
+    class func stop() {
+        sharedInstance.stop()
+    }
+
+    var timer: NSTimer? {
+        willSet {
+            stop()
+        }
+    }
+
+    static var sharedInstance = Timer()
+
+    func start(#target: AnyObject, selector: Selector) {
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: target, selector: selector, userInfo: nil, repeats: true)
+    }
+
+    func stop() {
+        if let timer = timer {
+            timer.invalidate()
+        }
     }
 
 }

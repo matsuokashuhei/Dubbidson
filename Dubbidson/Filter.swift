@@ -24,6 +24,7 @@ protocol Filterable {
     var name: String { get }
     var type: FilterType { get }
     func addTarget(target: GPUImageInput)
+    func addTarget(view: GPUImageView)
     func removeTarget(target: GPUImageInput)
 }
 
@@ -56,6 +57,11 @@ class Filter<T: GPUImageOutput where T: GPUImageInput>: Filterable {
         filter.addTarget(target)
     }
 
+    func addTarget(view: GPUImageView) {
+        filter.forceProcessingAtSize(view.sizeInPixels)
+        filter.addTarget(view)
+    }
+
     func removeTarget(target: GPUImageInput) {
         filter.removeTarget(target)
     }
@@ -80,17 +86,26 @@ func groupFilters(filters: [GPUImageOutput]) -> GPUImageFilterGroup {
 
 let filters: [Filterable] = [
     Filter<GPUImageFilter>(name: "Normal", type: .Normal),
+    Filter<GPUImageAmatorkaFilter>(name: "Amatorka", type: .Normal),
+    Filter<GPUImageMissEtikateFilter>(name: "Miss Etikate", type: .Normal),
+    Filter<GPUImageSoftEleganceFilter>(name: "Soft elegance", type: .Normal),
     //Filter<GPUImageSepiaFilter>(name: "Sepia", type: .Normal),
+    Filter<GPUImageSepiaFilter>(name: "Sepia", type: .Normal),
     Filter<GPUImageFilterGroup>(name: "Sepia + Amatorka", type: .Custom(configurationFunction: { () -> GPUImageOutput in
         return groupFilters([GPUImageSepiaFilter(), GPUImageAmatorkaFilter()])
     })),
+    /*
     Filter<GPUImageFilterGroup>(name: "Sepia + Miss Etikate + Vignette", type: .Custom(configurationFunction: { () -> GPUImageOutput in
         return groupFilters([GPUImageSepiaFilter(), GPUImageMissEtikateFilter(), GPUImageVignetteFilter()])
+    })),
+    */
+    Filter<GPUImageFilterGroup>(name: "Sepia + Miss Etikate", type: .Custom(configurationFunction: { () -> GPUImageOutput in
+        return groupFilters([GPUImageSepiaFilter(), GPUImageMissEtikateFilter()])
     })),
     Filter<GPUImageFilterGroup>(name: "Sepia + Soft elegance", type: .Custom(configurationFunction: { () -> GPUImageOutput in
         return groupFilters([GPUImageSepiaFilter(), GPUImageSoftEleganceFilter()])
     })),
-    //Filter<GPUImageGrayscaleFilter>(name: "Grayscale", type: .Normal),
+    Filter<GPUImageGrayscaleFilter>(name: "Grayscale", type: .Normal),
     Filter<GPUImageFilterGroup>(name: "Grayscale + Amatorka", type: .Custom(configurationFunction: { () -> GPUImageOutput in
         return groupFilters([GPUImageGrayscaleFilter(), GPUImageAmatorkaFilter()])
     })),
@@ -100,9 +115,6 @@ let filters: [Filterable] = [
     Filter<GPUImageFilterGroup>(name: "Grayscale + Soft elegance", type: .Custom(configurationFunction: { () -> GPUImageOutput in
         return groupFilters([GPUImageGrayscaleFilter(), GPUImageSoftEleganceFilter()])
     })),
-    Filter<GPUImageAmatorkaFilter>(name: "Amatorka", type: .Normal),
-    Filter<GPUImageMissEtikateFilter>(name: "Miss Etikate", type: .Normal),
-    Filter<GPUImageSoftEleganceFilter>(name: "Soft elegance", type: .Normal),
     Filter<GPUImageOverlayBlendFilter>(name: "Overlay blend", type: .Blend),
     Filter<GPUImageSoftLightBlendFilter>(name: "Soft light blend", type: .Blend),
     /*
