@@ -22,10 +22,10 @@ class Mixer: NSObject {
 
     /*
     func mixdown(#videoURL: NSURL, audioURL: NSURL) -> Promise<(videoURL: NSURL, thumbnailURL: NSURL)> {
-        return Promise { (filfull, reject) in
+        return Promise { (fulfill, reject) in
             mixdown(videoURL: videoURL, audioURL: audioURL).then { (outputURL: NSURL) in
                 self.saveThumbnail(outputURL).then { (thumbnailURL) in
-                    filfull(videoURL: outputURL, thumbnailURL: thumbnailURL)
+                    fulfill(videoURL: outputURL, thumbnailURL: thumbnailURL)
                 }.catch { error in
                     reject(error)
                 }
@@ -140,11 +140,11 @@ class Mixer: NSObject {
     }
 
     private func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
-        return Promise { (filfull, reject) in
+        return Promise { (fulfill, reject) in
             let result: Result<UIImage, NSError> = self.generateThumbnail(videoURL)
             switch result {
             case .Success(let box):
-                filfull(box.value)
+                fulfill(box.value)
             case .Failure(let box):
                 reject(box.value)
             }

@@ -41,9 +41,9 @@ class FileIO {
     }
 
     func audioFileURL(song: Song) -> Promise<NSURL> {
-        return Promise { (filfull, reject) in
+        return Promise { (fulfill, reject) in
             if let URL = audioFileURL(song) {
-                filfull(URL)
+                fulfill(URL)
             } else {
                 reject(NSError())
             }

@@ -15,7 +15,6 @@ import GPUImage
 import PromiseKit
 import RealmSwift
 import Result
-import SVProgressHUD
 import XCGLogger
 
 class RecordViewController: UIViewController {
@@ -174,6 +173,13 @@ extension RecordViewController: SongsViewControllerDelegate {
             prepareToRecord(audioURL: FileIO.sharedInstance.audioFileURL(song)!)
             return
         }
+        Downloader.sharedInstance.download(song).then { audioURL -> () in
+            TemporaryFile.create(audioURL)
+            self.prepareToRecord(audioURL: audioURL)
+        }.catch { error in
+            Notificator.sharedInstance.showError(error)
+        }
+        /*
         Downloader.sharedInstance.download(song) { (result) -> () in
             switch result {
             case .Success(let box):
@@ -188,6 +194,7 @@ extension RecordViewController: SongsViewControllerDelegate {
                 }
             }
         }
+        */
     }
 
     func prepareToRecord(#audioURL: NSURL) {
@@ -254,7 +261,7 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
         let song = songView.song
         if let recordingURL = writer.assetWriter.outputURL {
             if let audioURL = FileIO.sharedInstance.audioFileURL(song) {
-                SVProgressHUD.show()
+                Notificator.sharedInstance.showLoading()
                 Mixer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL).then { (videoURL) in
                     let id = videoURL.lastPathComponent!.stringByDeletingPathExtension
                     return self.generateThumbnail(videoURL).then { (image) in
@@ -274,26 +281,26 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
                     self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
                     FileIO.sharedInstance.delete(recordingURL)
                 }.finally {
-                    SVProgressHUD.dismiss()
+                    Notificator.sharedInstance.dismissLoading()
                 }.catch { error in
                     self.logger.error("error: \(error.localizedDescription)")
-                    SVProgressHUD.showErrorWithStatus(error.localizedDescription)
+                    Notificator.sharedInstance.showError(error)
                 }
             } else {
                 let error = Error.unknown()
                 self.logger.error(error.localizedDescription)
-                SVProgressHUD.showErrorWithStatus(error.localizedDescription)
+                Notificator.sharedInstance.showError(error)
             }
         } else {
             let error = Error.unknown()
             self.logger.error(error.localizedDescription)
-            SVProgressHUD.showErrorWithStatus(error.localizedDescription)
+            Notificator.sharedInstance.showError(error)
         }
     }
 
     func movieRecordingFailedWithError(error: NSError!) {
         logger.error("error: \(error.localizedDescription)")
-        SVProgressHUD.showErrorWithStatus(error.localizedDescription)
+        Notificator.sharedInstance.showError(error)
     }
 
     func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
@@ -301,9 +308,9 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
             if let asset = AVAsset.assetWithURL(videoURL) as? AVAsset {
                 let generator = AVAssetImageGenerator(asset: asset)
                 generator.appliesPreferredTrackTransform = true
-                let time = CMTimeMake(1, 30)
+                //let time = CMTimeMake(1, 30)
                 var error: NSError?
-                if let image = generator.copyCGImageAtTime(time, actualTime: nil, error: &error) {
+                if let image = generator.copyCGImageAtTime(asset.duration, actualTime: nil, error: &error) {
                     if let thumbnail = UIImage(CGImage: image) {
                         fulfill(thumbnail)
                     } else {

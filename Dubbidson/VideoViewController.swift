@@ -179,6 +179,7 @@ extension VideoViewController: VideoPlayerDelegate {
             NSLayoutConstraint(item: player.view, attribute: .Bottom, relatedBy: .Equal, toItem: videoView, attribute: .Bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: player.view, attribute: .Trailing, relatedBy: .Equal, toItem: videoView, attribute: .Trailing, multiplier: 1, constant: 0),
         ])
+        videoView.bringSubviewToFront(backButton)
     }
 
     func readyToPlay(player: VideoPlayer) {

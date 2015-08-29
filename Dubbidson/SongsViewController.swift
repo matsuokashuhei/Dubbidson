@@ -27,14 +27,18 @@ class SongsViewController: UIViewController {
         didSet { searchBar.delegate = self }
     }
 
-    @IBOutlet weak var songsTableView: UITableView! {
+    @IBOutlet weak var tableView: UITableView! {
         didSet {
-            songsTableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 64.0, right: 0.0)
-            songsTableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 64.0, right: 0.0)
-            songsTableView.delegate = self
-            songsTableView.dataSource = self
-            songsTableView.tableFooterView = UIView(frame: CGRectZero)
+            tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 64.0, right: 0.0)
+            tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 64.0, right: 0.0)
+            tableView.delegate = self
+            tableView.dataSource = self
+            tableView.tableFooterView = UIView(frame: CGRectZero)
         }
+    }
+
+    @IBOutlet weak var suggestionsView: UIView! {
+        didSet { suggestionsView.hidden = true }
     }
 
     @IBOutlet weak var closeButton: UIButton! {
@@ -54,7 +58,12 @@ class SongsViewController: UIViewController {
 
     let player = AudioPlayer.sharedInstance
 
-    var songs = [Song]()
+    var songs = [Song]() {
+        didSet {
+            tableView.reloadData()
+            tableView.contentOffset = CGPointMake(0, 0)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,46 +86,22 @@ class SongsViewController: UIViewController {
 extension SongsViewController {
 
     func fetch() {
-        /*
-        iTunes.sharedInstance.topsongs { (result) -> () in
-            switch result {
-            case .Success(let box):
-                Async.background {
-                    self.songs = box.value
-                }.main {
-                    self.songsTableView.reloadData()
-                }
-            case .Failure(let box):
-                self.logger.error(box.value.localizedDescription)
-            }
-        }
-        */
-        iTunes.sharedInstance.topsongs().then { songs -> () in
+        Notificator.sharedInstance.showLoading()
+        iTunesAPI.sharedInstance.topsongs().then { songs -> () in
             self.songs = songs
-            self.songsTableView.reloadData()
+        }.finally {
+            Notificator.sharedInstance.dismissLoading()
         }.catch { error in
             self.logger.error(error.localizedDescription)
         }
     }
 
     func search(keyword: String) {
-        /*
-        iTunes.sharedInstance.search(keyword: keyword) { (result) -> () in
-            switch result {
-            case .Success(let box):
-                Async.background {
-                    self.songs = box.value
-                }.main {
-                    self.songsTableView.reloadData()
-                }
-            case .Failure(let box):
-                self.logger.error(box.value.localizedDescription)
-            }
-        }
-        */
-        iTunes.sharedInstance.search(keyword: keyword).then { songs -> () in
+        Notificator.sharedInstance.showLoading()
+        iTunesAPI.sharedInstance.search(keyword: keyword).then { songs -> () in
             self.songs = songs
-            self.songsTableView.reloadData()
+        }.finally {
+            Notificator.sharedInstance.dismissLoading()
         }.catch { error in
             self.logger.error(error.localizedDescription)
         }
@@ -128,7 +113,7 @@ extension SongsViewController {
 extension SongsViewController {
 
     func checkButtonTapped() {
-        if let indexPath = songsTableView.indexPathForSelectedRow() {
+        if let indexPath = tableView.indexPathForSelectedRow() {
             player.delegate = nil
             delegate?.selectedSong(songs[indexPath.row])
             dismissViewControllerAnimated(true, completion: nil)
@@ -137,11 +122,6 @@ extension SongsViewController {
 
     func closeButtonTapped() {
         dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    func searchButtonTapped() {
-        songsTableView.setContentOffset(CGPointZero, animated: true)
-        searchBar.becomeFirstResponder()
     }
 
 }
@@ -196,9 +176,61 @@ extension SongsViewController: UIScrollViewDelegate {
 // MARK: - Search bar delegate
 extension SongsViewController: UISearchBarDelegate {
 
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        let text = searchBar.text
+        if text.isEmpty {
+            return
+        }
+        if let controller = childViewControllers.first as? SuggestionsViewController {
+            showSuggestionView()
+            controller.delegate = self
+            controller.keyword = searchBar.text
+        }
+    }
+
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        hideSuggestionView()
         searchBar.resignFirstResponder()
         search(searchBar.text)
+    }
+
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text.isEmpty {
+            return
+        }
+        if let controller = childViewControllers.first as? SuggestionsViewController {
+            showSuggestionView()
+            controller.delegate = self
+            controller.keyword = searchBar.text
+        }
+    }
+
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        hideSuggestionView()
+        searchBar.resignFirstResponder()
+    }
+
+    func showSuggestionView() {
+        suggestionsView.hidden = false
+        view.bringSubviewToFront(self.suggestionsView)
+    }
+
+    func hideSuggestionView() {
+        suggestionsView.hidden = true
+        view.sendSubviewToBack(suggestionsView)
+    }
+
+}
+
+// MARK: - Suggestions view controller delegate
+extension SongsViewController: SuggestionsViewControllerDelegate {
+
+    func didSelectKeyword(keyword: String) {
+        logger.verbose("keyword: \(keyword)")
+        searchBar.text = keyword
+        hideSuggestionView()
+        searchBar.resignFirstResponder()
+        search(keyword)
     }
 
 }

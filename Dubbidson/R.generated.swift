@@ -36,6 +36,7 @@ struct R {
   
   struct reuseIdentifier {
     static var songTableViewCell: ReuseIdentifier<Dubbidson.SongTableViewCell> { return ReuseIdentifier(identifier: "SongTableViewCell") }
+    static var suggestionTableViewCell: ReuseIdentifier<Dubbidson.SuggestionTableViewCell> { return ReuseIdentifier(identifier: "SuggestionTableViewCell") }
     static var videoTableViewCell: ReuseIdentifier<Dubbidson.VideoTableViewCell> { return ReuseIdentifier(identifier: "VideoTableViewCell") }
   }
   
@@ -49,11 +50,13 @@ struct R {
     struct main {
       static var initialViewController: UITabBarController? { return instance.instantiateInitialViewController() as? UITabBarController }
       static var instance: UIStoryboard { return UIStoryboard(name: "Main", bundle: nil) }
+      static var suggestionsViewController: Dubbidson.SuggestionsViewController? { return instance.instantiateViewControllerWithIdentifier("SuggestionsViewController") as? Dubbidson.SuggestionsViewController }
       
       static func validateImages() {
         assert(UIImage(named: "action") != nil, "[R.swift] Image named 'action' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "album") != nil, "[R.swift] Image named 'album' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "check") != nil, "[R.swift] Image named 'check' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "chevron_left") != nil, "[R.swift] Image named 'chevron_left' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "close") != nil, "[R.swift] Image named 'close' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "filter") != nil, "[R.swift] Image named 'filter' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "lens-off") != nil, "[R.swift] Image named 'lens-off' is used in storyboard 'Main', but couldn't be loaded.")
@@ -63,7 +66,7 @@ struct R {
       }
       
       static func validateViewControllers() {
-        
+        assert(suggestionsViewController != nil, "[R.swift] ViewController with identifier 'suggestionsViewController' could not be loaded from storyboard 'Main' as 'Dubbidson.SuggestionsViewController'.")
       }
     }
   }

@@ -10,6 +10,7 @@ import Foundation
 
 import Alamofire
 import Box
+import PromiseKit
 import Result
 import XCGLogger
 
@@ -42,6 +43,19 @@ class Downloader: NSObject {
             }
         } else {
             handler(.Failure(Box(Error.unknown())))
+        }
+    }
+
+    func download(song: Song) -> Promise<NSURL> {
+        return Promise { (fulfill, reject) in
+            download(song, handler: { (result) -> () in
+                switch result {
+                case .Success(let box):
+                    fulfill(box.value)
+                case .Failure(let box):
+                    reject(box.value)
+                }
+            })
         }
     }
 
