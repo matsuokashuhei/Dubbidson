@@ -92,26 +92,32 @@ extension RecordViewController {
 extension RecordViewController {
 
     func startRecording() {
+        if recordButton.imageView?.image == R.image.lensOn {
+            logger.verbose("再生中です。")
+            return
+        }
         // Writerのの作成
         let fileURL = FileIO.sharedInstance.recordingFileURL()
         writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
         writer.delegate = self
-        //filterOperator.addTarget(writer)
         filter.addTarget(writer)
         // ボタンの画像の変更
         recordButton.setImage(R.image.lensOn, forState: .Normal)
         // ビデオの書き込みと音楽の再生と開始
         writer.startRecording()
-        audioPlayer.play()
+        audioPlayer.startToPlay()
     }
 
     func finishRecording() {
         // Writeの終了
         writer.finishRecording()
-        //filterOperator.filter.removeTarget(writer)
         filter.removeTarget(writer)
         // ボタンの画像の変更
         recordButton.setImage(R.image.lensOff, forState: .Normal)
+    }
+
+    func stopRecording() {
+
     }
 
 }
@@ -140,7 +146,6 @@ extension RecordViewController {
                 controller.delegate = self
             case R.segue.selectFilter:
                 let controller = segue.destinationViewController as! FiltersViewController
-                //controller.filter = filter
                 controller.selectedFilter = filter
                 controller.blendImage = songView.artworkImage
                 controller.delegate = self

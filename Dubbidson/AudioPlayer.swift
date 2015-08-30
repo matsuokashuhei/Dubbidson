@@ -24,9 +24,9 @@ private var KVOContext = 0
 
 class AudioPlayer: NSObject {
 
-    let logger = XCGLogger.defaultInstance()
-
     static let sharedInstance = AudioPlayer()
+
+    let logger = XCGLogger.defaultInstance()
 
     var player: AVPlayer! {
         didSet {
@@ -56,13 +56,11 @@ class AudioPlayer: NSObject {
 
     var delegate: AudioPlayerDelegate?
 
-    var song: Song!
-
-    func prepareToPlay(song: Song) {
-        self.song = song
-        prepareToPlay(song.previewURL)
-    }
-
+    /**
+    音楽を再生する準備をする。
+    
+    :param: URL 再生する音楽のURL
+    */
     func prepareToPlay(URL: NSURL) {
         logger.debug("URL: \(URL)")
         item = AVPlayerItem(URL: URL)
@@ -73,13 +71,22 @@ class AudioPlayer: NSObject {
         }
     }
 
-    func readyToPlay(item: AVPlayerItem) {
+    private func readyToPlay(item: AVPlayerItem) {
         delegate?.readyToPlay(item)
-        startToPlay(item)
     }
 
     func startToPlay(item: AVPlayerItem) {
-        //let second = CMTimeMakeWithSeconds(1, Int32(NSEC_PER_SEC))
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "itemDidPlayToEndTime:", name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
+        player.play()
+        let second = CMTimeMakeWithSeconds(0.1, 60)
+        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(second, queue: nil) { [weak self] (time: CMTime) in
+            self?.playbackTime(item)
+        }
+    }
+
+    func startToPlay() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "itemDidPlayToEndTime:", name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
+        player.play()
         let second = CMTimeMakeWithSeconds(0.1, 60)
         periodicTimeObserver = player.addPeriodicTimeObserverForInterval(second, queue: nil) { [weak self] (time: CMTime) in
             self?.playbackTime(item)
@@ -89,12 +96,10 @@ class AudioPlayer: NSObject {
     func play() {
         if let item = player.currentItem {
             player.play()
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "itemDidPlayToEndTime:", name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
         }
     }
 
     func pause() {
-        //player.rate = 0.0
         if let player = self.player {
             player.pause()
         }
@@ -107,6 +112,7 @@ class AudioPlayer: NSObject {
             return false
         }
     }
+
 }
 
 // MARK: - KVO
@@ -121,13 +127,13 @@ extension AudioPlayer {
             if keyPath == "status" {
                 switch player.status {
                 case .ReadyToPlay:
-                    logger.verbose("ReadyToPlay")
+                    logger.verbose("player.status: ReadyToPlay")
                 case .Failed:
-                    logger.verbose("Failed")
+                    logger.verbose("player.status: Failed")
                     // TODO:
                     break
                 case .Unknown:
-                    logger.verbose("Unknown")
+                    logger.verbose("player.status: Unknown")
                     // TODO:
                     break
                 }
@@ -141,28 +147,27 @@ extension AudioPlayer {
             if keyPath == "status" {
                 switch item.status {
                 case .ReadyToPlay:
-                    logger.verbose("ReadyToPlay")
+                    logger.verbose("item.status: ReadyToPlay")
                     if let item = player.currentItem {
                         readyToPlay(item)
                     }
                 case .Failed:
-                    logger.verbose("Failed")
+                    logger.verbose("item.status: Failed")
                     break
                 case .Unknown:
-                    logger.verbose("Unknown")
+                    logger.verbose("item.status: Unknown")
                     break
                 }
                 return
             }
             if keyPath == "duration" {
+                // TODO: 使っていないので消す。
                 let duration: CMTime
                 if let value = change[NSKeyValueChangeNewKey] as? NSValue {
                     duration = value.CMTimeValue
                 } else {
                     duration = kCMTimeZero
                 }
-                let seconds = CMTimeGetSeconds(duration)
-                logger.verbose("seconds: \(seconds)")
             }
         }
     }

@@ -129,21 +129,26 @@ extension SongsViewController {
 // MARK: - Table view delegate
 extension SongsViewController: UITableViewDelegate {
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        checkButton.enabled = true
-        //let cell = tableView.dequeueReusableCellWithIdentifier("SongTableViewCell", forIndexPath: indexPath) as! SongTableViewCell
-        let song = songs[indexPath.row]
-        if player.isPlaying() {
-            if let nowPlaying = player.song {
-                if nowPlaying.id == song.id {
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if let selectedRowAtIndexPath = tableView.indexPathForSelectedRow() {
+            logger.verbose("selectedRowAtIndexPath: \(selectedRowAtIndexPath.row)")
+            if selectedRowAtIndexPath == indexPath {
+                if player.isPlaying() {
                     player.pause()
-                    //cell.pauseImage.hidden = true
-                    return
+                } else {
+                    player.play()
                 }
+                return nil
             }
         }
-        //cell.pauseImage.hidden = false
-        player.prepareToPlay(song)
+        logger.verbose("willSelectRowAtIndexPath: \(indexPath.row)")
+        return indexPath
+    }
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        checkButton.enabled = true
+        let song = songs[indexPath.row]
+        player.prepareToPlay(song.previewURL)
     }
 
 }
@@ -239,7 +244,7 @@ extension SongsViewController: SuggestionsViewControllerDelegate {
 extension SongsViewController: AudioPlayerDelegate {
 
     func readyToPlay(item: AVPlayerItem) {
-        player.play()
+        player.startToPlay(item)
     }
 
     func endTimeToPlay(item: AVPlayerItem) {
