@@ -133,6 +133,10 @@ public struct Song {
     public let artist: String!
     public let previewURL: NSURL!
 
+    public var downloadFileURL: NSURL? {
+        return FileIO.sharedInstance.downloadURL(self)
+    }
+
     public init?(entry: NSDictionary) {
         if let id = entry["id"] as? NSDictionary, let idattributes = id["attributes"] as? NSDictionary, let imid = idattributes["im:id"] as? String,
            let imname = entry["im:name"] as? NSDictionary, let name = imname["label"] as? String,

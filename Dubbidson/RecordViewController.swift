@@ -92,10 +92,6 @@ extension RecordViewController {
 extension RecordViewController {
 
     func startRecording() {
-        if recordButton.imageView?.image == R.image.lensOn {
-            logger.verbose("再生中です。")
-            return
-        }
         // Writerのの作成
         let fileURL = FileIO.sharedInstance.recordingFileURL()
         writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
@@ -175,7 +171,7 @@ extension RecordViewController: SongsViewControllerDelegate {
     func selectedSong(song: Song) {
         songView.song = song
         if TemporaryFile.exists(song.previewURL) {
-            prepareToRecord(audioURL: FileIO.sharedInstance.audioFileURL(song)!)
+            prepareToRecord(audioURL: song.downloadFileURL!)
             return
         }
         Downloader.sharedInstance.download(song).then { audioURL -> () in
@@ -265,7 +261,7 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
         logger.verbose("")
         let song = songView.song
         if let recordingURL = writer.assetWriter.outputURL {
-            if let audioURL = FileIO.sharedInstance.audioFileURL(song) {
+            if let audioURL = song.downloadFileURL {
                 Notificator.sharedInstance.showLoading()
                 Mixer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL).then { (videoURL) in
                     let id = videoURL.lastPathComponent!.stringByDeletingPathExtension

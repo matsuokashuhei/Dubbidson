@@ -36,18 +36,8 @@ class FileIO {
         */
     }
 
-    func audioFileURL(song: Song) -> NSURL? {
+    func downloadURL(song: Song) -> NSURL? {
         return fileURL(.Temporary, filename: song.previewURL.lastPathComponent)
-    }
-
-    func audioFileURL(song: Song) -> Promise<NSURL> {
-        return Promise { (fulfill, reject) in
-            if let URL = audioFileURL(song) {
-                fulfill(URL)
-            } else {
-                reject(NSError())
-            }
-        }
     }
 
     func recordingFileURL() -> NSURL? {
