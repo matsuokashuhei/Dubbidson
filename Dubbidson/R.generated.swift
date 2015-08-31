@@ -61,6 +61,7 @@ struct R {
         assert(UIImage(named: "filter") != nil, "[R.swift] Image named 'filter' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "lens-off") != nil, "[R.swift] Image named 'lens-off' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "play") != nil, "[R.swift] Image named 'play' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "settings") != nil, "[R.swift] Image named 'settings' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "tv") != nil, "[R.swift] Image named 'tv' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "videocam") != nil, "[R.swift] Image named 'videocam' is used in storyboard 'Main', but couldn't be loaded.")
       }
