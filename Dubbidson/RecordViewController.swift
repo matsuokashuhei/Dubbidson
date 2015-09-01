@@ -17,6 +17,10 @@ import RealmSwift
 import Result
 import XCGLogger
 
+enum State {
+    case Recording
+}
+
 class RecordViewController: UIViewController {
 
     @IBOutlet weak var durationLabel: UILabel! {
@@ -113,7 +117,8 @@ extension RecordViewController {
     }
 
     func stopRecording() {
-
+        audioPlayer.pause()
+        finishRecording()
     }
 
 }
@@ -122,7 +127,11 @@ extension RecordViewController {
 extension RecordViewController {
 
     func recordButtonTapped() {
-        startRecording()
+        if recordButton.imageView?.image == R.image.lensOff {
+            startRecording()
+        } else {
+            stopRecording()
+        }
     }
 
     func filterButtonTapped() {
@@ -138,6 +147,7 @@ extension RecordViewController {
         if let identifier = segue.identifier {
             switch identifier {
             case R.segue.selectSong:
+                recordButton.enabled = false
                 let controller = segue.destinationViewController as! SongsViewController
                 controller.delegate = self
             case R.segue.selectFilter:
@@ -168,7 +178,7 @@ extension RecordViewController: SongViewDelegate {
 // MARK: - Songs view contorller delegate
 extension RecordViewController: SongsViewControllerDelegate {
 
-    func selectedSong(song: Song) {
+    func didSelectSong(song: Song) {
         songView.song = song
         if TemporaryFile.exists(song.previewURL) {
             prepareToRecord(audioURL: song.downloadFileURL!)
@@ -180,26 +190,16 @@ extension RecordViewController: SongsViewControllerDelegate {
         }.catch { error in
             Notificator.sharedInstance.showError(error)
         }
-        /*
-        Downloader.sharedInstance.download(song) { (result) -> () in
-            switch result {
-            case .Success(let box):
-                let audioURL = box.value
-                TemporaryFile.create(audioURL)
-                self.prepareToRecord(audioURL: audioURL)
-            case .Failure(let box):
-                let error = box.value
-                self.logger.error(error.localizedDescription)
-                Async.main {
-                    SVProgressHUD.showErrorWithStatus(error.localizedDescription)
-                }
-            }
+    }
+
+    func didNotSelectSong() {
+        if let song = songView.song {
+            didSelectSong(song)
         }
-        */
     }
 
     func prepareToRecord(#audioURL: NSURL) {
-        logger.debug("")
+        logger.debug("audioURL: \(audioURL)")
         recordButton.enabled = true
         audioPlayer.delegate = self
         audioPlayer.prepareToPlay(audioURL)
@@ -217,19 +217,18 @@ extension RecordViewController: AudioPlayerDelegate {
         progressView.hidden = false
     }
 
-    func endTimeToPlay(item: AVPlayerItem) {
-        finishRecording()
-    }
-
     func playbackTime(time: CMTime, duration: CMTime) {
         let remainingTime = CMTimeGetSeconds(duration) - CMTimeGetSeconds(time)
         durationLabel.text = formatTime(CMTimeMakeWithSeconds(remainingTime, Int32(NSEC_PER_SEC)))
         progressView.progress = Float(CMTimeGetSeconds(time)) / Float(CMTimeGetSeconds(duration))
     }
 
-    func formatTime(time: CMTime) -> String {
+    func endTimeToPlay(item: AVPlayerItem) {
+        finishRecording()
+    }
+
+    private func formatTime(time: CMTime) -> String {
         let seconds = CMTimeGetSeconds(time)
-        logger.debug("seconds: \(seconds)")
         if isnormal(seconds) {
            return "\(Int(round(seconds))) sec"
         } else {
@@ -263,11 +262,13 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
         if let recordingURL = writer.assetWriter.outputURL {
             if let audioURL = song.downloadFileURL {
                 Notificator.sharedInstance.showLoading()
-                Mixer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL).then { (videoURL) in
+                let currentTime = audioPlayer.item.currentTime()
+                VideoComposer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL, duration: currentTime).then { (videoURL) in
                     let id = videoURL.lastPathComponent!.stringByDeletingPathExtension
                     return self.generateThumbnail(videoURL).then { (image) in
                         return Promise<String> { (fulfill, reject) in
                             let thumbnailURL = FileIO.sharedInstance.fileURL(.Documents, filename: "\(id).png")!
+                            FileIO.sharedInstance.save(image, fileURL: thumbnailURL)
                             if UIImagePNGRepresentation(image).writeToFile(thumbnailURL.path!, atomically: true) {
                                 fulfill(id)
                             } else {
@@ -276,12 +277,20 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
                                 reject(error)
                             }
                         }
+                        /*
+                        let thumbnailURL = FileIO.sharedInstance.fileURL(.Documents, filename: "\(id).png")!
+                        return FileIO.sharedInstance.save(image, fileURL: thumbnailURL)
+                        */
                     }
                 }.then { (id: String) -> () in
                     let video = Video.create(id, song: song)
+                    // TODO: UIを初期化する。シークバーやボタンその他
                     self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
-                    FileIO.sharedInstance.delete(recordingURL)
                 }.finally {
+                    self.audioPlayer.stop()
+                    self.progressView.progress = 0.0
+                    self.durationLabel.text = "30 sec"
+                    FileIO.sharedInstance.delete(recordingURL)
                     Notificator.sharedInstance.dismissLoading()
                 }.catch { error in
                     self.logger.error("error: \(error.localizedDescription)")
@@ -304,7 +313,7 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
         Notificator.sharedInstance.showError(error)
     }
 
-    func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
+    private func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
         return Promise { (fulfill, reject) in
             if let asset = AVAsset.assetWithURL(videoURL) as? AVAsset {
                 let generator = AVAssetImageGenerator(asset: asset)

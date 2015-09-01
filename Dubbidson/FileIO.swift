@@ -97,6 +97,16 @@ class FileIO {
         return formatter.stringFromDate(NSDate())
     }
 
+    func save(image: UIImage, fileURL: NSURL) -> Promise<Bool> {
+        return Promise { (fulfill, reject) in
+            if UIImagePNGRepresentation(image).writeToFile(fileURL.path!, atomically: true) {
+                fulfill(true)
+            } else {
+                reject(Error.unknown())
+            }
+        }
+    }
+
 }
 
 enum Directory {

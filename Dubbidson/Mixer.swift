@@ -14,29 +14,13 @@ import Box
 import PromiseKit
 import XCGLogger
 
-class Mixer: NSObject {
+class VideoComposer: NSObject {
 
     let logger = XCGLogger.defaultInstance()
 
-    static let sharedInstance = Mixer()
+    static let sharedInstance = VideoComposer()
 
-    /*
-    func mixdown(#videoURL: NSURL, audioURL: NSURL) -> Promise<(videoURL: NSURL, thumbnailURL: NSURL)> {
-        return Promise { (fulfill, reject) in
-            mixdown(videoURL: videoURL, audioURL: audioURL).then { (outputURL: NSURL) in
-                self.saveThumbnail(outputURL).then { (thumbnailURL) in
-                    fulfill(videoURL: outputURL, thumbnailURL: thumbnailURL)
-                }.catch { error in
-                    reject(error)
-                }
-            }.catch { error in
-                reject(error)
-            }
-        }
-    }
-    */
-
-    func mixdown(#videoURL: NSURL, audioURL: NSURL, handler: (Result<NSURL, NSError>) ->()) {
+    func mixdown(#videoURL: NSURL, audioURL: NSURL, duration: CMTime, handler: (Result<NSURL, NSError>) ->()) {
         logger.verbose("videoURL: \(videoURL.path!), audioURL: \(audioURL.path!)")
         var error: NSError?
 
@@ -44,7 +28,6 @@ class Mixer: NSObject {
 
         let videoAsset = AVURLAsset(URL: videoURL, options: nil)
         let videoRange = CMTimeRangeMake(kCMTimeZero, videoAsset.duration)
-        CMTimeGetSeconds(videoAsset.duration)
         let videoTrack = videoAsset.tracksWithMediaType(AVMediaTypeVideo).first as! AVAssetTrack
         let compositionVideoTrack = composition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: CMPersistentTrackID())
         compositionVideoTrack.insertTimeRange(videoRange, ofTrack: videoTrack, atTime: kCMTimeZero, error: &error)
@@ -55,11 +38,14 @@ class Mixer: NSObject {
         }
 
         let soundAsset = AVURLAsset(URL: audioURL, options: nil)
-        let soundRange = CMTimeRangeMake(kCMTimeZero, soundAsset.duration)
+        //let soundRange = CMTimeRangeMake(kCMTimeZero, soundAsset.duration)
+        let soundRange = CMTimeRangeMake(kCMTimeZero, duration)
 
         let float1 = CMTimeGetSeconds(videoAsset.duration)
-        let float2 = CMTimeGetSeconds(soundAsset.duration)
+        //let float2 = CMTimeGetSeconds(soundAsset.duration)
+        let float2 = CMTimeGetSeconds(duration)
         let float3 = float1 - float2
+        logger.debug("float1: \(float1), float2: \(float2), float3: \(float3)")
         let atTime = CMTimeMakeWithSeconds(float3, 30)
         let soundTrack = soundAsset.tracksWithMediaType(AVMediaTypeAudio).first as! AVAssetTrack
         let compositionSoundTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
@@ -105,9 +91,9 @@ class Mixer: NSObject {
         }
     }
 
-    func mixdown(#videoURL: NSURL, audioURL: NSURL) -> Promise<NSURL> {
+    func mixdown(#videoURL: NSURL, audioURL: NSURL, duration: CMTime) -> Promise<NSURL> {
         return Promise { fulfill, reject in
-            self.mixdown(videoURL: videoURL, audioURL: audioURL) { (result) in
+            self.mixdown(videoURL: videoURL, audioURL: audioURL, duration: duration) { (result) in
                 switch result {
                 case .Success(let box):
                     fulfill(box.value)
@@ -117,85 +103,5 @@ class Mixer: NSObject {
             }
         }
     }
-
-    /*
-    private func generateThumbnail(videoURL: NSURL) -> Result<UIImage, NSError> {
-        if let asset = AVAsset.assetWithURL(videoURL) as? AVAsset {
-            let generator = AVAssetImageGenerator(asset: asset)
-            generator.appliesPreferredTrackTransform = true
-            let time = CMTimeMake(1, 30)
-            var error: NSError?
-            if let image = generator.copyCGImageAtTime(time, actualTime: nil, error: &error) {
-                if let thumbnail = UIImage(CGImage: image) {
-                    return .Success(Box(thumbnail))
-                } else {
-                    return .Failure(Box(NSError()))
-                }
-            } else {
-                return .Failure(Box(NSError()))
-            }
-        } else {
-            return .Failure(Box(NSError()))
-        }
-    }
-
-    private func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
-        return Promise { (fulfill, reject) in
-            let result: Result<UIImage, NSError> = self.generateThumbnail(videoURL)
-            switch result {
-            case .Success(let box):
-                fulfill(box.value)
-            case .Failure(let box):
-                reject(box.value)
-            }
-        }
-    }
-
-    func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
-        return Promise { (fulfill, reject) in
-            if let asset = AVAsset.assetWithURL(videoURL) as? AVAsset {
-                let generator = AVAssetImageGenerator(asset: asset)
-                generator.appliesPreferredTrackTransform = true
-                let time = CMTimeMake(1, 30)
-                var error: NSError?
-                if let error = error {
-                    reject(NSError())
-                }
-                if let image = generator.copyCGImageAtTime(time, actualTime: nil, error: &error) {
-                    if let thumbnail = UIImage(CGImage: image) {
-                        fulfill(thumbnail)
-                    } else {
-                        reject(NSError())
-                    }
-                } else {
-                    reject(NSError())
-                }
-            } else {
-                reject(NSError())
-            }
-        }
-    }
-
-    func saveThumbnail(videoURL: NSURL) -> Promise<NSURL> {
-        return Promise { (fulfill, reject) in
-            if let videoFilename = videoURL.lastPathComponent {
-                let timestamp = videoFilename.stringByDeletingPathExtension
-                let thumbnailFilename = timestamp.stringByAppendingPathExtension("png")
-                self.generateThumbnail(videoURL).then { (image) -> () in
-                    let thumbnailURL = FileIO.fileURL(.Documents, filename: thumbnailFilename)!
-                    if UIImagePNGRepresentation(image).writeToFile(thumbnailURL.absoluteString!, atomically: true) {
-                        fulfill(thumbnailURL)
-                    } else {
-                        reject(NSError())
-                    }
-                }.catch { error in
-                    reject(error)
-                }
-            } else {
-                reject(NSError())
-            }
-        }
-    }
-    */
 
 }

@@ -36,14 +36,17 @@ class AudioPlayer: NSObject {
     }
 
     var item: AVPlayerItem! {
+        willSet {
+            if let periodicTimeObserver: AnyObject = self.periodicTimeObserver {
+                logger.debug("removeTimeObserver")
+                player.removeTimeObserver(periodicTimeObserver)
+            }
+        }
         didSet {
             let keyPaths = ["status", "duration"]
             if let prevItem = oldValue {
                 for keyPath in keyPaths {
                     prevItem.removeObserver(self, forKeyPath: keyPath, context: &KVOContext)
-                }
-                if let periodicTimeObserver: AnyObject = self.periodicTimeObserver {
-                    player.removeTimeObserver(periodicTimeObserver)
                 }
             }
             for keyPath in keyPaths {
@@ -62,7 +65,6 @@ class AudioPlayer: NSObject {
     :param: URL 再生する音楽のURL
     */
     func prepareToPlay(URL: NSURL) {
-        logger.debug("URL: \(URL)")
         item = AVPlayerItem(URL: URL)
         if let player = self.player {
             player.replaceCurrentItemWithPlayerItem(item)
@@ -75,21 +77,35 @@ class AudioPlayer: NSObject {
         delegate?.readyToPlay(item)
     }
 
+    /**
+    音楽の再生を始める。
+    
+    SongsViewControllerでSongTableViewCellをタップしたときに呼ばれる。
+
+    :param: item AVPlayerItem
+    */
     func startToPlay(item: AVPlayerItem) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "itemDidPlayToEndTime:", name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
         player.play()
+        /* SongsViewControllerでは不要
         let second = CMTimeMakeWithSeconds(0.1, 60)
+        logger.debug("addPeriodicTimeObserverForInterval")
         periodicTimeObserver = player.addPeriodicTimeObserverForInterval(second, queue: nil) { [weak self] (time: CMTime) in
             self?.playbackTime(item)
         }
+        */
     }
 
+    /**
+    音楽の再生を始める。
+    
+    RecordViewControllerのrecordButtonをタップしたときに呼ばれる。
+    */
     func startToPlay() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "itemDidPlayToEndTime:", name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
-        player.play()
-        let second = CMTimeMakeWithSeconds(0.1, 60)
-        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(second, queue: nil) { [weak self] (time: CMTime) in
-            self?.playbackTime(item)
+        if let item = self.item {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "itemDidPlayToEndTime:", name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
+            player.play()
+            startTimer(item)
         }
     }
 
@@ -102,6 +118,30 @@ class AudioPlayer: NSObject {
     func pause() {
         if let player = self.player {
             player.pause()
+        }
+    }
+
+    func stop() {
+        pause()
+        if let item = player.currentItem {
+            //delegate?.endTimeToPlay(item)
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
+            stopTimer()
+            player.seekToTime(kCMTimeZero)
+        }
+    }
+
+    func startTimer(item: AVPlayerItem) {
+        let second = CMTimeMakeWithSeconds(0.1, 60)
+        periodicTimeObserver = player.addPeriodicTimeObserverForInterval(second, queue: nil) { [weak self] (time: CMTime) in
+            self?.playbackTime(item)
+        }
+    }
+
+    func stopTimer() {
+        if let player = self.player, let periodicTimeObserver: AnyObject = self.periodicTimeObserver {
+            player.removeTimeObserver(periodicTimeObserver)
+            self.periodicTimeObserver = nil
         }
     }
 
@@ -178,11 +218,10 @@ extension AudioPlayer {
 
     func itemDidPlayToEndTime(notification: NSNotification) {
         if let item = notification.object as? AVPlayerItem {
-            logger.debug("")
-            //player.removeTimeObserver(periodicTimeObserver)
             NSNotificationCenter.defaultCenter().removeObserver(self, name: AVPlayerItemDidPlayToEndTimeNotification, object: item)
+            stopTimer()
             delegate?.endTimeToPlay(item)
-            player.seekToTime(kCMTimeZero)
+            //player.seekToTime(kCMTimeZero)
         }
     }
     

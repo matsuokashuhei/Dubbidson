@@ -18,7 +18,8 @@ import Result
 import XCGLogger
 
 protocol SongsViewControllerDelegate {
-    func selectedSong(song: Song)
+    func didSelectSong(song: Song)
+    func didNotSelectSong()
 }
 
 class SongsViewController: UIViewController {
@@ -73,6 +74,7 @@ class SongsViewController: UIViewController {
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        Notificator.sharedInstance.dismissLoading()
         player.pause()
     }
 
@@ -87,23 +89,25 @@ extension SongsViewController {
 
     func fetch() {
         Notificator.sharedInstance.showLoading()
-        iTunesAPI.sharedInstance.topsongs().then { songs -> () in
-            self.songs = songs
+        iTunesAPI.sharedInstance.topsongs().then { [weak self] songs -> () in
+            self?.songs = songs
         }.finally {
             Notificator.sharedInstance.dismissLoading()
         }.catch { error in
             self.logger.error(error.localizedDescription)
+            Notificator.sharedInstance.showError(error)
         }
     }
 
     func search(keyword: String) {
         Notificator.sharedInstance.showLoading()
-        iTunesAPI.sharedInstance.search(keyword: keyword).then { songs -> () in
-            self.songs = songs
+        iTunesAPI.sharedInstance.search(keyword: keyword).then { [weak self] songs -> () in
+            self?.songs = songs
         }.finally {
             Notificator.sharedInstance.dismissLoading()
         }.catch { error in
             self.logger.error(error.localizedDescription)
+            Notificator.sharedInstance.showError(error)
         }
     }
 
@@ -114,13 +118,13 @@ extension SongsViewController {
 
     func checkButtonTapped() {
         if let indexPath = tableView.indexPathForSelectedRow() {
-            player.delegate = nil
-            delegate?.selectedSong(songs[indexPath.row])
+            delegate?.didSelectSong(songs[indexPath.row])
             dismissViewControllerAnimated(true, completion: nil)
         }
     }
 
     func closeButtonTapped() {
+        delegate?.didNotSelectSong()
         dismissViewControllerAnimated(true, completion: nil)
     }
 
