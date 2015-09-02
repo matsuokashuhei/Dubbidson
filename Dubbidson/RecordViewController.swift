@@ -17,10 +17,6 @@ import RealmSwift
 import Result
 import XCGLogger
 
-enum State {
-    case Recording
-}
-
 class RecordViewController: UIViewController {
 
     @IBOutlet weak var durationLabel: UILabel! {
@@ -83,7 +79,7 @@ extension RecordViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
     }
 
     override func didReceiveMemoryWarning() {
@@ -97,7 +93,7 @@ extension RecordViewController {
 
     func startRecording() {
         // Writerのの作成
-        let fileURL = FileIO.sharedInstance.recordingFileURL()
+        let fileURL = FileIO.sharedInstance.createRecordingFile()
         writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
         writer.delegate = self
         filter.addTarget(writer)
@@ -180,13 +176,18 @@ extension RecordViewController: SongsViewControllerDelegate {
 
     func didSelectSong(song: Song) {
         songView.song = song
-        if TemporaryFile.exists(song.previewURL) {
+        if AudioFile.exists(song.previewURL) {
             prepareToRecord(audioURL: song.downloadFileURL!)
             return
         }
+        songView.downloadIndicator.hidden = false
+        songView.downloadIndicator.startAnimating()
         Downloader.sharedInstance.download(song).then { audioURL -> () in
-            TemporaryFile.create(audioURL)
+            AudioFile.create(audioURL)
             self.prepareToRecord(audioURL: audioURL)
+        }.finally {
+            self.songView.downloadIndicator.stopAnimating()
+            self.songView.downloadIndicator.hidden = true
         }.catch { error in
             Notificator.sharedInstance.showError(error)
         }
@@ -284,7 +285,6 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
                     }
                 }.then { (id: String) -> () in
                     let video = Video.create(id, song: song)
-                    // TODO: UIを初期化する。シークバーやボタンその他
                     self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
                 }.finally {
                     self.audioPlayer.stop()

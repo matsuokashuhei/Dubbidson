@@ -72,6 +72,11 @@ class SongsViewController: UIViewController {
         fetch()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .None)
+    }
+
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         Notificator.sharedInstance.dismissLoading()

@@ -14,8 +14,12 @@ class VideosViewController: UIViewController {
         didSet {
             tableView.delegate = self
             tableView.dataSource = self
+            tableView.tableFooterView = UIView(frame: CGRectZero)
+            tableView.allowsMultipleSelectionDuringEditing = true
         }
     }
+
+    @IBOutlet weak var toolBar: UIToolbar!
 
     var videos = [Video]() {
         didSet {
@@ -29,15 +33,14 @@ class VideosViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-        //navigationController?.navigationBarHidden = true
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .None)
+        setEditing(false, animated: true)
         fetch()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
 
     // MARK: - Navigation
 
@@ -51,10 +54,48 @@ class VideosViewController: UIViewController {
             default:
                 super.prepareForSegue(segue, sender: sender)
             }
-
         }
     }
 
+    var edited = false
+
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        tableView.setEditing(editing, animated: animated)
+        if editing {
+            let cancel = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelEditing")
+            let space = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+            let trash = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "endEditing")
+            toolBar.setItems([cancel, space, trash], animated: true)
+        } else {
+            let space = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+            let edit = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "startEditing")
+            toolBar.setItems([space, edit], animated: true)
+        }
+        edited = false
+    }
+
+    func startEditing() {
+        setEditing(true, animated: true)
+    }
+
+    func endEditing() {
+        if let indexPaths = tableView.indexPathsForSelectedRows() as? [NSIndexPath] {
+            let videos = indexPaths.map { (indexPath) -> Video in
+                return self.videos[indexPath.row]
+            }
+            Video.destroy(videos)
+            fetch()
+        }
+        setEditing(false, animated: true)
+    }
+
+    func cancelEditing() {
+        if edited {
+            fetch()
+        }
+        setEditing(false, animated: true)
+    }
 }
 
 // MARK: - DB
@@ -70,8 +111,12 @@ extension VideosViewController {
 extension VideosViewController: UITableViewDelegate {
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let video = videos[indexPath.row]
-        performSegueWithIdentifier(R.segue.watchVideo, sender: video)
+        if tableView.editing {
+            return
+        } else {
+            let video = videos[indexPath.row]
+            performSegueWithIdentifier(R.segue.watchVideo, sender: video)
+        }
     }
 
 }

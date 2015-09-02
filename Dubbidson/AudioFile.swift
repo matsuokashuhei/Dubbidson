@@ -9,16 +9,16 @@
 import Foundation
 
 import RealmSwift
+import XCGLogger
 
 enum MediaType: String {
     case Audio = "Audio"
     case Video = "Video"
 }
 
-class TemporaryFile: Object {
+class AudioFile: Object {
 
     dynamic var name = ""
-    dynamic var mediaType = ""
     dynamic var createdAt = NSDate()
 
     override class func primaryKey() -> String {
@@ -27,19 +27,11 @@ class TemporaryFile: Object {
 
 }
 
-extension TemporaryFile {
+extension AudioFile {
 
-    class func videoFiles() -> [TemporaryFile] {
-        return temporaryFiles(.Video)
-    }
-
-    class func audioFiles() -> [TemporaryFile] {
-        return temporaryFiles(.Audio)
-    }
-
-    class func temporaryFiles(type: MediaType) -> [TemporaryFile] {
-        let results = Realm().objects(TemporaryFile).filter("mediaType = '\(type.rawValue)'").sorted("createdAt")
-        var files = [TemporaryFile]()
+    class func all() -> [AudioFile] {
+        let results = Realm().objects(AudioFile).sorted("createdAt")
+        var files = [AudioFile]()
         for file in results {
             files.append(file)
         }
@@ -48,8 +40,11 @@ extension TemporaryFile {
 
     class func exists(fileURL: NSURL) -> Bool {
         if let fileName = fileURL.lastPathComponent {
-            let results = Realm().objects(TemporaryFile).filter("name = '\(fileName)'")
-            return results.count > 0
+            if let result = Realm().objectForPrimaryKey(AudioFile.self, key: fileName) {
+                return true
+            } else {
+                return false
+            }
         } else {
             return false
         }
@@ -57,16 +52,19 @@ extension TemporaryFile {
 
     class func create(fileURL: NSURL) {
         if let fileName = fileURL.lastPathComponent {
-            let file = TemporaryFile()
+            let file = AudioFile()
             file.name = fileName
-            if FileIO.sharedInstance.isVideoFile(fileName) {
-                file.mediaType = MediaType.Video.rawValue
-            } else {
-                file.mediaType = MediaType.Audio.rawValue
-            }
             let realm = Realm()
             realm.write {
                 realm.add(file)
+                let files = self.all()
+                XCGLogger.defaultInstance().verbose("files.count: \(files.count)")
+                if files.count > 5 {
+                    if let file = files.first {
+                        XCGLogger.defaultInstance().verbose("realm.delete(file)")
+                        realm.delete(file)
+                    }
+                }
             }
         }
     }

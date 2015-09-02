@@ -28,6 +28,10 @@ class SongView: UIView {
         }
     }
 
+    @IBOutlet weak var downloadIndicator: UIActivityIndicatorView! {
+        didSet { downloadIndicator.hidden = true }
+    }
+
     var artworkImage: UIImage?
 
     var song: Song! {

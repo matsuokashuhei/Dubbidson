@@ -18,8 +18,6 @@ class SuggestionsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
-            //tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 64.0, right: 0.0)
-            //tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 64.0, right: 0.0)
             logger.debug("")
             tableView.delegate = self
             tableView.dataSource = self

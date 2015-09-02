@@ -36,11 +36,12 @@
 		A87F47561B8236F600A71E82 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47551B8236F600A71E82 /* R.generated.swift */; };
 		A87F47581B824D7300A71E82 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47571B824D7300A71E82 /* VideosViewController.swift */; };
 		A88916A41B91EA620065E1D2 /* SuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88916A31B91EA620065E1D2 /* SuggestionsViewController.swift */; };
-		A8895F801B8E1A3F00AFC153 /* TemporaryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8895F7F1B8E1A3F00AFC153 /* TemporaryFile.swift */; };
+		A8895F801B8E1A3F00AFC153 /* AudioFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8895F7F1B8E1A3F00AFC153 /* AudioFile.swift */; };
 		A8895F861B8F6B7E00AFC153 /* texgyreadventor-bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F821B8F6B3C00AFC153 /* texgyreadventor-bold.otf */; };
 		A8895F871B8F6B7E00AFC153 /* texgyreadventor-bolditalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F831B8F6B3C00AFC153 /* texgyreadventor-bolditalic.otf */; };
 		A8895F881B8F6B7E00AFC153 /* texgyreadventor-italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F841B8F6B3C00AFC153 /* texgyreadventor-italic.otf */; };
 		A8895F891B8F6B7E00AFC153 /* texgyreadventor-regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F851B8F6B3C00AFC153 /* texgyreadventor-regular.otf */; };
+		A8906B931B95DF1000E31244 /* NSError+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8906B921B95DF1000E31244 /* NSError+.swift */; };
 		A8AE79E31B92162A009D337E /* Notificator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AE79E21B92162A009D337E /* Notificator.swift */; };
 		A8C07C451B83812200CB244A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8C07C441B83812200CB244A /* Main.storyboard */; };
 		A8C07C4B1B84D9AD00CB244A /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C07C4A1B84D9AD00CB244A /* Filter.swift */; };
@@ -93,11 +94,12 @@
 		A87F47571B824D7300A71E82 /* VideosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		A88916A31B91EA620065E1D2 /* SuggestionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewController.swift; sourceTree = "<group>"; };
 		A8895F7E1B8CB10400AFC153 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
-		A8895F7F1B8E1A3F00AFC153 /* TemporaryFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryFile.swift; sourceTree = "<group>"; };
+		A8895F7F1B8E1A3F00AFC153 /* AudioFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFile.swift; sourceTree = "<group>"; };
 		A8895F821B8F6B3C00AFC153 /* texgyreadventor-bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-bold.otf"; sourceTree = "<group>"; };
 		A8895F831B8F6B3C00AFC153 /* texgyreadventor-bolditalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-bolditalic.otf"; sourceTree = "<group>"; };
 		A8895F841B8F6B3C00AFC153 /* texgyreadventor-italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-italic.otf"; sourceTree = "<group>"; };
 		A8895F851B8F6B3C00AFC153 /* texgyreadventor-regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-regular.otf"; sourceTree = "<group>"; };
+		A8906B921B95DF1000E31244 /* NSError+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSError+.swift"; sourceTree = "<group>"; };
 		A8AE79E21B92162A009D337E /* Notificator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notificator.swift; sourceTree = "<group>"; };
 		A8C07C441B83812200CB244A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		A8C07C4A1B84D9AD00CB244A /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				A87F47311B82127100A71E82 /* AV */,
 				A8E7CF631B91B9E400A14374 /* API */,
 				A87F47321B82129100A71E82 /* Utils */,
+				A8906B911B95DEF700E31244 /* Extensions */,
 				A8895F7E1B8CB10400AFC153 /* MyPlayground.playground */,
 			);
 			name = Classes;
@@ -260,7 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				A87F473F1B8212C400A71E82 /* Video.swift */,
-				A8895F7F1B8E1A3F00AFC153 /* TemporaryFile.swift */,
+				A8895F7F1B8E1A3F00AFC153 /* AudioFile.swift */,
 			);
 			name = DB;
 			sourceTree = "<group>";
@@ -311,6 +314,14 @@
 				A8895F851B8F6B3C00AFC153 /* texgyreadventor-regular.otf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		A8906B911B95DEF700E31244 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A8906B921B95DF1000E31244 /* NSError+.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		A8E7CF631B91B9E400A14374 /* API */ = {
@@ -501,6 +512,7 @@
 				A87F47281B82125300A71E82 /* RecordViewController.swift in Sources */,
 				A87F473E1B8212BB00A71E82 /* Mixer.swift in Sources */,
 				A87F474E1B82137700A71E82 /* AudioPlayer.swift in Sources */,
+				A8906B931B95DF1000E31244 /* NSError+.swift in Sources */,
 				A87F47291B82125300A71E82 /* SongsViewController.swift in Sources */,
 				A87F47561B8236F600A71E82 /* R.generated.swift in Sources */,
 				A87F47351B8212A700A71E82 /* Downloader.swift in Sources */,
@@ -517,7 +529,7 @@
 				A8E7CF651B91B9F700A14374 /* GoogleAPI.swift in Sources */,
 				A87F472E1B82126400A71E82 /* FilterView.swift in Sources */,
 				A88916A41B91EA620065E1D2 /* SuggestionsViewController.swift in Sources */,
-				A8895F801B8E1A3F00AFC153 /* TemporaryFile.swift in Sources */,
+				A8895F801B8E1A3F00AFC153 /* AudioFile.swift in Sources */,
 				A8F9C8011B88E34400A8244C /* Error.swift in Sources */,
 				A8AE79E31B92162A009D337E /* Notificator.swift in Sources */,
 				A87F472D1B82126400A71E82 /* FiltersView.swift in Sources */,

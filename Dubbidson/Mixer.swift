@@ -72,7 +72,7 @@ class VideoComposer: NSObject {
         videoComposition.instructions = [instruction]
         videoComposition.frameDuration = CMTimeMake(1, 30)
 
-        let URL = FileIO.sharedInstance.videoFileURL()
+        let URL = FileIO.sharedInstance.createVideoFile()
         let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)
         session.outputURL = URL
         session.outputFileType = AVFileTypeQuickTimeMovie

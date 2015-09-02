@@ -41,7 +41,6 @@ class iTunesAPI {
     func topsongs(#handler: (Result<[Song], NSError>) -> ()) {
         let URL = NSURL(string: "https://itunes.apple.com/\(country)/rss/topsongs/limit=\(limit)/explicit=true/json")!
         let request = Alamofire.request(.GET, URL, parameters: nil)
-        debugPrintln(request)
         NetworkIndicator.sharedInstance.show()
         request.responseJSON() { (_, _, object, error) in
             NetworkIndicator.sharedInstance.dismiss()
@@ -81,7 +80,6 @@ class iTunesAPI {
     func search(#keyword: String, handler: (Result<[Song], NSError>) -> ()) {
         let URL = NSURL(string: "https://itunes.apple.com/search")!
         let request = Alamofire.request(.GET, "https://itunes.apple.com/search", parameters: ["term": keyword, "entity": "song", "limit": "\(limit)", "country": country])
-        debugPrintln(request)
         NetworkIndicator.sharedInstance.show()
         request.responseJSON { (_, _, object, error) in
             NetworkIndicator.sharedInstance.dismiss()

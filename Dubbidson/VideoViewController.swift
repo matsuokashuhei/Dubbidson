@@ -65,6 +65,7 @@ class VideoViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
     }
 
     override func viewWillDisappear(animated: Bool) {

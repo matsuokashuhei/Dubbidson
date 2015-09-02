@@ -18,6 +18,14 @@ final class Video: Object {
     dynamic var artworkImageURL = ""
     dynamic var createdAt = NSDate()
 
+    var fileURL: NSURL? {
+        return FileIO.sharedInstance.videoFileURL(self)
+    }
+
+    var thumbnailURL: NSURL? {
+        return FileIO.sharedInstance.thumbnailURL(self)
+    }
+
     override class func primaryKey() -> String {
         return "id"
     }
@@ -35,15 +43,12 @@ extension Video {
         return videos
     }
 
-    //class func create(song: Song, videoURL: NSURL, thumbnailURL: NSURL) -> Video {
     class func create(id: String, song: Song) -> Video {
         let video = Video()
         video.id = id
         video.name = song.name
         video.artist = song.artist
         video.artworkImageURL = song.imageURL.absoluteString!
-        //video.fileURL = fileURL.absoluteString!
-        //video.fileName = fileURL.lastPathComponent!
         let realm = Realm()
         realm.write {
             realm.add(video)
@@ -51,4 +56,18 @@ extension Video {
         return video
     }
 
+    class func destroy(videos: [Video]) {
+        let realm = Realm()
+        realm.write {
+            for video in videos {
+                if let fileURL = video.fileURL {
+                    FileIO.sharedInstance.delete(fileURL)
+                }
+                if let fileURL = video.thumbnailURL {
+                    FileIO.sharedInstance.delete(fileURL)
+                }
+                realm.delete(video)
+            }
+        }
+    }
 }

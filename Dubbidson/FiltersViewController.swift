@@ -101,6 +101,7 @@ class FiltersViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
         selectionView.startOutput()
     }
 

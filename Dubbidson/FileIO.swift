@@ -22,30 +22,16 @@ class FileIO {
 
     static let sharedInstance = FileIO()
 
-    func isVideoFile(fileName: String) -> Bool {
-        return fileName.pathExtension == Extension.Video.rawValue
-    }
-
-    func isVideoURL(URL: NSURL) -> Bool {
-        return URL.lastPathComponent?.pathExtension == Extension.Video.rawValue
-        /*
-        if let pathExtension = URL.lastPathComponent?.pathExtension {
-            return pathExtension == "m4v"
-        }
-        return false
-        */
-    }
-
     func downloadURL(song: Song) -> NSURL? {
         return fileURL(.Temporary, filename: song.previewURL.lastPathComponent)
     }
 
-    func recordingFileURL() -> NSURL? {
+    func createRecordingFile() -> NSURL? {
         let filename = String(format: "%@.\(Extension.Video.rawValue)", arguments:[timestamp()])
         return fileURL(.Temporary, filename: filename)
     }
 
-    func videoFileURL() -> NSURL? {
+    func createVideoFile() -> NSURL? {
         let filename = String(format: "%@.\(Extension.Video.rawValue)", arguments: [timestamp()])
         return fileURL(.Documents, filename: filename)
     }
@@ -90,6 +76,20 @@ class FileIO {
             return .Success(Box(false))
         }
     }
+
+    /*
+    func delete(fileURL: NSURL?) -> Promise<Bool> {
+        let result: Result<Bool, NSError> = delete(fileURL)
+        return Promise { (fulfill, reject) in
+            switch result {
+            case .Success(let box):
+                fulfill(box.value)
+            case .Failure(let box):
+                reject(box.value)
+            }
+        }
+    }
+    */
 
     func timestamp(format: String = "yyyyMMddHHmmss") -> String {
         let formatter = NSDateFormatter()
