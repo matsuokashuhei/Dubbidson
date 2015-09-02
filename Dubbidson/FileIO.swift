@@ -27,12 +27,12 @@ class FileIO {
     }
 
     func createRecordingFile() -> NSURL? {
-        let filename = String(format: "%@.\(Extension.Video.rawValue)", arguments:[timestamp()])
+        let filename = String(format: "%@.\(Extension.Video.rawValue)", arguments:[formattedTimestamp])
         return fileURL(.Temporary, filename: filename)
     }
 
     func createVideoFile() -> NSURL? {
-        let filename = String(format: "%@.\(Extension.Video.rawValue)", arguments: [timestamp()])
+        let filename = String(format: "%@.\(Extension.Video.rawValue)", arguments: [formattedTimestamp])
         return fileURL(.Documents, filename: filename)
     }
 
@@ -91,11 +91,17 @@ class FileIO {
     }
     */
 
-    func timestamp(format: String = "yyyyMMddHHmmss") -> String {
+    var formattedTimestamp: String {
         let formatter = NSDateFormatter()
-        formatter.dateFormat = format
+        formatter.dateFormat = "yyyyMMddHHmmss"
         return formatter.stringFromDate(NSDate())
     }
+    
+//    func timestamp(format: String = "yyyyMMddHHmmss") -> String {
+//        let formatter = NSDateFormatter()
+//        formatter.dateFormat = format
+//        return formatter.stringFromDate(NSDate())
+//    }
 
     func save(image: UIImage, fileURL: NSURL) -> Promise<Bool> {
         return Promise { (fulfill, reject) in

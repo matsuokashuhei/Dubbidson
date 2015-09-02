@@ -14,12 +14,13 @@ class VideosViewController: UIViewController {
         didSet {
             tableView.delegate = self
             tableView.dataSource = self
-            tableView.tableFooterView = UIView(frame: CGRectZero)
+            //tableView.tableFooterView = UIView(frame: CGRectZero)
+            tableView.tableFooterView = UIToolbar(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
             tableView.allowsMultipleSelectionDuringEditing = true
         }
     }
 
-    @IBOutlet weak var toolBar: UIToolbar!
+    //@IBOutlet weak var toolBar: UIToolbar!
 
     var videos = [Video]() {
         didSet {
@@ -61,6 +62,7 @@ class VideosViewController: UIViewController {
 
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        if let toolBar = tableView.tableFooterView as? UIToolbar {
         tableView.setEditing(editing, animated: animated)
         if editing {
             let cancel = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelEditing")
@@ -71,6 +73,7 @@ class VideosViewController: UIViewController {
             let space = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
             let edit = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "startEditing")
             toolBar.setItems([space, edit], animated: true)
+        }
         }
         edited = false
     }
@@ -145,7 +148,9 @@ class VideoTableViewCell: UITableViewCell {
     @IBOutlet weak var createdAtLabel: UILabel!
 
     func configure(video: Video) {
-        thumbnailImageView.kf_setImageWithURL(FileIO.sharedInstance.thumbnailURL(video)!)
+        if let thumbnailURL = video.thumbnailURL {
+            thumbnailImageView.kf_setImageWithURL(thumbnailURL)
+        }
         nameLabel.text = video.name
         artistLabel.text = video.artist
         createdAtLabel.text = formatDate(video.createdAt)

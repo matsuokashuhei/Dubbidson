@@ -25,6 +25,10 @@ class VideoViewController: UIViewController {
         }
     }
 
+    @IBOutlet weak var songNameLabel: UILabel!
+
+    @IBOutlet weak var songArtistLabel: UILabel!
+
     @IBOutlet weak var backButton: UIButton! {
         didSet { backButton.addTarget(self, action: "backButtonTapped", forControlEvents: .TouchUpInside) }
     }
@@ -55,12 +59,10 @@ class VideoViewController: UIViewController {
         logger.verbose("")
         super.viewDidLoad()
 
-        //if let URL = NSURL(string: video.fileURL) {
-        if let URL = FileIO.sharedInstance.videoFileURL(video) {
+        if let fileURL = video.fileURL {
             player.delegate = self
-            player.prepareToPlay(URL)
+            player.prepareToPlay(fileURL)
         }
-        // Do any additional setup after loading the view.
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -78,7 +80,6 @@ class VideoViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 
@@ -108,15 +109,7 @@ extension VideoViewController {
 
     func actionButtonTapped() {
         let message = "\(video.name) - \(video.artist)"
-        if let fileURL = FileIO.sharedInstance.videoFileURL(video) {
-            //let asset = AVURLAsset(URL: URL, options: nil)
-            /*
-            if let data = NSData(contentsOfURL: URL) {
-                let items = [data]
-                let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
-                presentViewController(controller, animated: true, completion: nil)
-            }
-            */
+        if let fileURL = video.fileURL {
             let controller = UIActivityViewController(activityItems: [message, fileURL], applicationActivities: nil)
             presentViewController(controller, animated: true, completion: nil)
         }
@@ -185,6 +178,8 @@ extension VideoViewController: VideoPlayerDelegate {
 
     func readyToPlay(player: VideoPlayer) {
         playButton.enabled = true
+        songNameLabel.text = video.name
+        songArtistLabel.text = video.artist
     }
 
     func playbackTime(time: Double, duration: Double) {
