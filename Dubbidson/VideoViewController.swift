@@ -111,6 +111,35 @@ extension VideoViewController {
         let message = "\(video.name) - \(video.artist)"
         if let fileURL = video.fileURL {
             let controller = UIActivityViewController(activityItems: [message, fileURL], applicationActivities: nil)
+            controller.completionWithItemsHandler = { (activityType, completed, info, error) in
+                if let error = error {
+                    self.logger.error(error.localizedDescription)
+                    return
+                }
+                if completed {
+                    switch activityType {
+                    case UIActivityTypePostToFacebook:
+                        self.logger.verbose("Post to Facebook")
+                    case UIActivityTypePostToTwitter:
+                        self.logger.verbose("Post to Twitter")
+                    case UIActivityTypePostToWeibo:
+                        self.logger.verbose("Post to Weibo")
+                    case UIActivityTypeMessage:
+                        self.logger.verbose("Message")
+                    case UIActivityTypeMail:
+                        self.logger.verbose("Mail")
+                    case UIActivityTypePostToVimeo:
+                        self.logger.verbose("Vimeo")
+                    case UIActivityTypePostToTencentWeibo:
+                        self.logger.verbose("Post to Tencent Weibo")
+                    default:
+                        self.logger.verbose("Others")
+                    }
+                }
+                if let info = info {
+                    self.logger.verbose("info: \(info)")
+                }
+            }
             presentViewController(controller, animated: true, completion: nil)
         }
     }

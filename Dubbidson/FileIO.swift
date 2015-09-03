@@ -77,32 +77,12 @@ class FileIO {
         }
     }
 
-    /*
-    func delete(fileURL: NSURL?) -> Promise<Bool> {
-        let result: Result<Bool, NSError> = delete(fileURL)
-        return Promise { (fulfill, reject) in
-            switch result {
-            case .Success(let box):
-                fulfill(box.value)
-            case .Failure(let box):
-                reject(box.value)
-            }
-        }
-    }
-    */
-
     var formattedTimestamp: String {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyyMMddHHmmss"
         return formatter.stringFromDate(NSDate())
     }
     
-//    func timestamp(format: String = "yyyyMMddHHmmss") -> String {
-//        let formatter = NSDateFormatter()
-//        formatter.dateFormat = format
-//        return formatter.stringFromDate(NSDate())
-//    }
-
     func save(image: UIImage, fileURL: NSURL) -> Promise<Bool> {
         return Promise { (fulfill, reject) in
             if UIImagePNGRepresentation(image).writeToFile(fileURL.path!, atomically: true) {
@@ -111,6 +91,58 @@ class FileIO {
                 reject(Error.unknown())
             }
         }
+    }
+
+}
+
+/*
+カメラロールに保存する場合はこれらのメソッドを呼ぶ。
+
+*/
+
+import AssetsLibrary
+import Photos
+
+extension FileIO {
+
+    func fetchLastVideoFromPhotos(handler: (Result<AVAsset, NSError>) -> ()) {
+        let options = PHFetchOptions()
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        let videos = PHAsset.fetchAssetsWithMediaType(.Video, options: options)
+        if let asset = videos.lastObject as? PHAsset {
+            let options = PHVideoRequestOptions()
+            options.version = .Original
+            PHImageManager.defaultManager().requestAVAssetForVideo(asset, options: options, resultHandler: { (asset, audioMix, info) -> Void in
+                if let asset = asset {
+                    handler(.Success(Box(asset)))
+                } else {
+                    handler(.Failure(Box(Error.unknown())))
+                }
+            })
+        }
+    }
+
+    func fetchLastVideoFromPhots() -> PHAsset? {
+        let options = PHFetchOptions()
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        let videos = PHAsset.fetchAssetsWithMediaType(.Video, options: options)
+        if let asset = videos.lastObject as? PHAsset {
+            return asset
+        } else {
+            return nil
+        }
+    }
+
+    func saveVideoToPhotos(fileURL: NSURL, handler: (Result<NSURL, NSError>) -> Void) {
+        let library = ALAssetsLibrary()
+        library.writeVideoAtPathToSavedPhotosAlbum(fileURL, completionBlock: { (assetURL, error) -> Void in
+            if let error = error {
+                handler(.Failure(Box(error)))
+            }
+            if let assetURL = assetURL {
+                handler(.Success(Box(assetURL)))
+            }
+        })
     }
 
 }

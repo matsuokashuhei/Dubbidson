@@ -93,7 +93,6 @@
 		A87F47551B8236F600A71E82 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		A87F47571B824D7300A71E82 /* VideosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		A88916A31B91EA620065E1D2 /* SuggestionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewController.swift; sourceTree = "<group>"; };
-		A8895F7E1B8CB10400AFC153 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		A8895F7F1B8E1A3F00AFC153 /* AudioFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFile.swift; sourceTree = "<group>"; };
 		A8895F821B8F6B3C00AFC153 /* texgyreadventor-bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-bold.otf"; sourceTree = "<group>"; };
 		A8895F831B8F6B3C00AFC153 /* texgyreadventor-bolditalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-bolditalic.otf"; sourceTree = "<group>"; };
@@ -211,7 +210,6 @@
 				A8E7CF631B91B9E400A14374 /* API */,
 				A87F47321B82129100A71E82 /* Utils */,
 				A8906B911B95DEF700E31244 /* Extensions */,
-				A8895F7E1B8CB10400AFC153 /* MyPlayground.playground */,
 			);
 			name = Classes;
 			sourceTree = "<group>";

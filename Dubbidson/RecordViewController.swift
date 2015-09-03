@@ -345,4 +345,21 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
             }
         }
     }
+
+}
+
+/*
+カメラロールに保存する場合はこれらのメソッドを呼ぶ。
+
+*/
+extension RecordViewController {
+
+    func saveToPhotos(videoURL: NSURL) {
+        UISaveVideoAtPathToSavedPhotosAlbum(videoURL.path!, self, "video:didFinishSavingWithError:contextInfo:", nil)
+    }
+
+    func video(videoPath: NSString, didFinishSavingWithError error: NSError!, contextInfo: UnsafeMutablePointer<Void>) {
+        logger.verbose("videoPath: \(videoPath)")
+    }
+
 }
