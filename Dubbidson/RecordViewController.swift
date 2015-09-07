@@ -61,6 +61,10 @@ class RecordViewController: UIViewController {
 
     var writer: GPUImageMovieWriter!
 
+    var isRecording: Bool {
+        return recordButton.imageView?.image == R.image.lensOn
+    }
+
     let audioPlayer = AudioPlayer.sharedInstance
 
 }
@@ -123,7 +127,8 @@ extension RecordViewController {
 extension RecordViewController {
 
     func recordButtonTapped() {
-        if recordButton.imageView?.image == R.image.lensOff {
+        //if recordButton.imageView?.image == R.image.lensOff {
+        if isRecording == false {
             startRecording()
         } else {
             stopRecording()
@@ -131,6 +136,10 @@ extension RecordViewController {
     }
 
     func filterButtonTapped() {
+        // レコーディング中は無効にする。
+        if isRecording {
+            return
+        }
         performSegueWithIdentifier(R.segue.selectFilter, sender: nil)
     }
 
@@ -166,6 +175,10 @@ extension RecordViewController {
 extension RecordViewController: SongViewDelegate {
 
     func songViewTapped() {
+        // レコーディング中は無効にする。
+        if isRecording {
+            return
+        }
         performSegueWithIdentifier(R.segue.selectSong, sender: nil)
     }
 
