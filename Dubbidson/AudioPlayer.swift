@@ -26,7 +26,12 @@ class AudioPlayer: NSObject {
 
     static let sharedInstance = AudioPlayer()
 
-    let logger = XCGLogger.defaultInstance()
+    //let logger = XCGLogger.defaultInstance()
+    let logger: XCGLogger = {
+        let logger = XCGLogger.defaultInstance()
+        logger.setup(logLevel: .Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
+        return logger
+    }()
 
     var player: AVPlayer! {
         didSet {

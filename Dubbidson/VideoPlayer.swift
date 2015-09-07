@@ -23,7 +23,12 @@ protocol VideoPlayerDelegate {
 
 class VideoPlayer: NSObject {
 
-    let logger = XCGLogger.defaultInstance()
+    //let logger = XCGLogger.defaultInstance()
+    let logger: XCGLogger = {
+        let logger = XCGLogger.defaultInstance()
+        logger.setup(logLevel: .Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
+        return logger
+    }()
 
     static let sharedInstance = VideoPlayer()
 
