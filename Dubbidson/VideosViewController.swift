@@ -7,20 +7,20 @@
 //
 
 import UIKit
+import XCGLogger
 
 class VideosViewController: UIViewController {
+
+    let logger = XCGLogger.defaultInstance()
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.delegate = self
             tableView.dataSource = self
-            //tableView.tableFooterView = UIView(frame: CGRectZero)
             tableView.tableFooterView = UIToolbar(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
             tableView.allowsMultipleSelectionDuringEditing = true
         }
     }
-
-    //@IBOutlet weak var toolBar: UIToolbar!
 
     var videos = [Video]() {
         didSet {

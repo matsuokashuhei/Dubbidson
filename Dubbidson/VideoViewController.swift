@@ -43,22 +43,19 @@ class VideoViewController: UIViewController {
     @IBOutlet weak var actionButton: UIButton! {
         didSet { actionButton.addTarget(self, action: "actionButtonTapped", forControlEvents: .TouchUpInside) }
     }
-//    @IBOutlet weak var closeButton: UIButton! {
-//        didSet {
-//            closeButton.addTarget(self, action: "closeButtonTapped", forControlEvents: .TouchUpInside)
-//        }
-//    }
 
-    let logger = XCGLogger.defaultInstance()
+    let logger: XCGLogger = {
+        let logger = XCGLogger.defaultInstance()
+        logger.setup(logLevel: .Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
+        return logger
+    }()
 
     let player = VideoPlayer.sharedInstance
 
     var video: Video!
 
     override func viewDidLoad() {
-        logger.verbose("")
         super.viewDidLoad()
-
         if let fileURL = video.fileURL {
             player.delegate = self
             player.prepareToPlay(fileURL)
@@ -71,7 +68,6 @@ class VideoViewController: UIViewController {
     }
 
     override func viewWillDisappear(animated: Bool) {
-        logger.verbose("")
         super.viewWillDisappear(animated)
         if player.state == .Playing {
             player.pause()
@@ -82,17 +78,6 @@ class VideoViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 // MARK: - Actions
@@ -195,6 +180,8 @@ extension VideoViewController: VideoPlayerDelegate {
     func readyForDisplay(player: VideoPlayer) {
         videoView.addSubview(player.view)
         player.view.frame = videoView.bounds
+        videoView.bringSubviewToFront(backButton)
+        /*
         player.view.setTranslatesAutoresizingMaskIntoConstraints(false)
         videoView.addConstraints([
             NSLayoutConstraint(item: player.view, attribute: .Top, relatedBy: .Equal, toItem: videoView, attribute: .Top, multiplier: 1, constant: 0),
@@ -202,7 +189,13 @@ extension VideoViewController: VideoPlayerDelegate {
             NSLayoutConstraint(item: player.view, attribute: .Bottom, relatedBy: .Equal, toItem: videoView, attribute: .Bottom, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: player.view, attribute: .Trailing, relatedBy: .Equal, toItem: videoView, attribute: .Trailing, multiplier: 1, constant: 0),
         ])
-        videoView.bringSubviewToFront(backButton)
+        layout(videoView, player.view) { view1, view2 in
+            view1.top == view2.top
+            view1.left == view2.left
+            view1.width == view2.width
+            view1.height == view2.height
+        }
+        */
     }
 
     func readyToPlay(player: VideoPlayer) {
