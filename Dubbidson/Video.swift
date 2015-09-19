@@ -35,7 +35,7 @@ final class Video: Object {
 extension Video {
 
     class func all() -> [Video] {
-        let results = Realm().objects(Video).sorted("createdAt", ascending: false)
+        let results = try! Realm().objects(Video).sorted("createdAt", ascending: false)
         var videos = [Video]()
         for video in results {
             videos.append(video)
@@ -48,17 +48,18 @@ extension Video {
         video.id = id
         video.name = song.name
         video.artist = song.artist
-        video.artworkImageURL = song.imageURL.absoluteString!
-        let realm = Realm()
-        realm.write {
+        video.artworkImageURL = song.imageURL.absoluteString
+        let realm = try! Realm()
+        try! realm.write {
             realm.add(video)
         }
+
         return video
     }
 
     class func destroy(videos: [Video]) {
-        let realm = Realm()
-        realm.write {
+        let realm = try! Realm()
+        try! realm.write {
             for video in videos {
                 if let fileURL = video.fileURL {
                     FileIO.sharedInstance.delete(fileURL)

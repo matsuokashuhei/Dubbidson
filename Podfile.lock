@@ -1,79 +1,38 @@
 PODS:
-  - Alamofire (1.3.1)
-  - Async (1.3.1)
-  - Box (1.2.2)
-  - Cartography (0.5.0)
-  - Google-Mobile-Ads-SDK (7.4.1)
-  - GPUImage (0.1.7)
-  - Kingfisher (1.4.5)
-  - OMGHTTPURLRQ (2.1.3):
-    - OMGHTTPURLRQ/RQ (= 2.1.3)
-  - OMGHTTPURLRQ/FormURLEncode (2.1.3)
-  - OMGHTTPURLRQ/RQ (2.1.3):
-    - OMGHTTPURLRQ/FormURLEncode
-    - OMGHTTPURLRQ/UserAgent
-  - OMGHTTPURLRQ/UserAgent (2.1.3)
-  - PromiseKit (2.2.1):
-    - PromiseKit/Foundation (= 2.2.1)
-    - PromiseKit/QuartzCore (= 2.2.1)
-    - PromiseKit/UIKit (= 2.2.1)
-  - PromiseKit/CorePromise (2.2.1)
-  - PromiseKit/Foundation (2.2.1):
-    - OMGHTTPURLRQ (~> 2.1.3)
-    - PromiseKit/CorePromise
-  - PromiseKit/QuartzCore (2.2.1):
-    - PromiseKit/CorePromise
-  - PromiseKit/UIKit (2.2.1):
-    - PromiseKit/CorePromise
-  - R.swift (0.8.5)
+  - R.swift (0.9.0)
   - Realm (0.95.0):
     - Realm/Headers (= 0.95.0)
   - Realm/Headers (0.95.0)
   - RealmSwift (0.95.0):
     - Realm (= 0.95.0)
-  - Result (0.4.4):
-    - Box (~> 1.2)
-  - SVProgressHUD (1.1.3)
-  - XCGLogger (2.3)
+  - XCGLogger (3.0)
 
 DEPENDENCIES:
-  - Alamofire
-  - Async (from `https://github.com/duemunk/Async.git`)
-  - Cartography
-  - Google-Mobile-Ads-SDK (~> 7.0)
-  - GPUImage
-  - Kingfisher
-  - PromiseKit
   - R.swift
-  - RealmSwift
-  - Result
-  - SVProgressHUD
+  - Realm (from `https://github.com/realm/realm-cocoa.git`, branch `swift-2.0`)
+  - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `swift-2.0`)
   - XCGLogger
 
 EXTERNAL SOURCES:
-  Async:
-    :git: https://github.com/duemunk/Async.git
+  Realm:
+    :branch: swift-2.0
+    :git: https://github.com/realm/realm-cocoa.git
+  RealmSwift:
+    :branch: swift-2.0
+    :git: https://github.com/realm/realm-cocoa.git
 
 CHECKOUT OPTIONS:
-  Async:
-    :commit: 9e64046b767fe11010891f5b7fe2aed613a6ee55
-    :git: https://github.com/duemunk/Async.git
+  Realm:
+    :commit: e4397aa856088322c41b9b1c6c76fc30f1938c55
+    :git: https://github.com/realm/realm-cocoa.git
+  RealmSwift:
+    :commit: e4397aa856088322c41b9b1c6c76fc30f1938c55
+    :git: https://github.com/realm/realm-cocoa.git
 
 SPEC CHECKSUMS:
-  Alamofire: e4ab637e3195b645c814b87a652373439e59f2a4
-  Async: edb15b1e34181d7c9873ce6b5d6eabc1c99e638b
-  Box: a92e8aa4c099e6bc0733829665caf9e668ef53b8
-  Cartography: 774e5cc446f5a6bca5d4345c5aa6af9a1fe74dc6
-  Google-Mobile-Ads-SDK: dce4c2728daa0bcbd88b6e3dc111b718a07b1eb6
-  GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
-  Kingfisher: 22fa7d41c83b214c19fbb82a77a9db52300b3719
-  OMGHTTPURLRQ: c4268dea4295b585d711055dbcd87bfa82badd5f
-  PromiseKit: 9c92257e39abf4b634533d44268592dfc6e4b5c2
-  R.swift: 4c7af5fcc88e31dd862bdc92173aa59db1d77222
-  Realm: bbb171b96728ea136ed5cd354dca2a3d6529923c
-  RealmSwift: 35eeb642bf0b43dedfe363451ba3288d0e72ebb9
-  Result: b44f6bc8762bbffaf2c5df58f2c7d12c3496ced8
-  SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
-  XCGLogger: a1d7b20405e369aa5c139221569cd080494b2469
+  R.swift: e814826404c4ea84bd5224a661d16771453e8b64
+  Realm: 1c28007bd496af94dba8c76d50719164e706a521
+  RealmSwift: 9864524dd99c2cb7b4643c29513ef8447fe63724
+  XCGLogger: 5802533aff8bafc8b3b9776ab8972576f31d0a4e
 
 COCOAPODS: 0.38.2

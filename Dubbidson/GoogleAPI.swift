@@ -9,7 +9,6 @@
 import Foundation
 
 import Alamofire
-import Box
 import PromiseKit
 import Result
 import XCGLogger
@@ -33,7 +32,7 @@ class GoogleAPI {
         }
     }
 
-    func suggestions(#keyword: String, handler: (Result<[String], NSError>) -> ()) {
+    func suggestions(keyword keyword: String, handler: (ATResult<[String], NSError>.t) -> ()) {
         let URL = "http://suggestqueries.google.com/complete/search"
         let parameters = [
             "ds": "yt",
@@ -46,40 +45,33 @@ class GoogleAPI {
             "oe": "utf_8",
         ]
         let request = Alamofire.request(.GET, URL, parameters: parameters)
-        //debugPrintln(request)
-        request.responseJSON { (_, _, object, error) in
-            if let error = error {
-                self.logger.error(error.localizedDescription)
-                handler(.Failure(Box(error)))
+        request.responseJSON { (_, _, result) in
+            guard let JSON = result.value as? NSArray else {
+                handler(.Failure(NSError.errorWithAppError(.JSONParseFailed)))
                 return
             }
-            if let JSON = object as? NSArray {
-                var suggestions = [String]()
-                if let keywords = JSON[1] as? NSArray {
-                    for keyword in keywords {
-                        if let keyword = keyword as? NSArray {
-                            if let suggestion = keyword[0] as? String {
-                                suggestions.append(suggestion)
-                            }
+            var suggestions = [String]()
+            if let keywords = JSON[1] as? NSArray {
+                for keyword in keywords {
+                    if let keyword = keyword as? NSArray {
+                        if let suggestion = keyword[0] as? String {
+                            suggestions.append(suggestion)
                         }
                     }
                 }
-                handler(.Success(Box(suggestions)))
-            } else {
-                self.logger.error("")
-                handler(.Failure(Box(Error.unknown())))
             }
+            handler(.Success(suggestions))
         }
     }
 
-    func suggestions(#keyword: String) -> Promise<[String]> {
+    func suggestions(keyword keyword: String) -> Promise<[String]> {
         return Promise { fulfill, reject in
             suggestions(keyword: keyword) { (result) in
                 switch result {
-                case .Success(let box):
-                    fulfill(box.value)
-                case .Failure(let box):
-                    reject(box.value)
+                case .Success(let value):
+                    fulfill(value)
+                case .Failure(let error):
+                    reject(error)
                 }
 
             }
@@ -90,7 +82,7 @@ class GoogleAPI {
 
 extension GoogleAPI {
 
-    class func suggestions(#keyword: String, handler: (Result<[String], NSError>) -> ()) {
+    class func suggestions(keyword keyword: String, handler: (ATResult<[String], NSError>.t) -> ()) {
         GoogleAPI.sharedInstance.suggestions(keyword: keyword, handler: handler)
     }
 

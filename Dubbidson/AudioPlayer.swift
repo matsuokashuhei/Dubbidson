@@ -10,7 +10,6 @@ import Foundation
 import AVFoundation
 
 import Alamofire
-import Box
 import Result
 import XCGLogger
 
@@ -29,14 +28,14 @@ class AudioPlayer: NSObject {
     //let logger = XCGLogger.defaultInstance()
     let logger: XCGLogger = {
         let logger = XCGLogger.defaultInstance()
-        logger.setup(logLevel: .Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
+        logger.setup(.Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
         return logger
     }()
 
     var player: AVPlayer! {
         didSet {
-            player.addObserver(self, forKeyPath: "status", options: .Initial | .New, context: &KVOContext)
-            player.addObserver(self, forKeyPath: "rate", options: .Initial | .New, context: &KVOContext)
+            player.addObserver(self, forKeyPath: "status", options: [.Initial, .New], context: &KVOContext)
+            player.addObserver(self, forKeyPath: "rate", options: [.Initial, .New], context: &KVOContext)
         }
     }
 
@@ -55,7 +54,7 @@ class AudioPlayer: NSObject {
                 }
             }
             for keyPath in keyPaths {
-                item.addObserver(self, forKeyPath: keyPath, options: .Initial | .New, context: &KVOContext)
+                item.addObserver(self, forKeyPath: keyPath, options: [.Initial, .New], context: &KVOContext)
             }
         }
     }
@@ -115,7 +114,7 @@ class AudioPlayer: NSObject {
     }
 
     func play() {
-        if let item = player.currentItem {
+        if let _ = player.currentItem {
             player.play()
         }
     }
@@ -163,7 +162,7 @@ class AudioPlayer: NSObject {
 // MARK: - KVO
 extension AudioPlayer {
 
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if context != &KVOContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
             return
@@ -207,12 +206,14 @@ extension AudioPlayer {
             }
             if keyPath == "duration" {
                 // TODO: 使っていないので消す。
+                /*
                 let duration: CMTime
                 if let value = change[NSKeyValueChangeNewKey] as? NSValue {
                     duration = value.CMTimeValue
                 } else {
                     duration = kCMTimeZero
                 }
+                */
             }
         }
     }

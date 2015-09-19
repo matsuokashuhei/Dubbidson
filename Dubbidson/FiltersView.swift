@@ -32,7 +32,7 @@ class FilterSelectionView: UIView {
             case .Normal:
                 setFilter(filter)
             case .Blend:
-                if let blendImage = self.blendImage {
+                if let _ = self.blendImage {
                     setFilter(filter)
                 }
             case .Custom:

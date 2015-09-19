@@ -62,7 +62,9 @@ class VideosViewController: UIViewController {
 
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        if let toolBar = tableView.tableFooterView as? UIToolbar {
+        guard let toolBar = tableView.tableFooterView as? UIToolbar else {
+            return
+        }
         tableView.setEditing(editing, animated: animated)
         if editing {
             let cancel = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelEditing")
@@ -74,7 +76,6 @@ class VideosViewController: UIViewController {
             let edit = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "startEditing")
             toolBar.setItems([space, edit], animated: true)
         }
-        }
         edited = false
     }
 
@@ -83,7 +84,7 @@ class VideosViewController: UIViewController {
     }
 
     func endEditing() {
-        if let indexPaths = tableView.indexPathsForSelectedRows() as? [NSIndexPath] {
+        if let indexPaths = tableView.indexPathsForSelectedRows {
             let videos = indexPaths.map { (indexPath) -> Video in
                 return self.videos[indexPath.row]
             }

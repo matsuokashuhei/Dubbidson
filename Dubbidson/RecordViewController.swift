@@ -10,7 +10,6 @@ import AVKit
 import UIKit
 
 import Async
-import Box
 import GPUImage
 import PromiseKit
 import RealmSwift
@@ -201,8 +200,8 @@ extension RecordViewController: SongsViewControllerDelegate {
         }.finally {
             self.songView.downloadIndicator.stopAnimating()
             self.songView.downloadIndicator.hidden = true
-        }.catch { error in
-            Notificator.sharedInstance.showError(error)
+//        }.catch { error in
+//            Notificator.sharedInstance.showError(error)
         }
     }
 
@@ -212,7 +211,7 @@ extension RecordViewController: SongsViewControllerDelegate {
         }
     }
 
-    func prepareToRecord(#audioURL: NSURL) {
+    func prepareToRecord(audioURL audioURL: NSURL) {
         logger.debug("audioURL: \(audioURL)")
         recordButton.enabled = true
         audioPlayer.delegate = self
@@ -273,23 +272,37 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
     func movieRecordingCompleted() {
         logger.verbose("")
         let song = songView.song
-        if let recordingURL = writer.assetWriter.outputURL {
-            if let audioURL = song.downloadFileURL {
+        guard let audioURL = song.downloadFileURL else {
+            let error = NSError.errorWithAppError(.OptionalValueIsNone)
+            logger.error(error.description)
+            Notificator.sharedInstance.showError(error)
+            return
+        }
+        let recordingURL = writer.assetWriter.outputURL
                 Notificator.sharedInstance.showLoading()
                 let currentTime = audioPlayer.item.currentTime()
                 VideoComposer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL, duration: currentTime).then { (videoURL) in
-                    let id = videoURL.lastPathComponent!.stringByDeletingPathExtension
+                    let id = (videoURL.lastPathComponent! as NSString).stringByDeletingPathExtension
+
                     return self.generateThumbnail(videoURL).then { (image) in
                         return Promise<String> { (fulfill, reject) in
                             let thumbnailURL = FileIO.sharedInstance.fileURL(.Documents, filename: "\(id).png")!
                             FileIO.sharedInstance.save(image, fileURL: thumbnailURL)
-                            if UIImagePNGRepresentation(image).writeToFile(thumbnailURL.path!, atomically: true) {
+                            if let image = UIImagePNGRepresentation(image) {
+                                image.writeToFile(thumbnailURL.path!, atomically: true)
                                 fulfill(id)
                             } else {
-                                let error = Error.unknown()
-                                self.logger.error(error.localizedDescription)
+                                let error = NSError.errorWithAppError(.UIImagePNGRepresentationIsFailed)
+                                self.logger.error(error.description)
                                 reject(error)
                             }
+//                            if UIImagePNGRepresentation(image).writeToFile(thumbnailURL.path!, atomically: true) {
+//                                fulfill(id)
+//                            } else {
+//                                let error = Error.unknown()
+//                                self.logger.error(error.localizedDescription)
+//                                reject(error)
+//                            }
                         }
                         /*
                         let thumbnailURL = FileIO.sharedInstance.fileURL(.Documents, filename: "\(id).png")!
@@ -305,20 +318,10 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
                     self.durationLabel.text = "30 sec"
                     FileIO.sharedInstance.delete(recordingURL)
                     Notificator.sharedInstance.dismissLoading()
-                }.catch { error in
+                }.catch_ { error in
                     self.logger.error("error: \(error.localizedDescription)")
                     Notificator.sharedInstance.showError(error)
                 }
-            } else {
-                let error = Error.unknown()
-                self.logger.error(error.localizedDescription)
-                Notificator.sharedInstance.showError(error)
-            }
-        } else {
-            let error = Error.unknown()
-            self.logger.error(error.localizedDescription)
-            Notificator.sharedInstance.showError(error)
-        }
     }
 
     func movieRecordingFailedWithError(error: NSError!) {
@@ -328,31 +331,13 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
 
     private func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
         return Promise { (fulfill, reject) in
-            if let asset = AVAsset.assetWithURL(videoURL) as? AVAsset {
-                let generator = AVAssetImageGenerator(asset: asset)
-                generator.appliesPreferredTrackTransform = true
-                //let time = CMTimeMake(1, 30)
-                var error: NSError?
-                if let image = generator.copyCGImageAtTime(asset.duration, actualTime: nil, error: &error) {
-                    if let thumbnail = UIImage(CGImage: image) {
-                        fulfill(thumbnail)
-                    } else {
-                        let error = Error.unknown()
-                        self.logger.error(error.localizedDescription)
-                        reject(error)
-                    }
-                } else {
-                    if let error = error {
-                        self.logger.error(error.localizedDescription)
-                        reject(error)
-                    } else {
-                        let error = Error.unknown()
-                        self.logger.error(error.localizedDescription)
-                        reject(error)
-                    }
-                }
-            } else {
-                let error = Error.unknown()
+            let asset = AVAsset(URL: videoURL)
+            let generator = AVAssetImageGenerator(asset: asset)
+            generator.appliesPreferredTrackTransform = true
+            do {
+                let image = try generator.copyCGImageAtTime(asset.duration, actualTime: nil)
+                fulfill(UIImage(CGImage: image))
+            } catch let error as NSError {
                 self.logger.error(error.localizedDescription)
                 reject(error)
             }

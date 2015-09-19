@@ -10,7 +10,6 @@ import AVFoundation
 import UIKit
 import MediaPlayer
 
-import Cartography
 import XCGLogger
 
 class VideoViewController: UIViewController {
@@ -21,7 +20,7 @@ class VideoViewController: UIViewController {
         didSet {
             slider.addTarget(self, action: "beginSeeking:", forControlEvents: .TouchDown)
             slider.addTarget(self, action: "seekPositionChanged:", forControlEvents: .ValueChanged)
-            slider.addTarget(self, action: "endSeeking:", forControlEvents: .TouchUpInside | .TouchUpOutside | .TouchCancel)
+            slider.addTarget(self, action: "endSeeking:", forControlEvents: [.TouchUpInside, .TouchUpOutside, .TouchCancel])
         }
     }
 
@@ -46,7 +45,7 @@ class VideoViewController: UIViewController {
 
     let logger: XCGLogger = {
         let logger = XCGLogger.defaultInstance()
-        logger.setup(logLevel: .Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
+        logger.setup(.Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
         return logger
     }()
 
@@ -94,14 +93,17 @@ extension VideoViewController {
 
     func actionButtonTapped() {
         let message = "\(video.name) - \(video.artist)"
-        if let fileURL = video.fileURL {
-            let controller = UIActivityViewController(activityItems: [message, fileURL], applicationActivities: nil)
-            controller.completionWithItemsHandler = { (activityType, completed, info, error) in
-                if let error = error {
-                    self.logger.error(error.localizedDescription)
-                    return
-                }
-                if completed {
+        guard let fileURL = video.fileURL else {
+            return
+        }
+        let controller = UIActivityViewController(activityItems: [message, fileURL], applicationActivities: nil)
+        controller.completionWithItemsHandler = { (activityType, completed, info, error) in
+            if let error = error {
+                self.logger.error(error.localizedDescription)
+                return
+            }
+            if completed {
+                if let activityType = activityType {
                     switch activityType {
                     case UIActivityTypePostToFacebook:
                         self.logger.verbose("Post to Facebook")
@@ -121,12 +123,12 @@ extension VideoViewController {
                         self.logger.verbose("Others")
                     }
                 }
-                if let info = info {
-                    self.logger.verbose("info: \(info)")
-                }
             }
-            presentViewController(controller, animated: true, completion: nil)
+            if let info = info {
+                self.logger.verbose("info: \(info)")
+            }
         }
+        presentViewController(controller, animated: true, completion: nil)
     }
 
     func closeButtonTapped() {

@@ -30,40 +30,45 @@ class AudioFile: Object {
 extension AudioFile {
 
     class func all() -> [AudioFile] {
-        let results = Realm().objects(AudioFile).sorted("createdAt")
+        let results = try! Realm().objects(AudioFile).sorted("createdAt")
+        return results.map { (audioFile) -> AudioFile in
+            return audioFile
+        }
+        /*
         var files = [AudioFile]()
         for file in results {
             files.append(file)
         }
         return files
+        */
     }
 
     class func exists(fileURL: NSURL) -> Bool {
-        if let fileName = fileURL.lastPathComponent {
-            if let result = Realm().objectForPrimaryKey(AudioFile.self, key: fileName) {
-                return true
-            } else {
-                return false
-            }
+        guard let fileName = fileURL.lastPathComponent else {
+            return false
+        }
+        if let _ = try! Realm().objectForPrimaryKey(AudioFile.self, key: fileName) {
+            return true
         } else {
             return false
         }
     }
 
     class func create(fileURL: NSURL) {
-        if let fileName = fileURL.lastPathComponent {
-            let file = AudioFile()
-            file.name = fileName
-            let realm = Realm()
-            realm.write {
-                realm.add(file)
-                let files = self.all()
-                XCGLogger.defaultInstance().verbose("files.count: \(files.count)")
-                if files.count > 5 {
-                    if let file = files.first {
-                        XCGLogger.defaultInstance().verbose("realm.delete(file)")
-                        realm.delete(file)
-                    }
+        guard let fileName = fileURL.lastPathComponent else {
+            return
+        }
+        let file = AudioFile()
+        file.name = fileName
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(file)
+            let files = self.all()
+            XCGLogger.defaultInstance().verbose("files.count: \(files.count)")
+            if files.count > 5 {
+                if let file = files.first {
+                    XCGLogger.defaultInstance().verbose("realm.delete(file)")
+                    realm.delete(file)
                 }
             }
         }

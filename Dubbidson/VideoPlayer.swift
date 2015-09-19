@@ -26,7 +26,7 @@ class VideoPlayer: NSObject {
     //let logger = XCGLogger.defaultInstance()
     let logger: XCGLogger = {
         let logger = XCGLogger.defaultInstance()
-        logger.setup(logLevel: .Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
+        logger.setup(.Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
         return logger
     }()
 
@@ -151,7 +151,7 @@ extension VideoPlayer {
 
 class Timer {
 
-    class func start(#target: AnyObject, selector: Selector) {
+    class func start(target target: AnyObject, selector: Selector) {
         sharedInstance.start(target: target, selector: selector)
     }
 
@@ -167,7 +167,7 @@ class Timer {
 
     static var sharedInstance = Timer()
 
-    func start(#target: AnyObject, selector: Selector) {
+    func start(target target: AnyObject, selector: Selector) {
         timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: target, selector: selector, userInfo: nil, repeats: true)
     }
 

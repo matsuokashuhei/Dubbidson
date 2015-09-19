@@ -10,7 +10,6 @@ import AVFoundation
 import Foundation
 
 import Result
-import Box
 import PromiseKit
 import XCGLogger
 
@@ -20,22 +19,17 @@ class VideoComposer: NSObject {
 
     static let sharedInstance = VideoComposer()
 
-    func mixdown(#videoURL: NSURL, audioURL: NSURL, duration: CMTime, handler: (Result<NSURL, NSError>) ->()) {
+    func mixdown(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime, handler: (Result<NSURL, NSError>) ->()) {
         logger.verbose("videoURL: \(videoURL.path!), audioURL: \(audioURL.path!)")
-        var error: NSError?
 
         let composition = AVMutableComposition()
 
         let videoAsset = AVURLAsset(URL: videoURL, options: nil)
         let videoRange = CMTimeRangeMake(kCMTimeZero, videoAsset.duration)
-        let videoTrack = videoAsset.tracksWithMediaType(AVMediaTypeVideo).first as! AVAssetTrack
+        let videoTrack = videoAsset.tracksWithMediaType(AVMediaTypeVideo).first!
         let compositionVideoTrack = composition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: CMPersistentTrackID())
-        compositionVideoTrack.insertTimeRange(videoRange, ofTrack: videoTrack, atTime: kCMTimeZero, error: &error)
-        if let error = error {
-            self.logger.error(error.localizedDescription)
-            handler(.Failure(Box(error)))
-            return
-        }
+        //compositionVideoTrack.insertTimeRange(videoRange, ofTrack: videoTrack, atTime: kCMTimeZero, error: &error)
+        try! compositionVideoTrack.insertTimeRange(videoRange, ofTrack: videoTrack, atTime: kCMTimeZero)
 
         let soundAsset = AVURLAsset(URL: audioURL, options: nil)
         //let soundRange = CMTimeRangeMake(kCMTimeZero, soundAsset.duration)
@@ -47,14 +41,9 @@ class VideoComposer: NSObject {
         let float3 = float1 - float2
         logger.debug("float1: \(float1), float2: \(float2), float3: \(float3)")
         let atTime = CMTimeMakeWithSeconds(float3, 30)
-        let soundTrack = soundAsset.tracksWithMediaType(AVMediaTypeAudio).first as! AVAssetTrack
+        let soundTrack = soundAsset.tracksWithMediaType(AVMediaTypeAudio).first!
         let compositionSoundTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
-        compositionSoundTrack.insertTimeRange(soundRange, ofTrack: soundTrack, atTime: atTime, error: &error)
-        if let error = error {
-            self.logger.error(error.localizedDescription)
-            handler(.Failure(Box(error)))
-            return
-        }
+        try! compositionSoundTrack.insertTimeRange(soundRange, ofTrack: soundTrack, atTime: atTime)
 
         var videoSize = videoTrack.naturalSize
         let transform = videoTrack.preferredTransform
@@ -73,32 +62,41 @@ class VideoComposer: NSObject {
         videoComposition.frameDuration = CMTimeMake(1, 30)
 
         let URL = FileIO.sharedInstance.createVideoFile()
-        let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)
+        let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)!
         session.outputURL = URL
         session.outputFileType = AVFileTypeQuickTimeMovie
         session.videoComposition = videoComposition
         session.exportAsynchronouslyWithCompletionHandler { () -> Void in
+            switch session.status {
+            case .Completed:
+                handler(.Success(session.outputURL!))
+            default:
+                // TODO: エラー処理
+                handler(.Failure(NSError(domain: "", code: 999, userInfo: nil)))
+            }
+            /*
             if session.status == AVAssetExportSessionStatus.Completed {
-                handler(.Success(Box(session.outputURL)))
+                handler(.Success(session.outputURL))
             } else {
                 if let error = session.error {
                     self.logger.error(error.localizedDescription)
-                    handler(.Failure(Box(error)))
+                    handler(.Failure(error))
                 } else {
-                    handler(.Failure(Box(NSError())))
+                    handler(.Failure(NSError()))
                 }
             }
+            */
         }
     }
 
-    func mixdown(#videoURL: NSURL, audioURL: NSURL, duration: CMTime) -> Promise<NSURL> {
+    func mixdown(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime) -> Promise<NSURL> {
         return Promise { fulfill, reject in
             self.mixdown(videoURL: videoURL, audioURL: audioURL, duration: duration) { (result) in
                 switch result {
-                case .Success(let box):
-                    fulfill(box.value)
-                case .Failure(let box):
-                    reject(box.value)
+                case .Success(let URL):
+                    fulfill(URL)
+                case .Failure(let error):
+                    reject(error)
                 }
             }
         }

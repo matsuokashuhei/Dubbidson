@@ -9,7 +9,6 @@
 import Foundation
 
 import Alamofire
-import Box
 import PromiseKit
 import Result
 import XCGLogger
@@ -20,29 +19,29 @@ class Downloader: NSObject {
 
     static let sharedInstance = Downloader()
 
-    func download(song: Song, handler: (Result<NSURL, NSError>) ->()) {
+    func download(song: Song, handler: (ATResult<NSURL, NSError>.t) ->()) {
         logger.debug("song: name: \(song.name), title: \(song.artist) をダウンロードします。")
-        if let destinationURL = song.downloadFileURL {
-            switch FileIO.sharedInstance.delete(destinationURL) {
-            case .Success(let box):
-                NetworkIndicator.sharedInstance.show()
-                Alamofire.download(.GET, song.previewURL) { (_, _) -> NSURL in
-                    return destinationURL
-                }.response{ (_, _, _, error) -> () in
-                    NetworkIndicator.sharedInstance.dismiss()
-                    if let error = error {
-                        self.logger.error(error.localizedDescription)
-                        handler(.Failure(Box(error)))
-                    } else {
-                        self.logger.verbose("destinationURL: \(destinationURL)")
-                        handler(.Success(Box(destinationURL)))
-                    }
+        guard let destinationURL = song.downloadFileURL else {
+            handler(.Failure(NSError.errorWithAppError(.OptionalValueIsNone)))
+            return
+        }
+        switch FileIO.sharedInstance.delete(destinationURL) {
+        case .Success(_):
+            NetworkIndicator.sharedInstance.show()
+            Alamofire.download(.GET, song.previewURL) { (_, _) -> NSURL in
+                return destinationURL
+            }.response{ (_, _, _, error) -> () in
+                NetworkIndicator.sharedInstance.dismiss()
+                if let error = error as? NSError {
+                    self.logger.error(error.description)
+                    handler(.Failure(error))
+                } else {
+                    self.logger.verbose("destinationURL: \(destinationURL)")
+                    handler(.Success(destinationURL))
                 }
-            case .Failure(let box):
-                handler(.Failure(box))
             }
-        } else {
-            handler(.Failure(Box(Error.unknown())))
+        case .Failure(let error):
+            handler(.Failure(error))
         }
     }
 
@@ -50,10 +49,10 @@ class Downloader: NSObject {
         return Promise { (fulfill, reject) in
             download(song, handler: { (result) -> () in
                 switch result {
-                case .Success(let box):
-                    fulfill(box.value)
-                case .Failure(let box):
-                    reject(box.value)
+                case .Success(let donwloadURL):
+                    fulfill(donwloadURL)
+                case .Failure(let error):
+                    reject(error)
                 }
             })
         }

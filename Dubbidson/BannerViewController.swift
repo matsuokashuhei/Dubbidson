@@ -23,7 +23,7 @@ class BannerViewController: UIViewController {
         bannerView = BannerView(rootViewController: self)
         bannerView.delegate = self
         view.addSubview(bannerView)
-        contentController = childViewControllers.first! as! UIViewController
+        contentController = childViewControllers.first!
     }
 
     override func viewWillAppear(animated: Bool) {

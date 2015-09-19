@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-import Box
 import PromiseKit
 import Result
 
@@ -18,6 +17,9 @@ class FileIO {
     enum Extension: String {
         case Video = "mp4"
         case Image = "png"
+        func add(fileName: String) -> String {
+            return "\(fileName).\(self.rawValue)"
+        }
     }
 
     static let sharedInstance = FileIO()
@@ -37,44 +39,68 @@ class FileIO {
     }
 
     func videoFileURL(video: Video) -> NSURL? {
-        if let directory = Directory.Documents.URL, let destinationURL = NSURL(string: "\(video.id).\(Extension.Video.rawValue)", relativeToURL: directory) {
-            return destinationURL
-        } else {
+        guard let directory = Directory.Documents.URL else {
             return nil
         }
+        guard let destinationURL = NSURL(string: Extension.Video.add(video.id), relativeToURL: directory) else {
+            return nil
+        }
+        return destinationURL
     }
 
     func thumbnailURL(video: Video) -> NSURL? {
-        if let directory = Directory.Documents.URL, let destinationURL = NSURL(string: "\(video.id).\(Extension.Image.rawValue)", relativeToURL: directory) {
-            return destinationURL
-        } else {
+        guard let directory = Directory.Documents.URL else {
             return nil
         }
+        guard let destinationURL = NSURL(string: Extension.Image.add(video.id), relativeToURL: directory) else {
+            return nil
+        }
+        return destinationURL
     }
 
     func fileURL(directory: Directory, filename: String?) -> NSURL? {
-        if let directory = directory.URL, let filename = filename, let destinationURL = NSURL(string: filename, relativeToURL: directory) {
-            return destinationURL
-        } else {
+        guard let directory = directory.URL else {
             return nil
         }
+        guard let filename = filename else {
+            return nil
+        }
+        guard let destinationURL = NSURL(string: filename, relativeToURL: directory) else {
+            return nil
+        }
+        return destinationURL
     }
 
-    func delete(fileURL: NSURL) -> Result<Bool, NSError> {
-        if let path = fileURL.path {
-            if NSFileManager.defaultManager().fileExistsAtPath(path) {
-                var error: NSError?
-                let result = NSFileManager.defaultManager().removeItemAtPath(path, error: &error)
-                if let error = error {
-                    return .Failure(Box(error))
-                }
-                return .Success(Box(result))
-            } else {
-                return .Success(Box(false))
+    func delete(fileURL: NSURL) -> ATResult<Bool, NSError>.t {
+        guard let path = fileURL.path else {
+            return .Failure(NSError.errorWithAppError(.Unknown))
+        }
+        if NSFileManager.defaultManager().fileExistsAtPath(path) {
+            do {
+                try NSFileManager.defaultManager().removeItemAtPath(path)
+                return .Success(true)
+            } catch let error as NSError {
+                return .Failure(error)
             }
         } else {
-            return .Success(Box(false))
+            return .Success(false)
         }
+        /*
+        if let path = fileURL.path {
+            if NSFileManager.defaultManager().fileExistsAtPath(path) {
+                do {
+                    try NSFileManager.defaultManager().removeItemAtPath(path)
+                    return .Success(true)
+                } catch let error as NSError {
+                    return .Failure(error)
+                }
+            } else {
+                return .Success(false)
+            }
+        } else {
+            return .Success(false)
+        }
+        */
     }
 
     var formattedTimestamp: String {
@@ -85,11 +111,23 @@ class FileIO {
     
     func save(image: UIImage, fileURL: NSURL) -> Promise<Bool> {
         return Promise { (fulfill, reject) in
+            guard let image = UIImagePNGRepresentation(image) else {
+                reject(NSError.errorWithAppError(.UIImagePNGRepresentationIsFailed))
+                return
+            }
+            do {
+                try image.writeToFile(fileURL.path!, options: .AtomicWrite)
+                fulfill(true)
+            } catch let error as NSError {
+                reject(error)
+            }
+            /*
             if UIImagePNGRepresentation(image).writeToFile(fileURL.path!, atomically: true) {
                 fulfill(true)
             } else {
                 reject(Error.unknown())
             }
+            */
         }
     }
 
@@ -105,7 +143,7 @@ import Photos
 
 extension FileIO {
 
-    func fetchLastVideoFromPhotos(handler: (Result<AVAsset, NSError>) -> ()) {
+    func fetchLastVideoFromPhotos(handler: (ATResult<AVAsset, NSError>.t) -> ()) {
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         let videos = PHAsset.fetchAssetsWithMediaType(.Video, options: options)
@@ -114,9 +152,9 @@ extension FileIO {
             options.version = .Original
             PHImageManager.defaultManager().requestAVAssetForVideo(asset, options: options, resultHandler: { (asset, audioMix, info) -> Void in
                 if let asset = asset {
-                    handler(.Success(Box(asset)))
+                    handler(.Success(asset))
                 } else {
-                    handler(.Failure(Box(Error.unknown())))
+                    handler(.Failure(NSError.errorWithAppError(.Unknown)))
                 }
             })
         }
@@ -133,14 +171,16 @@ extension FileIO {
         }
     }
 
-    func saveVideoToPhotos(fileURL: NSURL, handler: (Result<NSURL, NSError>) -> Void) {
+    func saveVideoToPhotos(fileURL: NSURL, handler: (ATResult<NSURL, NSError>.t) -> Void) {
+        //PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(fileURL)
+        // TODO: iOS9から非推奨
         let library = ALAssetsLibrary()
         library.writeVideoAtPathToSavedPhotosAlbum(fileURL, completionBlock: { (assetURL, error) -> Void in
             if let error = error {
-                handler(.Failure(Box(error)))
+                handler(.Failure(error))
             }
             if let assetURL = assetURL {
-                handler(.Success(Box(assetURL)))
+                handler(.Success(assetURL))
             }
         })
     }
@@ -156,15 +196,11 @@ enum Directory {
     var URL: NSURL? {
         switch self {
         case .Documents:
-            return NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first as? NSURL
+            return NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
         case .Caches:
-            return NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first as? NSURL
+            return NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first
         case .Temporary:
-            if let path = NSTemporaryDirectory(), let URL = NSURL(fileURLWithPath: path) {
-                return URL
-            } else {
-                return nil
-            }
+            return NSURL(fileURLWithPath: NSTemporaryDirectory())
         }
     }
 

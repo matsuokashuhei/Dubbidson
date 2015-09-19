@@ -9,10 +9,27 @@ struct R {
     storyboard.main.validateViewControllers()
   }
   
+  struct font {
+    static func teXGyreAdventorBold(size size: CGFloat) -> UIFont? {
+      return UIFont(name: "TeXGyreAdventor-Bold", size: size)
+    }
+    
+    static func teXGyreAdventorBolditalic(size size: CGFloat) -> UIFont? {
+      return UIFont(name: "TeXGyreAdventor-BoldItalic", size: size)
+    }
+    
+    static func teXGyreAdventorItalic(size size: CGFloat) -> UIFont? {
+      return UIFont(name: "TeXGyreAdventor-Italic", size: size)
+    }
+    
+    static func teXGyreAdventorRegular(size size: CGFloat) -> UIFont? {
+      return UIFont(name: "TeXGyreAdventor-Regular", size: size)
+    }
+  }
+  
   struct image {
     static var action: UIImage? { return UIImage(named: "action") }
     static var album: UIImage? { return UIImage(named: "album") }
-    static var appIcon: UIImage? { return UIImage(named: "AppIcon") }
     static var bar: UIImage? { return UIImage(named: "bar") }
     static var check: UIImage? { return UIImage(named: "check") }
     static var chevron_left: UIImage? { return UIImage(named: "chevron_left") }
@@ -54,16 +71,16 @@ struct R {
       
       static func validateImages() {
         assert(UIImage(named: "action") != nil, "[R.swift] Image named 'action' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "album") != nil, "[R.swift] Image named 'album' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "check") != nil, "[R.swift] Image named 'check' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "chevron_left") != nil, "[R.swift] Image named 'chevron_left' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "close") != nil, "[R.swift] Image named 'close' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "filter") != nil, "[R.swift] Image named 'filter' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "lens-off") != nil, "[R.swift] Image named 'lens-off' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "play") != nil, "[R.swift] Image named 'play' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "settings") != nil, "[R.swift] Image named 'settings' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "tv") != nil, "[R.swift] Image named 'tv' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "videocam") != nil, "[R.swift] Image named 'videocam' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "close") != nil, "[R.swift] Image named 'close' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "filter") != nil, "[R.swift] Image named 'filter' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "play") != nil, "[R.swift] Image named 'play' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "album") != nil, "[R.swift] Image named 'album' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "check") != nil, "[R.swift] Image named 'check' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "settings") != nil, "[R.swift] Image named 'settings' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "lens-off") != nil, "[R.swift] Image named 'lens-off' is used in storyboard 'Main', but couldn't be loaded.")
       }
       
       static func validateViewControllers() {
@@ -77,6 +94,7 @@ struct _R {
   struct nib {
     struct _LaunchScreen: NibResource {
       var instance: UINib { return UINib.init(nibName: "LaunchScreen", bundle: nil) }
+      var name: String { return "LaunchScreen" }
       
       func firstView(ownerOrNil: AnyObject?, options optionsOrNil: [NSObject : AnyObject]?) -> UIView? {
         return instantiateWithOwner(ownerOrNil, options: optionsOrNil)[0] as? UIView
@@ -89,7 +107,7 @@ struct _R {
   }
 }
 
-struct ReuseIdentifier<T>: Printable {
+struct ReuseIdentifier<T>: CustomStringConvertible {
   let identifier: String
   
   var description: String { return identifier }
@@ -97,6 +115,7 @@ struct ReuseIdentifier<T>: Printable {
 
 protocol NibResource {
   var instance: UINib { get }
+  var name: String { get }
 }
 
 protocol Reusable {
@@ -130,7 +149,7 @@ extension UITableView {
   }
   
   func registerNibs<T: NibResource where T: Reusable, T.T: UITableViewCell>(nibResources: [T]) {
-    nibResources.map(registerNib)
+    nibResources.forEach(registerNib)
   }
 }
 
@@ -152,10 +171,16 @@ extension UICollectionView {
   }
   
   func registerNibs<T: NibResource where T: Reusable, T.T: UICollectionViewCell>(nibResources: [T]) {
-    nibResources.map(registerNib)
+    nibResources.forEach(registerNib)
   }
   
   func registerNibs<T: NibResource where T: Reusable, T.T: UICollectionReusableView>(nibResources: [T], forSupplementaryViewOfKind kind: String) {
-    nibResources.map { self.registerNib($0, forSupplementaryViewOfKind: kind) }
+    nibResources.forEach { self.registerNib($0, forSupplementaryViewOfKind: kind) }
+  }
+}
+
+extension UIViewController {
+  convenience init(nib: NibResource) {
+    self.init(nibName: nib.name, bundle: nil)
   }
 }

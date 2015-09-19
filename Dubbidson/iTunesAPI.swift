@@ -9,7 +9,6 @@
 import Foundation
 
 import Alamofire
-import Box
 import PromiseKit
 import Result
 
@@ -33,34 +32,45 @@ class iTunesAPI {
         */
     }
 
-    func configure(#limit: Int, country: String) {
+    func configure(limit limit: Int, country: String) {
         self.limit = limit
         self.country = country
     }
 
-    func topsongs(#handler: (Result<[Song], NSError>) -> ()) {
+    //typealias SongsResult = ATResult<[Song], NSError>.t
+    func topsongs(handler handler: (ATResult<[Song], NSError>.t) -> ()) {
         let URL = NSURL(string: "https://itunes.apple.com/\(country)/rss/topsongs/limit=\(limit)/explicit=true/json")!
         let request = Alamofire.request(.GET, URL, parameters: nil)
         NetworkIndicator.sharedInstance.show()
-        request.responseJSON() { (_, _, object, error) in
+        request.responseJSON() { (_, _, result) in
             NetworkIndicator.sharedInstance.dismiss()
-            if let error = error {
-                handler(.Failure(Box(error)))
+            guard let JSON = result.value as? NSDictionary else {
+                handler(.Failure(NSError.errorWithAppError(.JSONParseFailed)))
                 return
             }
-            if let json = object as? NSDictionary, let feed = json["feed"] as? NSDictionary, let entries = feed["entry"] as? [NSDictionary] {
-                let songs = entries.flatMap { (entry) -> [Song] in
-                    if let song = Song(entry: entry) {
-                        return [song]
-                    } else {
-                        return []
-                    }
-
-                }
-                handler(.Success(Box(songs)))
-            } else {
-                handler(.Failure(Box(NSError())))
+            guard let feed = JSON["feed"] as? NSDictionary else {
+                handler(.Success([]))
+                return
             }
+            guard let entries = feed["entry"] as? [NSDictionary] else {
+                handler(.Success([]))
+                return
+            }
+            let songs = entries.flatMap({ (entry) -> Song? in
+                return Song(entry: entry)
+            })
+            handler(.Success(songs))
+            /*
+            let songs = entries.flatMap { (entry) -> [Song] in
+                if let song = Song(entry: entry) {
+                    return [song]
+                } else {
+                    return []
+                }
+
+            }
+            handler(.Success(songs))
+            */
         }
     }
 
@@ -68,26 +78,21 @@ class iTunesAPI {
         return Promise { (fulfill, reject) in
             topsongs { (result) -> () in
                 switch result {
-                case .Success(let box):
-                    fulfill(box.value)
-                case .Failure(let box):
-                    reject(box.value)
+                case .Success(let songs):
+                    fulfill(songs)
+                case .Failure(let error):
+                    reject(error)
                 }
             }
         }
     }
 
-    func search(#keyword: String, handler: (Result<[Song], NSError>) -> ()) {
-        let URL = NSURL(string: "https://itunes.apple.com/search")!
+    func search(keyword keyword: String, handler: (ATResult<[Song], NSError>.t) -> ()) {
         let request = Alamofire.request(.GET, "https://itunes.apple.com/search", parameters: ["term": keyword, "entity": "song", "limit": "\(limit)", "country": country])
         NetworkIndicator.sharedInstance.show()
-        request.responseJSON { (_, _, object, error) in
+        request.responseJSON { _, _, result in
             NetworkIndicator.sharedInstance.dismiss()
-            if let error = error {
-                handler(.Failure(Box(error)))
-                return
-            }
-            if let json = object as? NSDictionary, let results = json["results"] as? [NSDictionary] {
+            if let json = result.value as? NSDictionary, let results = json["results"] as? [NSDictionary] {
                 let songs = results.flatMap { (result) -> [Song] in
                     if let id = result["trackId"] as? Int,
                        let artist = result["artistName"] as? String,
@@ -101,21 +106,21 @@ class iTunesAPI {
                         return []
                     }
                 }
-                handler(.Success(Box(songs)))
+                handler(.Success(songs))
             } else {
-                handler(.Success(Box([])))
+                handler(.Success([]))
             }
         }
     }
 
-    func search(#keyword: String) -> Promise<[Song]> {
+    func search(keyword keyword: String) -> Promise<[Song]> {
         return Promise { (fulfill, reject) in
             search(keyword: keyword) { (result) -> () in
                 switch result {
-                case .Success(let box):
-                    fulfill(box.value)
-                case .Failure(let box):
-                    reject(box.value)
+                case .Success(let songs):
+                    fulfill(songs)
+                case .Failure(let error):
+                    reject(error)
                 }
             }
         }

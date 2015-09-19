@@ -48,8 +48,8 @@ class SuggestionsViewController: UIViewController {
     func fetch(keyword: String) {
         GoogleAPI.sharedInstance.suggestions(keyword: keyword).then { (suggestions) in
             self.suggestions = suggestions
-        }.catch { (error) in
-            self.logger.error(error.localizedDescription)
+//        }.catch { (error) in
+//            self.logger.error(error.localizedDescription)
         }
     }
 }

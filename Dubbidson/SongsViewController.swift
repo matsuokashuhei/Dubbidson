@@ -12,7 +12,6 @@ import AVFoundation
 import UIKit
 
 import Async
-import Box
 import Kingfisher
 import Result
 import XCGLogger
@@ -98,7 +97,7 @@ extension SongsViewController {
             self?.songs = songs
         }.finally {
             Notificator.sharedInstance.dismissLoading()
-        }.catch { error in
+        }.catch_ { error in
             self.logger.error(error.localizedDescription)
             Notificator.sharedInstance.showError(error)
         }
@@ -110,7 +109,7 @@ extension SongsViewController {
             self?.songs = songs
         }.finally {
             Notificator.sharedInstance.dismissLoading()
-        }.catch { error in
+        }.catch_ { error in
             self.logger.error(error.localizedDescription)
             Notificator.sharedInstance.showError(error)
         }
@@ -122,7 +121,7 @@ extension SongsViewController {
 extension SongsViewController {
 
     func checkButtonTapped() {
-        if let indexPath = tableView.indexPathForSelectedRow() {
+        if let indexPath = tableView.indexPathForSelectedRow {
             delegate?.didSelectSong(songs[indexPath.row])
             dismissViewControllerAnimated(true, completion: nil)
         }
@@ -139,7 +138,7 @@ extension SongsViewController {
 extension SongsViewController: UITableViewDelegate {
 
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if let selectedRowAtIndexPath = tableView.indexPathForSelectedRow() {
+        if let selectedRowAtIndexPath = tableView.indexPathForSelectedRow {
             logger.verbose("selectedRowAtIndexPath: \(selectedRowAtIndexPath.row)")
             if selectedRowAtIndexPath == indexPath {
                 if player.isPlaying() {
@@ -191,31 +190,32 @@ extension SongsViewController: UIScrollViewDelegate {
 extension SongsViewController: UISearchBarDelegate {
 
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        let text = searchBar.text
-        if text.isEmpty {
+        guard let text = searchBar.text else {
             return
         }
         if let controller = childViewControllers.first as? SuggestionsViewController {
             showSuggestionView()
             controller.delegate = self
-            controller.keyword = searchBar.text
+            controller.keyword = text
         }
     }
 
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         hideSuggestionView()
         searchBar.resignFirstResponder()
-        search(searchBar.text)
+        if let text = searchBar.text {
+            search(text)
+        }
     }
 
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text.isEmpty {
+        guard let text = searchBar.text else {
             return
         }
         if let controller = childViewControllers.first as? SuggestionsViewController {
             showSuggestionView()
             controller.delegate = self
-            controller.keyword = searchBar.text
+            controller.keyword = text
         }
     }
 

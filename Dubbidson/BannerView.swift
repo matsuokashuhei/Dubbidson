@@ -9,7 +9,7 @@
 import iAd
 import UIKit
 
-import GoogleMobileAds
+//import GoogleMobileAds
 import XCGLogger
 
 protocol BannerViewDelegate {
@@ -22,7 +22,7 @@ class BannerView: UIView {
     let logger = XCGLogger.defaultInstance()
 
     var iAdView: ADBannerView!
-    var adMobView: GADBannerView!
+    //var adMobView: GADBannerView!
 
     var bannerLoaded = false
 
@@ -35,22 +35,22 @@ class BannerView: UIView {
         iAdView.delegate = self
         addSubview(iAdView)
         // AdMob
-        adMobView = GADBannerView(adSize: kGADAdSizeBanner)
-        adMobView.adUnitID = "ca-app-pub-5621609150019172/8896291645"
-        adMobView.rootViewController = rootViewController
-        //request.testDevices = @[ @"c9281a800055c835ded25fdd531b18a5"
-        adMobView.delegate = self
-        addSubview(adMobView)
-        let request = GADRequest()
-        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
-        adMobView.loadRequest(request)
+//        adMobView = GADBannerView(adSize: kGADAdSizeBanner)
+//        adMobView.adUnitID = "ca-app-pub-5621609150019172/8896291645"
+//        adMobView.rootViewController = rootViewController
+//        //request.testDevices = @[ @"c9281a800055c835ded25fdd531b18a5"
+//        adMobView.delegate = self
+//        addSubview(adMobView)
+//        let request = GADRequest()
+//        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
+//        adMobView.loadRequest(request)
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
@@ -82,7 +82,7 @@ class BannerView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         iAdView.frame = bounds
-        adMobView.frame = bounds
+//        adMobView.frame = bounds
     }
 
     override func sizeThatFits(size: CGSize) -> CGSize {
@@ -120,13 +120,14 @@ extension BannerView: ADBannerViewDelegate {
     func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
         logger.verbose("")
         hide(iAdView)
-        let request = GADRequest()
-        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
-        adMobView.loadRequest(request)
+//        let request = GADRequest()
+//        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
+//        adMobView.loadRequest(request)
     }
 
 }
 
+/*
 extension BannerView: GADBannerViewDelegate {
 
     func adViewDidReceiveAd(bannerView: GADBannerView!) {
@@ -146,3 +147,4 @@ extension BannerView: GADBannerViewDelegate {
     }
 
 }
+*/
