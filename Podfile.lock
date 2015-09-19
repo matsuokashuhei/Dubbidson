@@ -1,4 +1,5 @@
 PODS:
+  - Google-Mobile-Ads-SDK (7.4.1)
   - R.swift (0.9.0)
   - Realm (0.95.0):
     - Realm/Headers (= 0.95.0)
@@ -8,6 +9,7 @@ PODS:
   - XCGLogger (3.0)
 
 DEPENDENCIES:
+  - Google-Mobile-Ads-SDK (~> 7.0)
   - R.swift
   - Realm (from `https://github.com/realm/realm-cocoa.git`, branch `swift-2.0`)
   - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `swift-2.0`)
@@ -30,6 +32,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/realm/realm-cocoa.git
 
 SPEC CHECKSUMS:
+  Google-Mobile-Ads-SDK: dce4c2728daa0bcbd88b6e3dc111b718a07b1eb6
   R.swift: e814826404c4ea84bd5224a661d16771453e8b64
   Realm: 1c28007bd496af94dba8c76d50719164e706a521
   RealmSwift: 9864524dd99c2cb7b4643c29513ef8447fe63724

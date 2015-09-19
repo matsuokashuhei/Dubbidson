@@ -17,4 +17,4 @@ pod 'RealmSwift', :git => 'https://github.com/realm/realm-cocoa.git', :branch =>
 pod 'R.swift'
 #pod 'Cartography'
 #pod 'PromiseKit'
-#pod 'Google-Mobile-Ads-SDK', '~> 7.0'
+pod 'Google-Mobile-Ads-SDK', '~> 7.0'
