@@ -39,3 +39,4 @@ Carthage/Build
 # R.swift
 *.generate.swift
 
+.ruby-version
