@@ -23,18 +23,21 @@ protocol VideoPlayerDelegate {
 
 class VideoPlayer: NSObject {
 
-    //let logger = XCGLogger.defaultInstance()
     let logger: XCGLogger = {
         let logger = XCGLogger.defaultInstance()
         logger.setup(.Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
         return logger
     }()
 
+    var delegate: VideoPlayerDelegate?
+
     static let sharedInstance = VideoPlayer()
 
-    private let player: MPMoviePlayerController
+    private let controller: MPMoviePlayerViewController
 
-    var delegate: VideoPlayerDelegate?
+    var player: MPMoviePlayerController {
+        return controller.moviePlayer
+    }
 
     var view: UIView {
         return player.view
@@ -46,9 +49,10 @@ class VideoPlayer: NSObject {
 
     override init() {
         logger.verbose("")
-        player = MPMoviePlayerController()
-        player.controlStyle = .None
-        player.shouldAutoplay = false
+        controller = MPMoviePlayerViewController()
+        controller.moviePlayer.controlStyle = .None
+        controller.moviePlayer.shouldAutoplay = false
+        controller.view.translatesAutoresizingMaskIntoConstraints = true
         super.init()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "loadStateDidChange:", name: MPMoviePlayerLoadStateDidChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "playBackStateDidChange:", name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
