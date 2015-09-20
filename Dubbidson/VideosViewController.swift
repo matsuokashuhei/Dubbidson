@@ -30,6 +30,8 @@ class VideosViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "showBanner:", name: BannerViewShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hideBanner:", name: BannerViewHideNotification, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -99,6 +101,22 @@ class VideosViewController: UIViewController {
             fetch()
         }
         setEditing(false, animated: true)
+    }
+
+    func showBanner(notification: NSNotification) {
+        NSNotificationCenter.defaultCenter().removeObserver(notification)
+        tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+    }
+    
+    func hideBanner(notification: NSNotification) {
+        NSNotificationCenter.defaultCenter().removeObserver(notification)
+        tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 50.0, right: 0.0)
+        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 50.0, right: 0.0)
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
     }
 }
 

@@ -9,7 +9,7 @@
 import iAd
 import UIKit
 
-//import GoogleMobileAds
+import GoogleMobileAds
 import XCGLogger
 
 protocol BannerViewDelegate {
@@ -22,7 +22,7 @@ class BannerView: UIView {
     let logger = XCGLogger.defaultInstance()
 
     var iAdView: ADBannerView!
-    //var adMobView: GADBannerView!
+    var adMobView: GADBannerView!
 
     var bannerLoaded = false
 
@@ -35,15 +35,28 @@ class BannerView: UIView {
         iAdView.delegate = self
         addSubview(iAdView)
         // AdMob
-//        adMobView = GADBannerView(adSize: kGADAdSizeBanner)
-//        adMobView.adUnitID = "ca-app-pub-5621609150019172/8896291645"
-//        adMobView.rootViewController = rootViewController
-//        //request.testDevices = @[ @"c9281a800055c835ded25fdd531b18a5"
-//        adMobView.delegate = self
-//        addSubview(adMobView)
-//        let request = GADRequest()
-//        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
-//        adMobView.loadRequest(request)
+        /*
+        adMobView = GADBannerView(adSize: kGADAdSizeBanner)
+        adMobView.adUnitID = "ca-app-pub-5621609150019172/8896291645"
+        adMobView.rootViewController = rootViewController
+        //request.testDevices = @[ @"c9281a800055c835ded25fdd531b18a5"
+        adMobView.delegate = self
+        addSubview(adMobView)
+        let request = GADRequest()
+        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
+        adMobView.loadRequest(request)
+        */
+        adMobView = {
+            let view = GADBannerView(adSize: kGADAdSizeBanner)
+            view.adUnitID = "ca-app-pub-5621609150019172/8896291645"
+            view.rootViewController = rootViewController
+            view.delegate = self
+            return view
+        }()
+        addSubview(adMobView)
+        let request = GADRequest()
+        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
+        adMobView.loadRequest(request)
     }
 
     override init(frame: CGRect) {
@@ -54,35 +67,10 @@ class BannerView: UIView {
         super.init(coder: aDecoder)
     }
 
-    /*
-    func configure(rootViewController: UIViewController) {
-        // ビューの設定
-        backgroundColor = UIColor.clearColor()
-        userInteractionEnabled = false
-        // iAd の設定
-        iAdView = ADBannerView(adType: .Banner)
-        //iAdView.frame = CGRect(origin: CGPoint(x: 0, y: bounds.size.height), size: bounds.size)
-        iAdView.hidden = true
-        iAdView.delegate = self
-        addSubview(iAdView)
-        // AdMob の設定
-        //adMobView = GADBannerView(frame: CGRectZero)
-        //adMobView = GADBannerView(adSize: kGADAdSizeBanner, origin: CGPoint(x: 0, y: bounds.size.height))
-        adMobView = GADBannerView(adSize: kGADAdSizeBanner)
-        adMobView.rootViewController = rootViewController
-        adMobView.adUnitID = "ca-app-pub-5621609150019172/8896291645"
-        //adMobView.adSize = GADAdSizeFromCGSize(bounds.size)
-        adMobView.hidden = true
-        adMobView.delegate = self
-        addSubview(adMobView)
-        adMobView.loadRequest(GADRequest())
-    }
-    */
-
     override func layoutSubviews() {
         super.layoutSubviews()
         iAdView.frame = bounds
-//        adMobView.frame = bounds
+        adMobView.frame = bounds
     }
 
     override func sizeThatFits(size: CGSize) -> CGSize {
@@ -120,14 +108,13 @@ extension BannerView: ADBannerViewDelegate {
     func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
         logger.verbose("")
         hide(iAdView)
-//        let request = GADRequest()
-//        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
-//        adMobView.loadRequest(request)
+        let request = GADRequest()
+        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
+        adMobView.loadRequest(request)
     }
 
 }
 
-/*
 extension BannerView: GADBannerViewDelegate {
 
     func adViewDidReceiveAd(bannerView: GADBannerView!) {
@@ -147,4 +134,3 @@ extension BannerView: GADBannerViewDelegate {
     }
 
 }
-*/
