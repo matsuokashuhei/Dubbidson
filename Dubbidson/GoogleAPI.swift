@@ -33,7 +33,7 @@ class GoogleAPI {
     }
 
     func suggestions(keyword keyword: String, handler: (ATResult<[String], NSError>.t) -> ()) {
-        let URL = "http://suggestqueries.google.com/complete/search"
+        let URL = "https://suggestqueries.google.com/complete/search"
         let parameters = [
             "ds": "yt",
             "hjson": "t",
