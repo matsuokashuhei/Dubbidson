@@ -75,7 +75,6 @@ func groupFilters(filters: [GPUImageOutput]) -> GPUImageFilterGroup {
     }
     filterGroup.initialFilters = [filters.first!]
     filterGroup.terminalFilter = filters.last!
-//    for (index,filter) in enumerate(filters) {
     for (index,filter) in filters.enumerate() {
         if filter == filters.last! {
             continue

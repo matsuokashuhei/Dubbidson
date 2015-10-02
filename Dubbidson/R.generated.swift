@@ -9,6 +9,19 @@ struct R {
     storyboard.main.validateViewControllers()
   }
   
+  struct file {
+    static var cartfile: NSURL? { return NSBundle.mainBundle().URLForResource("Cartfile", withExtension: "") }
+    static var lookupPng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup", withExtension: "png") }
+    static var lookup_amatorkaPng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_amatorka", withExtension: "png") }
+    static var lookup_miss_etikatePng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_miss_etikate", withExtension: "png") }
+    static var lookup_soft_elegance_1Png: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_soft_elegance_1", withExtension: "png") }
+    static var lookup_soft_elegance_2Png: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_soft_elegance_2", withExtension: "png") }
+    static var texgyreadventorBoldOtf: NSURL? { return NSBundle.mainBundle().URLForResource("texgyreadventor-bold", withExtension: "otf") }
+    static var texgyreadventorBolditalicOtf: NSURL? { return NSBundle.mainBundle().URLForResource("texgyreadventor-bolditalic", withExtension: "otf") }
+    static var texgyreadventorItalicOtf: NSURL? { return NSBundle.mainBundle().URLForResource("texgyreadventor-italic", withExtension: "otf") }
+    static var texgyreadventorRegularOtf: NSURL? { return NSBundle.mainBundle().URLForResource("texgyreadventor-regular", withExtension: "otf") }
+  }
+  
   struct font {
     static func teXGyreAdventorBold(size size: CGFloat) -> UIFont? {
       return UIFont(name: "TeXGyreAdventor-Bold", size: size)
@@ -37,6 +50,11 @@ struct R {
     static var filter: UIImage? { return UIImage(named: "filter") }
     static var lensOff: UIImage? { return UIImage(named: "lens-off") }
     static var lensOn: UIImage? { return UIImage(named: "lens-on") }
+    static var lookup: UIImage? { return UIImage(named: "lookup") }
+    static var lookup_amatorka: UIImage? { return UIImage(named: "lookup_amatorka") }
+    static var lookup_miss_etikate: UIImage? { return UIImage(named: "lookup_miss_etikate") }
+    static var lookup_soft_elegance_1: UIImage? { return UIImage(named: "lookup_soft_elegance_1") }
+    static var lookup_soft_elegance_2: UIImage? { return UIImage(named: "lookup_soft_elegance_2") }
     static var maximum_track: UIImage? { return UIImage(named: "maximum_track") }
     static var minimum_track: UIImage? { return UIImage(named: "minimum_track") }
     static var pause: UIImage? { return UIImage(named: "pause") }
