@@ -29,6 +29,12 @@ class RecordViewController: UIViewController {
         }
     }
 
+    @IBOutlet weak var countdownView: CountdownView! {
+        didSet {
+            countdownView.hidden = true
+        }
+    }
+
     @IBOutlet weak var captureView: GPUImageView!
 
     @IBOutlet weak var songView: SongView! {
@@ -91,44 +97,23 @@ extension RecordViewController {
 
 }
 
-// MARK: - ビデオの保存
-extension RecordViewController {
-
-    func startRecording() {
-        // Writerのの作成
-        let fileURL = FileIO.sharedInstance.createRecordingFile()
-        writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
-        writer.delegate = self
-        filter.addTarget(writer)
-        // ボタンの画像の変更
-        recordButton.setImage(R.image.lensOn, forState: .Normal)
-        // ビデオの書き込みと音楽の再生と開始
-        writer.startRecording()
-        audioPlayer.startToPlay()
-    }
-
-    func finishRecording() {
-        // Writeの終了
-        writer.finishRecording()
-        filter.removeTarget(writer)
-        // ボタンの画像の変更
-        recordButton.setImage(R.image.lensOff, forState: .Normal)
-    }
-
-    func stopRecording() {
-        audioPlayer.pause()
-        finishRecording()
-    }
-
-}
-
 // MARK: - Actions
 extension RecordViewController {
 
     func recordButtonTapped() {
         //if recordButton.imageView?.image == R.image.lensOff {
         if isRecording == false {
-            startRecording()
+            //CountdownTimer.sharedInstance.delegate = self
+            //CountdownTimer.sharedInstance.showWithSeconds(4.0, view: self.view)
+//            CountdownTimer.sharedInstance.showWithSeconds(4.0, view: view) { [weak self] () -> () in
+//                Async.main {
+//                    self?.startRecording()
+//                }
+//            }
+            countdownView.delegate = self
+            countdownView.hidden = false
+            countdownView.startWithSeconds(4.0)
+            //startRecording()
         } else {
             stopRecording()
         }
@@ -140,6 +125,17 @@ extension RecordViewController {
             return
         }
         performSegueWithIdentifier(R.segue.selectFilter, sender: nil)
+    }
+
+}
+
+extension RecordViewController: CountdownViewDelegate {
+
+    func countdownDidFinish(countdownView: CountdownView) {
+        logger.verbose("")
+        countdownView.hidden = true
+        countdownView.delegate = nil
+        self.startRecording()
     }
 
 }
@@ -166,6 +162,38 @@ extension RecordViewController {
                 super.prepareForSegue(segue, sender: sender)
             }
         }
+    }
+
+}
+
+// MARK: - ビデオの保存
+extension RecordViewController {
+
+    func startRecording() {
+        logger.verbose("")
+        // Writerのの作成
+        let fileURL = FileIO.sharedInstance.createRecordingFile()
+        writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
+        writer.delegate = self
+        filter.addTarget(writer)
+        // ボタンの画像の変更
+        recordButton.setImage(R.image.lensOn, forState: .Normal)
+        // ビデオの書き込みと音楽の再生と開始
+        writer.startRecording()
+        audioPlayer.startToPlay()
+    }
+
+    func finishRecording() {
+        // Writeの終了
+        writer.finishRecording()
+        filter.removeTarget(writer)
+        // ボタンの画像の変更
+        recordButton.setImage(R.image.lensOff, forState: .Normal)
+    }
+
+    func stopRecording() {
+        audioPlayer.pause()
+        finishRecording()
     }
 
 }
@@ -200,8 +228,8 @@ extension RecordViewController: SongsViewControllerDelegate {
         }.finally {
             self.songView.downloadIndicator.stopAnimating()
             self.songView.downloadIndicator.hidden = true
-//        }.catch { error in
-//            Notificator.sharedInstance.showError(error)
+        }.catch_ { error in
+            Notificator.sharedInstance.showError(error)
         }
     }
 
