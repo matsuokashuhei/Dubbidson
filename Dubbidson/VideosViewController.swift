@@ -168,7 +168,7 @@ class VideoTableViewCell: UITableViewCell {
 
     func configure(video: Video) {
         if let thumbnailURL = video.thumbnailURL {
-            thumbnailImageView.kf_setImageWithURL(thumbnailURL)
+            thumbnailImageView.af_setImageWithURL(thumbnailURL)
         }
         nameLabel.text = video.name
         artistLabel.text = video.artist

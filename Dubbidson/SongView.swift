@@ -8,7 +8,8 @@
 
 import UIKit
 
-import Kingfisher
+import Alamofire
+import AlamofireImage
 
 protocol SongViewDelegate {
     func songViewTapped()
@@ -36,19 +37,40 @@ class SongView: UIView {
 
     var song: Song! {
         didSet {
-            artworkImageView.kf_setImageWithURL(song.imageURL)
-            artworkImageView.layer.cornerRadius = artworkImageView.frame.size.width / 2
-            artworkImageView.clipsToBounds = true
-            if artworkImageView.hidden {
-                button.hidden = true
-                artworkImageView.hidden = false
-            }
-            let downloader = KingfisherManager.sharedManager.downloader
-            downloader.downloadImageWithURL(song.imageURL, progressBlock: nil) { (image, error, imageURL) -> () in
-                if let image = image {
-                    self.artworkImage = image
+            Alamofire.request(.GET, song.imageURL).responseImage { [weak self] response in
+                switch response.result {
+                case .Success(let value):
+                    if let _self = self {
+                        _self.artworkImage = value
+                        _self.artworkImageView.image = value
+                        _self.artworkImageView.layer.cornerRadius = _self.artworkImageView.frame.size.width / 2
+                        _self.artworkImageView.clipsToBounds = true
+                        if _self.artworkImageView.hidden {
+                            _self.button.hidden = true
+                            _self.artworkImageView.hidden = false
+                        }
+                    }
+                case .Failure(let _):
+                   return
                 }
             }
+            /*
+            Alamofire.request(.GET, song.imageURL).responseImage { [weak self] (_, _, result) in
+                guard let image = result.value else {
+                    return
+                }
+                if let s = self {
+                    s.artworkImage = image
+                    s.artworkImageView.image = image
+                    s.artworkImageView.layer.cornerRadius = s.artworkImageView.frame.size.width / 2
+                    s.artworkImageView.clipsToBounds = true
+                    if s.artworkImageView.hidden {
+                        s.button.hidden = true
+                        s.artworkImageView.hidden = false
+                    }
+                }
+            }
+            */
         }
     }
 

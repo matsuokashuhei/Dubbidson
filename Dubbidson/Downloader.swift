@@ -10,7 +10,7 @@ import Foundation
 
 import Alamofire
 import PromiseKit
-import Result
+//import Result
 import XCGLogger
 
 class Downloader: NSObject {
@@ -19,7 +19,8 @@ class Downloader: NSObject {
 
     static let sharedInstance = Downloader()
 
-    func download(song: Song, handler: (ATResult<NSURL, NSError>.t) ->()) {
+    //func download(song: Song, handler: (ATResult<NSURL, NSError>.t) ->()) {
+    func download(song: Song, handler: (Result<NSURL, NSError>) ->()) {
         logger.debug("song: name: \(song.name), title: \(song.artist) をダウンロードします。")
         guard let destinationURL = song.downloadFileURL else {
             handler(.Failure(NSError.errorWithAppError(.OptionalValueIsNone)))
@@ -32,7 +33,7 @@ class Downloader: NSObject {
                 return destinationURL
             }.response{ (_, _, _, error) -> () in
                 NetworkIndicator.sharedInstance.dismiss()
-                if let error = error as? NSError {
+                if let error = error {
                     self.logger.error(error.description)
                     handler(.Failure(error))
                 } else {

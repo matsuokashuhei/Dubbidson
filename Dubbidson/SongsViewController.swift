@@ -12,7 +12,6 @@ import AVFoundation
 import UIKit
 
 import Async
-import Kingfisher
 import Result
 import XCGLogger
 
@@ -276,7 +275,7 @@ class SongTableViewCell: UITableViewCell {
 //    }
 
     func configure(song: Song) {
-        artworkImageView.kf_setImageWithURL(song.imageURL)
+        artworkImageView.af_setImageWithURL(song.imageURL)
         nameLabel.text = song.name
         artistLabel.text = song.artist
 //        pauseImage.hidden = true

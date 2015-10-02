@@ -71,7 +71,7 @@ class FileIO {
         return destinationURL
     }
 
-    func delete(fileURL: NSURL) -> ATResult<Bool, NSError>.t {
+    func delete(fileURL: NSURL) -> Result<Bool, NSError> {
         guard let path = fileURL.path else {
             return .Failure(NSError.errorWithAppError(.Unknown))
         }
@@ -143,7 +143,7 @@ import Photos
 
 extension FileIO {
 
-    func fetchLastVideoFromPhotos(handler: (ATResult<AVAsset, NSError>.t) -> ()) {
+    func fetchLastVideoFromPhotos(handler: (Result<AVAsset, NSError>) -> ()) {
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         let videos = PHAsset.fetchAssetsWithMediaType(.Video, options: options)
@@ -171,7 +171,7 @@ extension FileIO {
         }
     }
 
-    func saveVideoToPhotos(fileURL: NSURL, handler: (ATResult<NSURL, NSError>.t) -> Void) {
+    func saveVideoToPhotos(fileURL: NSURL, handler: (Result<NSURL, NSError>) -> Void) {
         //PHAssetChangeRequest.creationRequestForAssetFromVideoAtFileURL(fileURL)
         // TODO: iOS9から非推奨
         let library = ALAssetsLibrary()
