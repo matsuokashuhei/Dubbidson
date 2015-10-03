@@ -50,27 +50,10 @@ class SongView: UIView {
                             _self.artworkImageView.hidden = false
                         }
                     }
-                case .Failure(let _):
+                case .Failure(_):
                    return
                 }
             }
-            /*
-            Alamofire.request(.GET, song.imageURL).responseImage { [weak self] (_, _, result) in
-                guard let image = result.value else {
-                    return
-                }
-                if let s = self {
-                    s.artworkImage = image
-                    s.artworkImageView.image = image
-                    s.artworkImageView.layer.cornerRadius = s.artworkImageView.frame.size.width / 2
-                    s.artworkImageView.clipsToBounds = true
-                    if s.artworkImageView.hidden {
-                        s.button.hidden = true
-                        s.artworkImageView.hidden = false
-                    }
-                }
-            }
-            */
         }
     }
 

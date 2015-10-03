@@ -10,7 +10,6 @@ import Foundation
 
 import Alamofire
 import PromiseKit
-//import Result
 import XCGLogger
 
 class GoogleAPI {
@@ -32,7 +31,6 @@ class GoogleAPI {
         }
     }
 
-    //func suggestions(keyword keyword: String, handler: (ATResult<[String], NSError>.t) -> ()) {
     func suggestions(keyword keyword: String, handler: (Result<[String], NSError>) -> ()) {
         let URL = "https://suggestqueries.google.com/complete/search"
         let parameters = [
@@ -88,7 +86,6 @@ class GoogleAPI {
 
 extension GoogleAPI {
 
-    //class func suggestions(keyword keyword: String, handler: (ATResult<[String], NSError>.t) -> ()) {
     class func suggestions(keyword keyword: String, handler: (Result<[String], NSError>) -> ()) {
         GoogleAPI.sharedInstance.suggestions(keyword: keyword, handler: handler)
     }

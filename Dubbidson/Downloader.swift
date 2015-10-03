@@ -19,7 +19,6 @@ class Downloader: NSObject {
 
     static let sharedInstance = Downloader()
 
-    //func download(song: Song, handler: (ATResult<NSURL, NSError>.t) ->()) {
     func download(song: Song, handler: (Result<NSURL, NSError>) ->()) {
         logger.debug("song: name: \(song.name), title: \(song.artist) をダウンロードします。")
         guard let destinationURL = song.downloadFileURL else {
