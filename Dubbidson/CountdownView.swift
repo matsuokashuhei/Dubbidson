@@ -8,25 +8,59 @@
 
 import UIKit
 import XCGLogger
-import Async
+//import Async
 
-protocol CountdownViewDelegate {
-    func countdownDidFinish(circleView: CountdownView)
-}
-
+//protocol CountdownViewDelegate {
+//    func countdownDidFinish(circleView: CountdownView)
+//}
 
 class CountdownView: UIView {
 
     let logger = XCGLogger.defaultInstance()
 
     private var degrees: Double = 0
-    private var timeInSeconds: Double = 0
+    private var timeInSeconds: Double = 0 {
+        didSet {
+            if timeInSeconds > 0 {
+                hidden = false
+            } else {
+                hidden = true
+            }
+        }
+    }
     private let timeInterval: Double = 1
 
-    var delegate: CountdownViewDelegate?
+    private var isRunning = false {
+        didSet {
+            if !isRunning {
+                timeInSeconds = 0
+            }
+        }
+    }
+
+//    var delegate: CountdownViewDelegate?
+
+    typealias CompletionHandler = () -> ()
+    var completionHandler: CompletionHandler?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+
+    private func setup() {
+        backgroundColor = UIColor.clearColor()
+        //userInteractionEnabled = true
+        //addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stop"))
+    }
 
     override func drawRect(rect: CGRect) {
-        backgroundColor = UIColor.clearColor()
+        //backgroundColor = UIColor.clearColor()
         drawCircle(rect)
         drawTime(rect)
     }
@@ -58,21 +92,31 @@ class CountdownView: UIView {
         text.drawInRect(textRect, withAttributes: attributes)
     }
 
-    func startWithSeconds(seconds: Double) {
+    func startWithSeconds(seconds: Double, finished: () -> ()) {
+        isRunning = true
+        hidden = false
         timeInSeconds = seconds
+        completionHandler = finished
         degrees = 0
         update()
         updateTime()
     }
 
     func update() {
+        guard isRunning else {
+            return
+        }
         degrees += 360.0 / 30.0
         if timeInSeconds > 0 {
             NSTimer.scheduledTimerWithTimeInterval(1.0 / 30.0, target: self, selector: "update", userInfo: nil, repeats: false)
             setNeedsDisplay()
         } else {
+            //hidden = true
             setNeedsDisplay()
-            delegate?.countdownDidFinish(self)
+            if let completionHandler = self.completionHandler {
+                completionHandler()
+            }
+            //delegate?.countdownDidFinish(self)
         }
         if degrees == 360 {
             degrees = 0
@@ -80,16 +124,82 @@ class CountdownView: UIView {
     }
 
     func updateTime() {
+        guard isRunning else {
+            return
+        }
         timeInSeconds -= timeInterval
         if timeInSeconds > 0 {
             NSTimer.scheduledTimerWithTimeInterval(timeInterval, target: self, selector: "updateTime", userInfo: nil, repeats: false)
-        } else {
-            delegate?.countdownDidFinish(self)
+//        } else {
+//            delegate?.countdownDidFinish(self)
         }
+    }
+
+    func stop() {
+        isRunning = false
+        hidden = true
     }
 
 }
 
+class CountdownTimer {
+
+    let logger = XCGLogger.defaultInstance()
+
+    static let sharedInstance = CountdownTimer()
+
+    var mainWindow: UIWindow!
+
+    var window: UIWindow!
+
+    var countdownView: CountdownView!
+
+    func showWithSeconds(seconds: Double, finished: () -> ()) {
+        mainWindow = UIApplication.sharedApplication().keyWindow
+    
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window.backgroundColor = UIColor.clearColor()
+        window.userInteractionEnabled = true
+        window.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stop"))
+        countdownView = CountdownView(frame: CGRect(x: window.bounds.width / 4, y: window.bounds.width / 4, width: window.bounds.width / 2, height: window.bounds.height / 2))
+        window.addSubview(countdownView)
+        window.makeKeyAndVisible()
+        countdownView.startWithSeconds(4.0) { () -> () in
+            self.hide()
+            finished()
+        }
+    }
+
+    dynamic func stop() {
+        logger.verbose("")
+        guard let countdownView = self.countdownView else {
+            return
+        }
+        countdownView.stop()
+        hide()
+    }
+
+    func hide() {
+        logger.verbose("")
+        guard let _ = self.window else {
+            return
+        }
+        mainWindow.makeKeyAndVisible()
+        window = nil
+        /*
+        logger.verbose("UIApplication.sharedApplication().windows: \(UIApplication.sharedApplication().windows.count)")
+        for window in UIApplication.sharedApplication().windows {
+            if window == self.window {
+                continue
+            }
+            self.window = nil
+            window.makeKeyAndVisible()
+        }
+        */
+    }
+
+}
+/*
 class CountdownTimer {
 
     let logger = XCGLogger.defaultInstance()
@@ -159,3 +269,4 @@ extension CountdownTimer: CountdownViewDelegate {
     }
     
 }
+*/

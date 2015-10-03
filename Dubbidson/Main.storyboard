@@ -183,21 +183,9 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3u-n7-Fbk" customClass="GPUImageView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzD-Cs-BkQ" customClass="CountdownView" customModule="Dubbidson" customModuleProvider="target">
-                                        <rect key="frame" x="87" y="88" width="200" height="200"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="200" id="X86-Sb-8Hn"/>
-                                            <constraint firstAttribute="height" constant="200" id="YMz-Nr-H1Z"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
                                 <animations/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="kzD-Cs-BkQ" firstAttribute="centerY" secondItem="g3u-n7-Fbk" secondAttribute="centerY" id="1CO-qg-hsl"/>
-                                    <constraint firstItem="kzD-Cs-BkQ" firstAttribute="centerX" secondItem="g3u-n7-Fbk" secondAttribute="centerX" id="LMh-5S-KvK"/>
                                     <constraint firstAttribute="width" secondItem="g3u-n7-Fbk" secondAttribute="height" multiplier="1:1" id="yrz-aC-fKB"/>
                                 </constraints>
                             </view>
@@ -310,6 +298,10 @@
                                     <constraint firstAttribute="centerX" secondItem="Fav-Rc-zeT" secondAttribute="centerX" id="yfc-fC-fuF"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kzD-Cs-BkQ" customClass="CountdownView" customModule="Dubbidson" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <animations/>
+                            </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -318,7 +310,11 @@
                             <constraint firstItem="g3u-n7-Fbk" firstAttribute="top" secondItem="1cT-Hq-pxM" secondAttribute="top" id="Fbd-7e-4fk"/>
                             <constraint firstAttribute="width" secondItem="g3u-n7-Fbk" secondAttribute="width" id="FeK-19-iR1"/>
                             <constraint firstAttribute="trailing" secondItem="DUK-bv-Nbj" secondAttribute="trailing" id="Jqz-7m-PTh"/>
+                            <constraint firstItem="kzD-Cs-BkQ" firstAttribute="top" secondItem="1cT-Hq-pxM" secondAttribute="top" id="OZz-Om-GNK"/>
+                            <constraint firstAttribute="trailing" secondItem="kzD-Cs-BkQ" secondAttribute="trailing" id="UdB-4J-pZX"/>
                             <constraint firstItem="V9v-qR-HmM" firstAttribute="top" secondItem="DUK-bv-Nbj" secondAttribute="bottom" id="W16-Aw-lcI"/>
+                            <constraint firstAttribute="bottom" secondItem="kzD-Cs-BkQ" secondAttribute="bottom" id="bYF-tB-YDN"/>
+                            <constraint firstItem="kzD-Cs-BkQ" firstAttribute="leading" secondItem="1cT-Hq-pxM" secondAttribute="leading" id="h7o-fM-Jy5"/>
                             <constraint firstItem="DUK-bv-Nbj" firstAttribute="top" secondItem="g3u-n7-Fbk" secondAttribute="bottom" id="i1H-0s-o7p"/>
                             <constraint firstItem="DUK-bv-Nbj" firstAttribute="leading" secondItem="1cT-Hq-pxM" secondAttribute="leading" id="oLx-zv-tQs"/>
                         </constraints>
@@ -351,7 +347,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Zje-jy-GUM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hP1-x1-fv2">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="13t-T1-nW3">
@@ -1031,6 +1027,6 @@
         <image name="videocam" width="36" height="36"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Jaw-8Y-1WH"/>
+        <segue reference="Vvc-ph-e8x"/>
     </inferredMetricsTieBreakers>
 </document>

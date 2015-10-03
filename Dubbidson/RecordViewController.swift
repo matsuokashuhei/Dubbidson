@@ -91,6 +91,11 @@ extension RecordViewController {
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
     }
 
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        logger.verbose("")
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -101,19 +106,10 @@ extension RecordViewController {
 extension RecordViewController {
 
     func recordButtonTapped() {
-        //if recordButton.imageView?.image == R.image.lensOff {
         if isRecording == false {
-            //CountdownTimer.sharedInstance.delegate = self
-            //CountdownTimer.sharedInstance.showWithSeconds(4.0, view: self.view)
-//            CountdownTimer.sharedInstance.showWithSeconds(4.0, view: view) { [weak self] () -> () in
-//                Async.main {
-//                    self?.startRecording()
-//                }
-//            }
-            countdownView.delegate = self
-            countdownView.hidden = false
-            countdownView.startWithSeconds(4.0)
-            //startRecording()
+            CountdownTimer.sharedInstance.showWithSeconds(4.0) { () in
+                self.startRecording()
+            }
         } else {
             stopRecording()
         }
@@ -125,17 +121,6 @@ extension RecordViewController {
             return
         }
         performSegueWithIdentifier(R.segue.selectFilter, sender: nil)
-    }
-
-}
-
-extension RecordViewController: CountdownViewDelegate {
-
-    func countdownDidFinish(countdownView: CountdownView) {
-        logger.verbose("")
-        countdownView.hidden = true
-        countdownView.delegate = nil
-        self.startRecording()
     }
 
 }
