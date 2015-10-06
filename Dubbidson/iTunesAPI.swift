@@ -97,7 +97,7 @@ class iTunesAPI {
                         let artistName = result["artistName"] as? String,
                         let trackName = result["trackName"] as? String,
                         let _artworkURL = result["artworkUrl100"] as? String,
-                        let _previewURL = result["previewURL"] as? String,
+                        let _previewURL = result["previewUrl"] as? String,
                         let artworkURL = NSURL(string: _artworkURL),
                         let previewURL = NSURL(string: _previewURL) else {
                         return nil

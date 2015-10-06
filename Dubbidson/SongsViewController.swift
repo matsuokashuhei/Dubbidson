@@ -192,6 +192,9 @@ extension SongsViewController: UISearchBarDelegate {
         guard let text = searchBar.text else {
             return
         }
+        if text.characters.count < 3 {
+            return
+        }
         if let controller = childViewControllers.first as? SuggestionsViewController {
             showSuggestionView()
             controller.delegate = self
