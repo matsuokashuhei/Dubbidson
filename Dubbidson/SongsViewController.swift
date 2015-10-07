@@ -137,19 +137,23 @@ extension SongsViewController {
 extension SongsViewController: UITableViewDelegate {
 
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if let selectedRowAtIndexPath = tableView.indexPathForSelectedRow {
-            logger.verbose("selectedRowAtIndexPath: \(selectedRowAtIndexPath.row)")
-            if selectedRowAtIndexPath == indexPath {
-                if player.isPlaying() {
-                    player.pause()
-                } else {
-                    player.play()
-                }
-                return nil
-            }
+        guard
+            let selectedIndexPath = tableView.indexPathForSelectedRow,
+            let cell = tableView.cellForRowAtIndexPath(selectedIndexPath) as? SongTableViewCell else {
+            return indexPath
         }
-        logger.verbose("willSelectRowAtIndexPath: \(indexPath.row)")
-        return indexPath
+        cell.pauseImageView.hidden = true
+        if selectedIndexPath == indexPath {
+            if player.isPlaying() {
+                player.pause()
+            } else {
+                player.play()
+                cell.pauseImageView.hidden = false
+            }
+            return nil
+        } else {
+            return indexPath
+        }
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -171,6 +175,11 @@ extension SongsViewController: UITableViewDataSource {
         let song = songs[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.songTableViewCell, forIndexPath: indexPath)!
         cell.configure(song)
+        if let item = player.item, let asset = item.asset as? AVURLAsset {
+            if song.previewURL == asset.URL {
+                cell.pauseImageView.hidden = false
+            }
+        }
         return cell
     }
 
@@ -256,6 +265,12 @@ extension SongsViewController: AudioPlayerDelegate {
 
     func readyToPlay(item: AVPlayerItem) {
         player.startToPlay(item)
+        if let indexPath = tableView.indexPathForSelectedRow {
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! SongTableViewCell
+            cell.pauseImageView.hidden = false
+            logger.verbose("indexPath: \(indexPath.row)")
+            logger.verbose("cell: \(cell.nameLabel.text)")
+        }
     }
 
     func endTimeToPlay(item: AVPlayerItem) {
@@ -271,16 +286,15 @@ class SongTableViewCell: UITableViewCell {
     @IBOutlet weak var artworkImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
-//    @IBOutlet weak var pauseImage: UIImageView! {
-//        didSet {
-//            pauseImage.hidden = true
-//        }
-//    }
+    @IBOutlet weak var pauseImageView: UIImageView! {
+        didSet { pauseImageView.hidden = true }
+    }
 
     func configure(song: Song) {
         artworkImageView.af_setImageWithURL(song.imageURL)
         nameLabel.text = song.name
         artistLabel.text = song.artist
-//        pauseImage.hidden = true
+        pauseImageView.hidden = true
     }
+    
 }
