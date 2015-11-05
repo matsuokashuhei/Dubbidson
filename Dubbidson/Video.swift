@@ -50,7 +50,7 @@ extension Video {
         video.artist = song.artist
         video.artworkImageURL = song.imageURL.absoluteString
         let realm = try! Realm()
-        realm.write {
+        try! realm.write {
             realm.add(video)
         }
 
@@ -59,7 +59,7 @@ extension Video {
 
     class func destroy(videos: [Video]) {
         let realm = try! Realm()
-        realm.write {
+        try! realm.write {
             for video in videos {
                 if let fileURL = video.fileURL {
                     FileIO.sharedInstance.delete(fileURL)

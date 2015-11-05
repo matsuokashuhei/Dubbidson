@@ -61,7 +61,7 @@ extension AudioFile {
         let file = AudioFile()
         file.name = fileName
         let realm = try! Realm()
-        realm.write {
+        try! realm.write {
             realm.add(file)
             let files = self.all()
             XCGLogger.defaultInstance().verbose("files.count: \(files.count)")
