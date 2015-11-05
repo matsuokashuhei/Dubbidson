@@ -11,26 +11,20 @@
 		A80A8F861BBEF25A0087383C /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F6F1BBEF2490087383C /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A80A8F871BBEF25A0087383C /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F701BBEF2490087383C /* AlamofireImage.framework */; };
 		A80A8F881BBEF25A0087383C /* AlamofireImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F701BBEF2490087383C /* AlamofireImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A80A8F891BBEF25A0087383C /* Async.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F721BBEF2490087383C /* Async.framework */; };
-		A80A8F8A1BBEF25A0087383C /* Async.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F721BBEF2490087383C /* Async.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A80A8F8B1BBEF25A0087383C /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F731BBEF2490087383C /* GPUImage.framework */; };
 		A80A8F8C1BBEF25A0087383C /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F731BBEF2490087383C /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A80A8F8D1BBEF25A0087383C /* OMGHTTPURLRQ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F741BBEF2490087383C /* OMGHTTPURLRQ.framework */; };
 		A80A8F8E1BBEF25A0087383C /* OMGHTTPURLRQ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F741BBEF2490087383C /* OMGHTTPURLRQ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A80A8F8F1BBEF25A0087383C /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F751BBEF2490087383C /* PromiseKit.framework */; };
 		A80A8F901BBEF25A0087383C /* PromiseKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F751BBEF2490087383C /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A80A8F911BBEF25A0087383C /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F761BBEF2490087383C /* Realm.framework */; };
-		A80A8F921BBEF25A0087383C /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F761BBEF2490087383C /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A80A8F931BBEF25A0087383C /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F771BBEF2490087383C /* RealmSwift.framework */; };
-		A80A8F941BBEF25A0087383C /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F771BBEF2490087383C /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A80A8F951BBEF25A0087383C /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F781BBEF2490087383C /* Result.framework */; };
 		A80A8F961BBEF25A0087383C /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F781BBEF2490087383C /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A80A8F971BBEF25A0087383C /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F791BBEF2490087383C /* SVProgressHUD.framework */; };
 		A80A8F981BBEF25A0087383C /* SVProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F791BBEF2490087383C /* SVProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A80A8F9B1BBEF2790087383C /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F9A1BBEF2790087383C /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		A80A8F9D1BBEF6860087383C /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = A80A8F9C1BBEF6860087383C /* Cartfile */; settings = {ASSET_TAGS = (); }; };
+		A80A8F9D1BBEF6860087383C /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = A80A8F9C1BBEF6860087383C /* Cartfile */; };
 		A8237BD71B88700F00ED8BA1 /* NetworkIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */; };
-		A85349A51BA9BE6C00D2CE58 /* FileIOTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85349A41BA9BE6C00D2CE58 /* FileIOTest.swift */; settings = {ASSET_TAGS = (); }; };
+		A85349A51BA9BE6C00D2CE58 /* FileIOTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85349A41BA9BE6C00D2CE58 /* FileIOTest.swift */; };
 		A87F47001B820E9100A71E82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F46FF1B820E9100A71E82 /* AppDelegate.swift */; };
 		A87F47071B820E9100A71E82 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A87F47061B820E9100A71E82 /* Images.xcassets */; };
 		A87F470A1B820E9100A71E82 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A87F47081B820E9100A71E82 /* LaunchScreen.xib */; };
@@ -68,6 +62,11 @@
 		A8B640041B9C7F81007B3842 /* BannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B640031B9C7F81007B3842 /* BannerViewController.swift */; };
 		A8C07C451B83812200CB244A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8C07C441B83812200CB244A /* Main.storyboard */; };
 		A8C07C4B1B84D9AD00CB244A /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C07C4A1B84D9AD00CB244A /* Filter.swift */; };
+		A8D9D3AA1BE889BC0092CE24 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F761BBEF2490087383C /* Realm.framework */; };
+		A8D9D3AB1BE889BC0092CE24 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F761BBEF2490087383C /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A8D9D3AC1BE889BC0092CE24 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F771BBEF2490087383C /* RealmSwift.framework */; };
+		A8D9D3AD1BE889BC0092CE24 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A80A8F771BBEF2490087383C /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A8D9D3AF1BE88B150092CE24 /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8D9D3AE1BE88B150092CE24 /* XCGLogger.framework */; };
 		A8DCCEB11BA40155004BBB9D /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DCCEB01BA40155004BBB9D /* CountdownView.swift */; };
 		A8E7CF651B91B9F700A14374 /* GoogleAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E7CF641B91B9F700A14374 /* GoogleAPI.swift */; };
 		A8F9C8011B88E34400A8244C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F9C8001B88E34400A8244C /* Error.swift */; };
@@ -94,12 +93,11 @@
 				A80A8F8C1BBEF25A0087383C /* GPUImage.framework in Embed Frameworks */,
 				A80A8F8E1BBEF25A0087383C /* OMGHTTPURLRQ.framework in Embed Frameworks */,
 				A80A8F961BBEF25A0087383C /* Result.framework in Embed Frameworks */,
+				A8D9D3AB1BE889BC0092CE24 /* Realm.framework in Embed Frameworks */,
 				A80A8F901BBEF25A0087383C /* PromiseKit.framework in Embed Frameworks */,
-				A80A8F921BBEF25A0087383C /* Realm.framework in Embed Frameworks */,
+				A8D9D3AD1BE889BC0092CE24 /* RealmSwift.framework in Embed Frameworks */,
 				A80A8F981BBEF25A0087383C /* SVProgressHUD.framework in Embed Frameworks */,
 				A80A8F881BBEF25A0087383C /* AlamofireImage.framework in Embed Frameworks */,
-				A80A8F941BBEF25A0087383C /* RealmSwift.framework in Embed Frameworks */,
-				A80A8F8A1BBEF25A0087383C /* Async.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,8 +108,6 @@
 		4AF7E5E89765120C201C4C07 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A80A8F6F1BBEF2490087383C /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		A80A8F701BBEF2490087383C /* AlamofireImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireImage.framework; path = Carthage/Build/iOS/AlamofireImage.framework; sourceTree = "<group>"; };
-		A80A8F711BBEF2490087383C /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = Carthage/Build/iOS/Argo.framework; sourceTree = "<group>"; };
-		A80A8F721BBEF2490087383C /* Async.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Async.framework; path = Carthage/Build/iOS/Async.framework; sourceTree = "<group>"; };
 		A80A8F731BBEF2490087383C /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GPUImage.framework; path = Carthage/Build/iOS/GPUImage.framework; sourceTree = "<group>"; };
 		A80A8F741BBEF2490087383C /* OMGHTTPURLRQ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OMGHTTPURLRQ.framework; path = Carthage/Build/iOS/OMGHTTPURLRQ.framework; sourceTree = "<group>"; };
 		A80A8F751BBEF2490087383C /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
@@ -164,6 +160,8 @@
 		A8B640031B9C7F81007B3842 /* BannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerViewController.swift; sourceTree = "<group>"; };
 		A8C07C441B83812200CB244A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		A8C07C4A1B84D9AD00CB244A /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		A8D9D3A71BE881F40092CE24 /* Dubbidson-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dubbidson-Bridging-Header.h"; sourceTree = "<group>"; };
+		A8D9D3AE1BE88B150092CE24 /* XCGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCGLogger.framework; path = /Users/matsuosh/Documents/iOS/Dubbidson/Carthage/Build/iOS/XCGLogger.framework; sourceTree = "<absolute>"; };
 		A8DCCEB01BA40155004BBB9D /* CountdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
 		A8E7CF641B91B9F700A14374 /* GoogleAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleAPI.swift; sourceTree = "<group>"; };
 		A8F9C8001B88E34400A8244C /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -178,15 +176,15 @@
 			files = (
 				A80A8F9B1BBEF2790087383C /* Pods.framework in Frameworks */,
 				A80A8F851BBEF25A0087383C /* Alamofire.framework in Frameworks */,
+				A8D9D3AC1BE889BC0092CE24 /* RealmSwift.framework in Frameworks */,
 				A80A8F8B1BBEF25A0087383C /* GPUImage.framework in Frameworks */,
 				A80A8F8D1BBEF25A0087383C /* OMGHTTPURLRQ.framework in Frameworks */,
 				A80A8F951BBEF25A0087383C /* Result.framework in Frameworks */,
 				A80A8F8F1BBEF25A0087383C /* PromiseKit.framework in Frameworks */,
-				A80A8F911BBEF25A0087383C /* Realm.framework in Frameworks */,
 				A80A8F971BBEF25A0087383C /* SVProgressHUD.framework in Frameworks */,
+				A8D9D3AF1BE88B150092CE24 /* XCGLogger.framework in Frameworks */,
 				A80A8F871BBEF25A0087383C /* AlamofireImage.framework in Frameworks */,
-				A80A8F931BBEF25A0087383C /* RealmSwift.framework in Frameworks */,
-				A80A8F891BBEF25A0087383C /* Async.framework in Frameworks */,
+				A8D9D3AA1BE889BC0092CE24 /* Realm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,8 +204,6 @@
 				A80A8F9A1BBEF2790087383C /* Pods.framework */,
 				A80A8F6F1BBEF2490087383C /* Alamofire.framework */,
 				A80A8F701BBEF2490087383C /* AlamofireImage.framework */,
-				A80A8F711BBEF2490087383C /* Argo.framework */,
-				A80A8F721BBEF2490087383C /* Async.framework */,
 				A80A8F731BBEF2490087383C /* GPUImage.framework */,
 				A80A8F741BBEF2490087383C /* OMGHTTPURLRQ.framework */,
 				A80A8F751BBEF2490087383C /* PromiseKit.framework */,
@@ -238,6 +234,7 @@
 				A623F29F6C117ACCE7DBAA84 /* Pods */,
 				00CB7DD33FFD7A1B1154EB3D /* Frameworks */,
 				A80A8F9C1BBEF6860087383C /* Cartfile */,
+				A8D9D3A71BE881F40092CE24 /* Dubbidson-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -434,8 +431,8 @@
 				A87F46F81B820E9100A71E82 /* Resources */,
 				B13BBC352EAA461CF99F0242 /* Embed Pods Frameworks */,
 				36947115E6A5C8D3C7DC58AF /* Copy Pods Resources */,
-				A878ECBC1BA6F01F00C1D124 /* ShellScript */,
 				A80A8F991BBEF25A0087383C /* Embed Frameworks */,
+				A878ECBC1BA6F01F00C1D124 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -470,7 +467,7 @@
 		A87F46F21B820E9100A71E82 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = matsuosh;
 				TargetAttributes = {
@@ -555,12 +552,24 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Chameleon.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CleanroomASL.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CleanroomLogger.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/GPUImage.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/OMGHTTPURLRQ.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/usr/local/bin/carthage copy-frameworks";
-			shellScript = "";
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 		A87F47541B82357500A71E82 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -763,6 +772,7 @@
 			baseConfigurationReference = 4AF7E5E89765120C201C4C07 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -772,11 +782,14 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = Dubbidson/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.matsuosh.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Dubbidson-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -785,6 +798,7 @@
 			baseConfigurationReference = F6335BED45FD80631594E4CB /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -794,11 +808,13 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				INFOPLIST_FILE = Dubbidson/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.matsuosh.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Dubbidson-Bridging-Header.h";
 			};
 			name = Release;
 		};

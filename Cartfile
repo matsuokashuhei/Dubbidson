@@ -1,14 +1,25 @@
+# Network
 github "Alamofire/Alamofire" ~> 3.0
 github "Alamofire/AlamofireImage" ~> 2.0
-github "duemunk/Async" ~> 1.4
-github "antitypical/Result" ~> 0.6
+#github "onevcat/Kingfisher" >= 1.5
+
+# Logging
+github "emaloney/CleanroomLogger"
+github "DaveWoodCom/XCGLogger"
+
+# AV
 github "BradLarson/GPUImage"
-##github "onevcat/Kingfisher" >= 1.5
-##github "emaloney/CleanroomLogger"
-##github "DaveWoodCom/XCGLogger"
-##github "robb/Cartography"
-github "mxcl/PromiseKit" "swift-2.0-minimal-changes"
-##github "mxcl/PromiseKit"
+
+# UI
 github "TransitApp/SVProgressHUD"
+
+# DB
 github "realm/realm-cocoa"
-github "thoughtbot/Argo"
+
+# Utility
+#github "robb/Cartography"
+github "mxcl/PromiseKit" "swift-2.0-minimal-changes"
+#github "mxcl/PromiseKit"
+github "ViccAlexander/Chameleon"
+#github "duemunk/Async" ~> 1.4
+github "antitypical/Result" ~> 0.6
