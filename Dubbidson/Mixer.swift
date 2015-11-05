@@ -24,19 +24,18 @@ class VideoComposer: NSObject {
 
         let composition = AVMutableComposition()
 
+        // ビデオのトラックの作成
         let videoAsset = AVURLAsset(URL: videoURL, options: nil)
         let videoRange = CMTimeRangeMake(kCMTimeZero, videoAsset.duration)
         let videoTrack = videoAsset.tracksWithMediaType(AVMediaTypeVideo).first!
         let compositionVideoTrack = composition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: CMPersistentTrackID())
-        //compositionVideoTrack.insertTimeRange(videoRange, ofTrack: videoTrack, atTime: kCMTimeZero, error: &error)
         try! compositionVideoTrack.insertTimeRange(videoRange, ofTrack: videoTrack, atTime: kCMTimeZero)
 
+        // 音声のトラックの作成
         let soundAsset = AVURLAsset(URL: audioURL, options: nil)
-        //let soundRange = CMTimeRangeMake(kCMTimeZero, soundAsset.duration)
         let soundRange = CMTimeRangeMake(kCMTimeZero, duration)
 
         let float1 = CMTimeGetSeconds(videoAsset.duration)
-        //let float2 = CMTimeGetSeconds(soundAsset.duration)
         let float2 = CMTimeGetSeconds(duration)
         let float3 = float1 - float2
         logger.debug("float1: \(float1), float2: \(float2), float3: \(float3)")
@@ -45,6 +44,7 @@ class VideoComposer: NSObject {
         let compositionSoundTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
         try! compositionSoundTrack.insertTimeRange(soundRange, ofTrack: soundTrack, atTime: atTime)
 
+        
         var videoSize = videoTrack.naturalSize
         let transform = videoTrack.preferredTransform
         if transform.a == 0.0 && transform.d == 0.0 && (transform.b == 1.0 || transform.b == -1.0) && (transform.c == 1.0 || transform.c == -1.0) {
@@ -61,6 +61,32 @@ class VideoComposer: NSObject {
         videoComposition.instructions = [instruction]
         videoComposition.frameDuration = CMTimeMake(1, 30)
 
+        let textLayer: CATextLayer = {
+            let layer = CATextLayer()
+            layer.string = "Dubbidson"
+            layer.font = R.font.teXGyreAdventorRegular(size: 10.0)!
+            layer.fontSize = videoSize.width / 10.0
+            layer.opacity = 0.5
+            layer.alignmentMode = kCAAlignmentRight
+            layer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height / 8.0)
+            //layer.bounds = CGRectMake(0, 0, videoSize.width, videoSize.height)
+            return layer
+        }()
+        let parentLayer = CALayer()
+        parentLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height)
+        
+        let videoLayer = CALayer()
+        videoLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height)
+        parentLayer.addSublayer(videoLayer)
+        parentLayer.addSublayer(textLayer)
+        
+        logger.debug("textLayer.frame: \(textLayer.frame)")
+        logger.debug("videoLayer.frame: \(videoLayer.frame)")
+        logger.debug("parentLayer.frame: \(parentLayer.frame)")
+        
+        videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+
+        
         let URL = FileIO.sharedInstance.createVideoFile()
         let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)!
         session.outputURL = URL
