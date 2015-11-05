@@ -90,6 +90,7 @@ struct R {
       static func validateImages() {
         assert(UIImage(named: "action") != nil, "[R.swift] Image named 'action' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "chevron_left") != nil, "[R.swift] Image named 'chevron_left' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "pause") != nil, "[R.swift] Image named 'pause' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "tv") != nil, "[R.swift] Image named 'tv' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "videocam") != nil, "[R.swift] Image named 'videocam' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "close") != nil, "[R.swift] Image named 'close' is used in storyboard 'Main', but couldn't be loaded.")
