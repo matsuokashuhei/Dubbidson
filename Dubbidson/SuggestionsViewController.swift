@@ -11,14 +11,13 @@ import UIKit
 import XCGLogger
 
 protocol SuggestionsViewControllerDelegate {
-    func didSelectKeyword(keyword: String)
+    func didSelectSuggestion(suggestion: String)
 }
 
 class SuggestionsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
-            logger.debug("")
             tableView.delegate = self
             tableView.dataSource = self
             tableView.tableFooterView = UIView(frame: CGRectZero)
@@ -29,7 +28,7 @@ class SuggestionsViewController: UIViewController {
 
     var keyword: String = "" {
         didSet {
-            fetch(keyword)
+            fetch(keyword: keyword)
         }
     }
     var suggestions = [String]() {
@@ -45,8 +44,8 @@ class SuggestionsViewController: UIViewController {
         logger.verbose("")
     }
 
-    func fetch(keyword: String) {
-        GoogleAPI.sharedInstance.suggestions(keyword: keyword) { (result) in
+    func fetch(keyword keyword: String) {
+        GoogleAPI.suggestions(keyword: keyword) { (result) in
             switch result {
             case .Success(let suggestions):
                 self.suggestions = suggestions
@@ -60,7 +59,7 @@ class SuggestionsViewController: UIViewController {
 extension SuggestionsViewController: UITableViewDelegate {
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        delegate?.didSelectKeyword(suggestions[indexPath.row])
+        delegate?.didSelectSuggestion(suggestions[indexPath.row])
     }
 
 }

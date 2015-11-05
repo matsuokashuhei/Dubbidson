@@ -250,12 +250,12 @@ extension SongsViewController: UISearchBarDelegate {
 // MARK: - Suggestions view controller delegate
 extension SongsViewController: SuggestionsViewControllerDelegate {
 
-    func didSelectKeyword(keyword: String) {
-        logger.verbose("keyword: \(keyword)")
-        searchBar.text = keyword
+    func didSelectSuggestion(suggestion: String) {
+        logger.verbose("keyword: \(suggestion)")
+        searchBar.text = suggestion
         hideSuggestionView()
         searchBar.resignFirstResponder()
-        search(keyword)
+        search(suggestion)
     }
 
 }
