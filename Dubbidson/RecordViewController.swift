@@ -91,11 +91,6 @@ extension RecordViewController {
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
     }
 
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        logger.verbose("")
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -129,23 +124,22 @@ extension RecordViewController {
 extension RecordViewController {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let identifier = segue.identifier {
-            switch identifier {
-            case R.segue.selectSong:
-                recordButton.enabled = false
-                let controller = segue.destinationViewController as! SongsViewController
-                controller.delegate = self
-            case R.segue.selectFilter:
-                let controller = segue.destinationViewController as! FiltersViewController
-                controller.selectedFilter = filter
-                controller.blendImage = songView.artworkImage
-                controller.delegate = self
-            case R.segue.watchVideo:
-                let controller = segue.destinationViewController as! VideoViewController
-                controller.video = sender as! Video
-            default:
-                super.prepareForSegue(segue, sender: sender)
-            }
+        guard let identifier = segue.identifier else { return }
+        switch identifier {
+        case R.segue.selectSong:
+            recordButton.enabled = false
+            let controller = segue.destinationViewController as! SongsViewController
+            controller.delegate = self
+        case R.segue.selectFilter:
+            let controller = segue.destinationViewController as! FiltersViewController
+            controller.selectedFilter = filter
+            controller.blendImage = songView.artworkImage
+            controller.delegate = self
+        case R.segue.watchVideo:
+            let controller = segue.destinationViewController as! VideoViewController
+            controller.video = sender as! Video
+        default:
+            super.prepareForSegue(segue, sender: sender)
         }
     }
 
@@ -201,6 +195,7 @@ extension RecordViewController: SongsViewControllerDelegate {
 
     func didSelectSong(song: Song) {
         songView.song = song
+        // TODO: ↓ これらはSongViewの中でやる。
         if AudioFile.exists(song.previewURL) {
             prepareToRecord(audioURL: song.downloadFileURL!)
             return
@@ -277,6 +272,7 @@ extension RecordViewController: FiltersViewControllerDeleage {
     func didDeselectFilter() {
         filter.addTarget(captureView)
     }
+
 }
 
 // MARK: - GPU image movie writer delegate

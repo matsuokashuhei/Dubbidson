@@ -131,10 +131,6 @@ extension VideoViewController {
         presentViewController(controller, animated: true, completion: nil)
     }
 
-    func closeButtonTapped() {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-
     func backButtonTapped() {
         navigationController?.popViewControllerAnimated(true)
     }
