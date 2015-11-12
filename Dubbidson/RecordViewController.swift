@@ -288,49 +288,37 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
             return
         }
         let recordingURL = writer.assetWriter.outputURL
-                Notificator.sharedInstance.showLoading()
-                let currentTime = audioPlayer.item.currentTime()
-                VideoComposer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL, duration: currentTime).then { (videoURL) in
-                    let id = (videoURL.lastPathComponent! as NSString).stringByDeletingPathExtension
-
-                    return self.generateThumbnail(videoURL).then { (image) in
-                        return Promise<String> { (fulfill, reject) in
-                            let thumbnailURL = FileIO.sharedInstance.fileURL(.Documents, filename: "\(id).png")!
-                            FileIO.sharedInstance.save(image, fileURL: thumbnailURL)
-                            if let image = UIImagePNGRepresentation(image) {
-                                image.writeToFile(thumbnailURL.path!, atomically: true)
-                                fulfill(id)
-                            } else {
-                                let error = NSError.errorWithAppError(.UIImagePNGRepresentationIsFailed)
-                                self.logger.error(error.description)
-                                reject(error)
-                            }
-//                            if UIImagePNGRepresentation(image).writeToFile(thumbnailURL.path!, atomically: true) {
-//                                fulfill(id)
-//                            } else {
-//                                let error = Error.unknown()
-//                                self.logger.error(error.localizedDescription)
-//                                reject(error)
-//                            }
-                        }
-                        /*
-                        let thumbnailURL = FileIO.sharedInstance.fileURL(.Documents, filename: "\(id).png")!
-                        return FileIO.sharedInstance.save(image, fileURL: thumbnailURL)
-                        */
+        Notificator.sharedInstance.showLoading()
+        let currentTime = audioPlayer.item.currentTime()
+        VideoComposer.sharedInstance.mixdown(videoURL: recordingURL, audioURL: audioURL, duration: currentTime).then { (videoURL) in
+            let id = (videoURL.lastPathComponent! as NSString).stringByDeletingPathExtension
+            return self.generateThumbnail(videoURL).then { (image) in
+                return Promise<String> { (fulfill, reject) in
+                    let thumbnailURL = FileIO.sharedInstance.fileURL(.Documents, filename: "\(id).png")!
+                    FileIO.sharedInstance.save(image, fileURL: thumbnailURL)
+                    if let image = UIImagePNGRepresentation(image) {
+                        image.writeToFile(thumbnailURL.path!, atomically: true)
+                        fulfill(id)
+                    } else {
+                        let error = NSError.errorWithAppError(.UIImagePNGRepresentationIsFailed)
+                        self.logger.error(error.description)
+                        reject(error)
                     }
-                }.then { (id: String) -> () in
-                    let video = Video.create(id, song: song)
-                    self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
-                }.finally {
-                    self.audioPlayer.stop()
-                    self.progressView.progress = 0.0
-                    self.durationLabel.text = "30 sec"
-                    FileIO.sharedInstance.delete(recordingURL)
-                    Notificator.sharedInstance.dismissLoading()
-                }.catch_ { error in
-                    self.logger.error("error: \(error.localizedDescription)")
-                    Notificator.sharedInstance.showError(error)
                 }
+            }
+        }.then { (id: String) -> () in
+            let video = Video.create(id, song: song)
+            self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
+        }.finally {
+            self.audioPlayer.stop()
+            self.progressView.progress = 0.0
+            self.durationLabel.text = "30 sec"
+            FileIO.sharedInstance.delete(recordingURL)
+            Notificator.sharedInstance.dismissLoading()
+        }.catch_ { error in
+            self.logger.error("error: \(error.localizedDescription)")
+            Notificator.sharedInstance.showError(error)
+        }
     }
 
     func movieRecordingFailedWithError(error: NSError!) {
