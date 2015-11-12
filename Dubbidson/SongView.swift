@@ -10,9 +10,11 @@ import UIKit
 
 import Alamofire
 import AlamofireImage
+import PromiseKit
 
 protocol SongViewDelegate {
     func songViewTapped()
+    func readyToPlay(song: Song)
 }
 
 class SongView: UIView {
@@ -37,23 +39,13 @@ class SongView: UIView {
 
     var song: Song! {
         didSet {
-            Alamofire.request(.GET, song.imageURL).responseImage { [weak self] response in
-                switch response.result {
-                case .Success(let value):
-                    if let _self = self {
-                        _self.artworkImage = value
-                        _self.artworkImageView.image = value
-                        _self.artworkImageView.layer.cornerRadius = _self.artworkImageView.frame.size.width / 2
-                        _self.artworkImageView.clipsToBounds = true
-                        if _self.artworkImageView.hidden {
-                            _self.button.hidden = true
-                            _self.artworkImageView.hidden = false
-                        }
-                    }
-                case .Failure(_):
-                   return
-                }
+            getArtworkImage(song.imageURL)
+            if AudioFile.exists(song.previewURL) {
+                delegate?.readyToPlay(song)
+            } else {
+                downloadSong(song)
             }
+            
         }
     }
 
@@ -67,5 +59,38 @@ class SongView: UIView {
         delegate?.songViewTapped()
     }
 
+    private func getArtworkImage(imageURL: NSURL) {
+        Alamofire.request(.GET, imageURL).responseImage { [weak self] response in
+            switch response.result {
+            case .Success(let value):
+                guard let _self = self else {
+                    return
+                }
+                _self.artworkImage = value
+                _self.artworkImageView.image = value
+                _self.artworkImageView.layer.cornerRadius = _self.artworkImageView.frame.size.width / 2
+                _self.artworkImageView.clipsToBounds = true
+                if _self.artworkImageView.hidden {
+                    _self.button.hidden = true
+                    _self.artworkImageView.hidden = false
+                }
+            case .Failure(_):
+               return
+            }
+        }
+    }
 
+    private func downloadSong(song: Song) {
+        downloadIndicator.hidden = false
+        downloadIndicator.startAnimating()
+        Downloader.sharedInstance.download(song).then { [weak self] audioURL -> () in
+            AudioFile.create(audioURL)
+            self?.delegate?.readyToPlay(song)
+        }.finally {
+            self.downloadIndicator.stopAnimating()
+            self.downloadIndicator.hidden = true
+        }.catch_ { error in
+            Notificator.sharedInstance.showError(error)
+        }
+    }
 }

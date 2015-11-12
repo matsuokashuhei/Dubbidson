@@ -187,6 +187,10 @@ extension RecordViewController: SongViewDelegate {
         }
         performSegueWithIdentifier(R.segue.selectSong, sender: nil)
     }
+    
+    func readyToPlay(song: Song) {
+        prepareToRecord(audioURL: song.downloadFileURL!)
+    }
 
 }
 
@@ -195,22 +199,6 @@ extension RecordViewController: SongsViewControllerDelegate {
 
     func didSelectSong(song: Song) {
         songView.song = song
-        // TODO: ↓ これらはSongViewの中でやる。
-        if AudioFile.exists(song.previewURL) {
-            prepareToRecord(audioURL: song.downloadFileURL!)
-            return
-        }
-        songView.downloadIndicator.hidden = false
-        songView.downloadIndicator.startAnimating()
-        Downloader.sharedInstance.download(song).then { audioURL -> () in
-            AudioFile.create(audioURL)
-            self.prepareToRecord(audioURL: audioURL)
-        }.finally {
-            self.songView.downloadIndicator.stopAnimating()
-            self.songView.downloadIndicator.hidden = true
-        }.catch_ { error in
-            Notificator.sharedInstance.showError(error)
-        }
     }
 
     func didNotSelectSong() {
