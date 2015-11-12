@@ -67,7 +67,7 @@ class RecordViewController: UIViewController {
     var writer: GPUImageMovieWriter!
 
     var isRecording: Bool {
-        return recordButton.imageView?.image == R.image.lensOn
+        return recordButton.imageView?.image == R.image.recOn
     }
 
     let audioPlayer = AudioPlayer.sharedInstance
@@ -156,7 +156,7 @@ extension RecordViewController {
         writer.delegate = self
         filter.addTarget(writer)
         // ボタンの画像の変更
-        recordButton.setImage(R.image.lensOn, forState: .Normal)
+        recordButton.setImage(R.image.recOn, forState: .Normal)
         // ビデオの書き込みと音楽の再生と開始
         writer.startRecording()
         audioPlayer.startToPlay()
@@ -167,7 +167,7 @@ extension RecordViewController {
         writer.finishRecording()
         filter.removeTarget(writer)
         // ボタンの画像の変更
-        recordButton.setImage(R.image.lensOff, forState: .Normal)
+        recordButton.setImage(R.image.recOff, forState: .Normal)
     }
 
     func stopRecording() {
