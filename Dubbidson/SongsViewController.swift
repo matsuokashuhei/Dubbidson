@@ -274,6 +274,10 @@ extension SongsViewController: AudioPlayerDelegate {
     }
 
     func endTimeToPlay(item: AVPlayerItem) {
+        guard let indexPath = tableView.indexPathForSelectedRow else { return }
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! SongTableViewCell
+        cell.pauseImageView.hidden = true
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
     func playbackTime(time: CMTime, duration: CMTime) {
