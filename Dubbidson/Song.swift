@@ -23,32 +23,32 @@ class Song: Object {
         return "id"
     }
     
-    convenience init?(topsongs entry: NSDictionary) {
+    convenience init?(entry item: NSDictionary) {
         self.init()
-        guard let id = entry["id"] as? NSDictionary,
+        guard let id = item["id"] as? NSDictionary,
             let idattributes = id["attributes"] as? NSDictionary,
             let imid = idattributes["im:id"] as? String else {
                 return nil
         }
         self.id = imid
-        guard let imname = entry["im:name"] as? NSDictionary,
+        guard let imname = item["im:name"] as? NSDictionary,
             let name = imname["label"] as? String else {
                 return nil
         }
         self.name = name
-        guard let images = entry["im:image"] as? [NSDictionary],
+        guard let images = item["im:image"] as? [NSDictionary],
             let image = images.last,
             let imageURL = image["label"] as? String else {
                 return nil
         }
         self.artworkURLString = imageURL
-        guard let imartist = entry["im:artist"] as? NSDictionary,
+        guard let imartist = item["im:artist"] as? NSDictionary,
             let artist = imartist["label"] as? String else {
                 return nil
         }
         self.artist = artist
         guard
-            let links = entry["link"] as? [NSDictionary],
+            let links = item["link"] as? [NSDictionary],
             let link = links.last,
             let linkattributes = link["attributes"] as? NSDictionary,
             let previewURL = linkattributes["href"] as? String else {
@@ -57,14 +57,14 @@ class Song: Object {
         self.previewURLString = previewURL
     }
     
-    convenience init?(search entry: NSDictionary) {
+    convenience init?(result item: NSDictionary) {
         self.init()
         guard
-            let trackId = entry["trackId"] as? Int,
-            let artistName = entry["artistName"] as? String,
-            let trackName = entry["trackName"] as? String,
-            let artworkURL = entry["artworkUrl100"] as? String,
-            let previewURL = entry["previewUrl"] as? String else {
+            let trackId = item["trackId"] as? Int,
+            let artistName = item["artistName"] as? String,
+            let trackName = item["trackName"] as? String,
+            let artworkURL = item["artworkUrl100"] as? String,
+            let previewURL = item["previewUrl"] as? String else {
                 return nil
         }
         id = "\(trackId)"

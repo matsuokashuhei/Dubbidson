@@ -56,7 +56,7 @@ class iTunesAPI {
                 }
                 let songs = entries.flatMap({ (entry) -> Song? in
                     //return Song(entry: entry)
-                    return Song(topsongs: entry)
+                    return Song(entry: entry)
                 })
                 handler(.Success(songs))
             case .Failure(let error):
@@ -92,23 +92,8 @@ class iTunesAPI {
                     handler(.Success([]))
                     return
                 }
-                /*
                 let songs = results.flatMap { (result) -> Song? in
-                    guard
-                        let trackId = result["trackId"] as? Int,
-                        let artistName = result["artistName"] as? String,
-                        let trackName = result["trackName"] as? String,
-                        let _artworkURL = result["artworkUrl100"] as? String,
-                        let _previewURL = result["previewUrl"] as? String,
-                        let artworkURL = NSURL(string: _artworkURL),
-                        let previewURL = NSURL(string: _previewURL) else {
-                        return nil
-                    }
-                    return Song(id: "\(trackId)", name: trackName, imageURL: artworkURL, artist: artistName, previewURL: previewURL)
-                }
-                */
-                let songs = results.flatMap { (result) -> Song? in
-                    return Song(search: result)
+                    return Song(result: result)
                 }
                 handler(.Success(songs))
             case .Failure(let error):

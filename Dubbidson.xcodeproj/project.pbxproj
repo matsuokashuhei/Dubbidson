@@ -46,6 +46,8 @@
 		A87016641C01A02F003C4983 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A870163D1C019EED003C4983 /* RealmSwift.framework */; };
 		A87016651C01A02F003C4983 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A870163E1C019EED003C4983 /* Result.framework */; };
 		A87016661C01A02F003C4983 /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A870163F1C019EED003C4983 /* SVProgressHUD.framework */; };
+		A870166A1C022FF5003C4983 /* topsongs.json in Resources */ = {isa = PBXBuildFile; fileRef = A87016691C022FF5003C4983 /* topsongs.json */; };
+		A870166C1C023178003C4983 /* search.json in Resources */ = {isa = PBXBuildFile; fileRef = A870166B1C023178003C4983 /* search.json */; };
 		A874F24F1C0194CD00108B08 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = A874F24E1C0194CD00108B08 /* Song.swift */; };
 		A874F2511C01969400108B08 /* SongTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A874F2501C01969400108B08 /* SongTest.swift */; };
 		A87F47001B820E9100A71E82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F46FF1B820E9100A71E82 /* AppDelegate.swift */; };
@@ -142,6 +144,8 @@
 		A870163D1C019EED003C4983 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		A870163E1C019EED003C4983 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		A870163F1C019EED003C4983 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
+		A87016691C022FF5003C4983 /* topsongs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = topsongs.json; sourceTree = "<group>"; };
+		A870166B1C023178003C4983 /* search.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = search.json; sourceTree = "<group>"; };
 		A874F24E1C0194CD00108B08 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		A874F2501C01969400108B08 /* SongTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongTest.swift; sourceTree = "<group>"; };
 		A87F46FA1B820E9100A71E82 /* Dubbidson.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dubbidson.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -309,8 +313,10 @@
 			isa = PBXGroup;
 			children = (
 				A87F47151B820E9100A71E82 /* DubbidsonTests.swift */,
-				A87F47131B820E9100A71E82 /* Supporting Files */,
 				A874F2501C01969400108B08 /* SongTest.swift */,
+				A87016691C022FF5003C4983 /* topsongs.json */,
+				A870166B1C023178003C4983 /* search.json */,
+				A87F47131B820E9100A71E82 /* Supporting Files */,
 			);
 			path = DubbidsonTests;
 			sourceTree = "<group>";
@@ -567,6 +573,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A870166A1C022FF5003C4983 /* topsongs.json in Resources */,
+				A870166C1C023178003C4983 /* search.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
