@@ -55,7 +55,8 @@ class iTunesAPI {
                     return
                 }
                 let songs = entries.flatMap({ (entry) -> Song? in
-                    return Song(entry: entry)
+                    //return Song(entry: entry)
+                    return Song(topsongs: entry)
                 })
                 handler(.Success(songs))
             case .Failure(let error):
@@ -91,6 +92,7 @@ class iTunesAPI {
                     handler(.Success([]))
                     return
                 }
+                /*
                 let songs = results.flatMap { (result) -> Song? in
                     guard
                         let trackId = result["trackId"] as? Int,
@@ -103,6 +105,10 @@ class iTunesAPI {
                         return nil
                     }
                     return Song(id: "\(trackId)", name: trackName, imageURL: artworkURL, artist: artistName, previewURL: previewURL)
+                }
+                */
+                let songs = results.flatMap { (result) -> Song? in
+                    return Song(search: result)
                 }
                 handler(.Success(songs))
             case .Failure(let error):
@@ -126,6 +132,7 @@ class iTunesAPI {
 }
 
 
+/*
 public struct Song {
 
     public let id: String!
@@ -173,3 +180,4 @@ extension Song: Equatable {}
 public func ==(lhs: Song, rhs: Song) -> Bool {
     return lhs.id == rhs.id
 }
+*/

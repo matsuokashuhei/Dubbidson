@@ -48,7 +48,7 @@ extension Video {
         video.id = id
         video.name = song.name
         video.artist = song.artist
-        video.artworkImageURL = song.imageURL.absoluteString
+        video.artworkImageURL = song.artworkURL.absoluteString
         let realm = try! Realm()
         try! realm.write {
             realm.add(video)

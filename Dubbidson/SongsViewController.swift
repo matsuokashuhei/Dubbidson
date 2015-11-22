@@ -263,7 +263,7 @@ extension SongsViewController: SuggestionsViewControllerDelegate {
 // MARK: - Audio player delegate
 extension SongsViewController: AudioPlayerDelegate {
 
-    func readyToPlay(item: AVPlayerItem) {
+    func readyToPlay(item item: AVPlayerItem) {
         player.startToPlay(item)
         if let indexPath = tableView.indexPathForSelectedRow {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! SongTableViewCell
@@ -295,7 +295,7 @@ class SongTableViewCell: UITableViewCell {
     }
 
     func configure(song: Song) {
-        artworkImageView.af_setImageWithURL(song.imageURL)
+        artworkImageView.af_setImageWithURL(song.artworkURL)
         nameLabel.text = song.name
         artistLabel.text = song.artist
         pauseImageView.hidden = true

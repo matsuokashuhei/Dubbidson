@@ -189,7 +189,8 @@ extension RecordViewController: SongViewDelegate {
     }
     
     func readyToPlay(song: Song) {
-        prepareToRecord(audioURL: song.downloadFileURL!)
+        //prepareToRecord(audioURL: song.downloadFileURL!)
+        prepareToRecord(audioURL: song.audioFileURL!)
     }
 
 }
@@ -219,7 +220,7 @@ extension RecordViewController: SongsViewControllerDelegate {
 // MARK: - Audio player delegate
 extension RecordViewController: AudioPlayerDelegate {
 
-    func readyToPlay(item: AVPlayerItem) {
+    func readyToPlay(item item: AVPlayerItem) {
         durationLabel.text = formatTime(item.duration)
         durationLabel.hidden = false
         progressView.progress = 0.0
@@ -269,7 +270,7 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
     func movieRecordingCompleted() {
         logger.verbose("")
         let song = songView.song
-        guard let audioURL = song.downloadFileURL else {
+        guard let audioURL = song.audioFileURL else {
             let error = NSError.errorWithAppError(.OptionalValueIsNone)
             logger.error(error.description)
             Notificator.sharedInstance.showError(error)

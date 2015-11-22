@@ -58,12 +58,14 @@ struct R {
     static var music: UIImage? { return UIImage(named: "music") }
     static var pause: UIImage? { return UIImage(named: "pause") }
     static var play: UIImage? { return UIImage(named: "play") }
+    static var rec: UIImage? { return UIImage(named: "rec") }
     static var recOff: UIImage? { return UIImage(named: "rec-off") }
     static var recOn: UIImage? { return UIImage(named: "rec-on") }
     static var settings: UIImage? { return UIImage(named: "settings") }
     static var thumb_track: UIImage? { return UIImage(named: "thumb_track") }
     static var tv: UIImage? { return UIImage(named: "tv") }
     static var videocam: UIImage? { return UIImage(named: "videocam") }
+    static var watch: UIImage? { return UIImage(named: "watch") }
   }
   
   struct nib {

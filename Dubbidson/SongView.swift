@@ -39,7 +39,7 @@ class SongView: UIView {
 
     var song: Song! {
         didSet {
-            getArtworkImage(song.imageURL)
+            getArtworkImage(song.artworkURL)
             if AudioFile.exists(song.previewURL) {
                 delegate?.readyToPlay(song)
             } else {

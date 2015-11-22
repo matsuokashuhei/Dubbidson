@@ -14,7 +14,7 @@ import Result
 import XCGLogger
 
 protocol AudioPlayerDelegate {
-    func readyToPlay(item: AVPlayerItem)
+    func readyToPlay(item item: AVPlayerItem)
     func endTimeToPlay(item: AVPlayerItem)
     func playbackTime(time: CMTime, duration: CMTime)
 }
@@ -78,7 +78,7 @@ class AudioPlayer: NSObject {
     }
 
     private func readyToPlay(item: AVPlayerItem) {
-        delegate?.readyToPlay(item)
+        delegate?.readyToPlay(item: item)
     }
 
     /**

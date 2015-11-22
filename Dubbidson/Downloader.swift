@@ -21,7 +21,8 @@ class Downloader: NSObject {
 
     func download(song: Song, handler: (Result<NSURL, NSError>) ->()) {
         logger.debug("song: name: \(song.name), title: \(song.artist) をダウンロードします。")
-        guard let destinationURL = song.downloadFileURL else {
+        //guard let destinationURL = song.downloadFileURL else {
+        guard let destinationURL = song.audioFileURL else {
             handler(.Failure(NSError.errorWithAppError(.OptionalValueIsNone)))
             return
         }
