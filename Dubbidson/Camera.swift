@@ -26,11 +26,16 @@ class Camera: NSObject {
     let squareFilter: GPUImageCropFilter
 
     private override init() {
-        camera = GPUImageVideoCamera(sessionPreset: AVCaptureSessionPreset640x480, cameraPosition: .Front)
-        camera.outputImageOrientation = .Portrait
-        camera.horizontallyMirrorFrontFacingCamera = true
-        squareFilter = GPUImageCropFilter(cropRegion: CGRect(x: 0.0, y: 0.125, width: 1.0, height: 0.75))
-        camera.addTarget(squareFilter)
+        #if TARGET_IPHONE_SIMULATOR
+            camera = GPUImageVideoCamera()
+            squareFilter = GPUImageCropFilter(cropRegion: CGRect(x: 0.0, y: 0.125, width: 1.0, height: 0.75))
+        #else
+            camera = GPUImageVideoCamera(sessionPreset: AVCaptureSessionPreset640x480, cameraPosition: .Front)
+            camera.outputImageOrientation = .Portrait
+            camera.horizontallyMirrorFrontFacingCamera = true
+            squareFilter = GPUImageCropFilter(cropRegion: CGRect(x: 0.0, y: 0.125, width: 1.0, height: 0.75))
+            camera.addTarget(squareFilter)
+        #endif
         super.init()
     }
 
