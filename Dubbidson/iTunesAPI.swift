@@ -55,7 +55,6 @@ class iTunesAPI {
                     return
                 }
                 let songs = entries.flatMap({ (entry) -> Song? in
-                    //return Song(entry: entry)
                     return Song(entry: entry)
                 })
                 handler(.Success(songs))
@@ -115,54 +114,3 @@ class iTunesAPI {
         }
     }
 }
-
-
-/*
-public struct Song {
-
-    public let id: String!
-    public let name: String!
-    public let imageURL: NSURL!
-    public let artist: String!
-    public let previewURL: NSURL!
-
-    public var downloadFileURL: NSURL? {
-        return FileIO.sharedInstance.downloadURL(self)
-    }
-
-    public init?(entry: NSDictionary) {
-        if let id = entry["id"] as? NSDictionary, let idattributes = id["attributes"] as? NSDictionary, let imid = idattributes["im:id"] as? String,
-           let imname = entry["im:name"] as? NSDictionary, let name = imname["label"] as? String,
-           let images = entry["im:image"] as? [NSDictionary], let image = images.last, let imageURL = image["label"] as? String,
-           let imartist = entry["im:artist"] as? NSDictionary, let artist = imartist["label"] as? String,
-           let links = entry["link"] as? [NSDictionary], let link = links.last, let linkattributes = link["attributes"] as? NSDictionary, let previewURL = linkattributes["href"] as? String {
-            self.id = imid
-            self.name = name
-            self.imageURL = NSURL(string: imageURL)!
-            self.artist = artist
-            self.previewURL = NSURL(string: previewURL)!
-        } else {
-            id = nil
-            name = nil
-            imageURL = nil
-            artist = nil
-            previewURL = nil
-            return nil
-        }
-    }
-
-    public init(id: String, name: String, imageURL: NSURL, artist: String, previewURL: NSURL) {
-        self.id = id
-        self.name = name
-        self.imageURL = imageURL
-        self.artist = artist
-        self.previewURL = previewURL
-    }
-
-}
-
-extension Song: Equatable {}
-public func ==(lhs: Song, rhs: Song) -> Bool {
-    return lhs.id == rhs.id
-}
-*/

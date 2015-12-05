@@ -28,7 +28,7 @@ protocol Filterable {
     func removeTarget(target: GPUImageInput)
 }
 
-class Filter<T: GPUImageOutput where T: GPUImageInput>: Filterable {
+public class Filter<T: GPUImageOutput where T: GPUImageInput>: Filterable {
 
     let filter: T
     let type: FilterType
@@ -67,6 +67,13 @@ class Filter<T: GPUImageOutput where T: GPUImageInput>: Filterable {
     }
 
 }
+
+/*
+extension Filter: Equatable {}
+public func ==<T: GPUImageOutput where T: GPUImageInput>(lhs: Filter<T>, rhs: Filter<T>) -> Bool {
+    return lhs.name == rhs.name
+}
+*/
 
 func groupFilters(filters: [GPUImageOutput]) -> GPUImageFilterGroup {
     let filterGroup = GPUImageFilterGroup()

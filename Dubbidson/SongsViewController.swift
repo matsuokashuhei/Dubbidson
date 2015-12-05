@@ -12,7 +12,6 @@ import AVFoundation
 import UIKit
 
 import Async
-import Result
 import XCGLogger
 
 protocol SongsViewControllerDelegate {
@@ -172,12 +171,17 @@ extension SongsViewController: UITableViewDataSource {
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        logger.verbose("")
         let song = songs[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.songTableViewCell, forIndexPath: indexPath)!
         cell.configure(song)
-        if let item = player.item, let asset = item.asset as? AVURLAsset {
-            if song.previewURL == asset.URL {
-                cell.pauseImageView.hidden = false
+        if player.isPlaying() {
+            if let item = player.item, let asset = item.asset as? AVURLAsset {
+                logger.verbose("song.previewURL: \(song.previewURL), asset.URL: \(asset.URL)")
+                if song.previewURL == asset.URL {
+                    logger.verbose("cell.pauseImageView.hidden = false")
+                    cell.pauseImageView.hidden = false
+                }
             }
         }
         return cell
@@ -251,7 +255,6 @@ extension SongsViewController: UISearchBarDelegate {
 extension SongsViewController: SuggestionsViewControllerDelegate {
 
     func didSelectSuggestion(suggestion: String) {
-        logger.verbose("keyword: \(suggestion)")
         searchBar.text = suggestion
         hideSuggestionView()
         searchBar.resignFirstResponder()
@@ -268,8 +271,6 @@ extension SongsViewController: AudioPlayerDelegate {
         if let indexPath = tableView.indexPathForSelectedRow {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! SongTableViewCell
             cell.pauseImageView.hidden = false
-            logger.verbose("indexPath: \(indexPath.row)")
-            logger.verbose("cell: \(cell.nameLabel.text)")
         }
     }
 
@@ -295,7 +296,11 @@ class SongTableViewCell: UITableViewCell {
     }
 
     func configure(song: Song) {
-        artworkImageView.af_setImageWithURL(song.artworkURL)
+        if let artwork = song.artwork {
+            artworkImageView.image = artwork
+        } else {
+            artworkImageView.af_setImageWithURL(song.artworkURL)
+        }
         nameLabel.text = song.name
         artistLabel.text = song.artist
         pauseImageView.hidden = true

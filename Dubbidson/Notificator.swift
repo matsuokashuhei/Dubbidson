@@ -14,12 +14,20 @@ class Notificator {
 
     static let sharedInstance = Notificator()
 
+    var isRunning = false
+
     func showLoading() {
-        SVProgressHUD.show()
+        if isRunning == false {
+            SVProgressHUD.show()
+            isRunning = true
+        }
     }
 
     func dismissLoading() {
-        SVProgressHUD.dismiss()
+        if isRunning {
+            SVProgressHUD.dismiss()
+            isRunning = false
+        }
     }
 
     func showError(error: NSError) {

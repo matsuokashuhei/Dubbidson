@@ -23,11 +23,7 @@ protocol VideoPlayerDelegate {
 
 class VideoPlayer: NSObject {
 
-    let logger: XCGLogger = {
-        let logger = XCGLogger.defaultInstance()
-        logger.setup(.Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
-        return logger
-    }()
+    let logger = XCGLogger.defaultInstance()
 
     var delegate: VideoPlayerDelegate?
 
@@ -59,7 +55,7 @@ class VideoPlayer: NSObject {
     }
 
     func prepareToPlay(URL: NSURL) {
-        logger.debug("URL: \(URL)")
+        logger.verbose("URL: \(URL)")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "durationAvailable:", name: MPMovieDurationAvailableNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "readyForDisplay:", name: MPMoviePlayerReadyForDisplayDidChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "mediaIsPreparedToPlayDidChange:", name: MPMediaPlaybackIsPreparedToPlayDidChangeNotification, object: nil)
@@ -68,16 +64,19 @@ class VideoPlayer: NSObject {
     }
 
     func play() {
+        logger.verbose("")
         player.play()
         Timer.start(target: self, selector: "playbackTime")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "playbackDidFinish:", name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
     }
 
     func pause() {
+        logger.verbose("")
         player.pause()
     }
 
     func stop() {
+        logger.verbose("")
         player.stop()
     }
 

@@ -91,13 +91,12 @@ class VideosViewController: UIViewController {
     }
 
     func endEditing() {
-        if let indexPaths = tableView.indexPathsForSelectedRows {
-            let videos = indexPaths.map { (indexPath) -> Video in
-                return self.videos[indexPath.row]
-            }
-            Video.destroy(videos)
-            fetch()
+        tableView.indexPathsForSelectedRows?.map { (indexPath) -> Video in
+            return self.videos[indexPath.row]
+        }.forEach { (video) -> () in
+            DB.sharedInstance.delete(video)
         }
+        fetch()
         setEditing(false, animated: true)
     }
 
@@ -138,6 +137,7 @@ extension VideosViewController {
 extension VideosViewController: UITableViewDelegate {
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        logger.verbose("")
         if tableView.editing {
             return
         } else {
@@ -166,18 +166,21 @@ extension VideosViewController: UITableViewDataSource {
 
 class VideoTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var thumbnailImageView: UIImageView!
+    @IBOutlet weak var thumbnailView: UIImageView!
+    @IBOutlet weak var artworkView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
-    @IBOutlet weak var createdAtLabel: UILabel!
+    @IBOutlet weak var createdLabel: UILabel!
 
     func configure(video: Video) {
-        if let thumbnailURL = video.thumbnailURL {
-            thumbnailImageView.af_setImageWithURL(thumbnailURL)
+        guard let song = video.song else {
+            return
         }
-        nameLabel.text = video.name
-        artistLabel.text = video.artist
-        createdAtLabel.text = formatDate(video.createdAt)
+        thumbnailView.image = video.thumbnail
+        nameLabel.text = song.name
+        artistLabel.text = song.artist
+        artworkView.af_setImageWithURL(song.artworkURL)
+        createdLabel.text = formatDate(video.created)
     }
 
     func formatDate(date: NSDate) -> String {

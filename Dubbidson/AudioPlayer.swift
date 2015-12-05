@@ -25,12 +25,7 @@ class AudioPlayer: NSObject {
 
     static let sharedInstance = AudioPlayer()
 
-    //let logger = XCGLogger.defaultInstance()
-    let logger: XCGLogger = {
-        let logger = XCGLogger.defaultInstance()
-        logger.setup(.Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
-        return logger
-    }()
+    let logger = XCGLogger.defaultInstance()
 
     var player: AVPlayer! {
         didSet {
@@ -64,11 +59,12 @@ class AudioPlayer: NSObject {
     var delegate: AudioPlayerDelegate?
 
     /**
-    音楽を再生する準備をする。
-    
-    :param: URL 再生する音楽のURL
-    */
+     音楽の再生の準備をする。
+     
+     - parameter URL: iTunesのプレビューURL
+     */
     func prepareToPlay(URL: NSURL) {
+        logger.verbose("URL: \(URL)")
         item = AVPlayerItem(URL: URL)
         if let player = self.player {
             player.replaceCurrentItemWithPlayerItem(item)
@@ -78,6 +74,7 @@ class AudioPlayer: NSObject {
     }
 
     private func readyToPlay(item: AVPlayerItem) {
+        logger.verbose("item: \(item)")
         delegate?.readyToPlay(item: item)
     }
 
@@ -184,7 +181,7 @@ extension AudioPlayer {
                 return
             }
             if keyPath == "rate" {
-                logger.verbose("rate: \(player.rate)")
+                logger.verbose("keypath: rate, rate: \(player.rate)")
             }
         }
         if let item = object as? AVPlayerItem {

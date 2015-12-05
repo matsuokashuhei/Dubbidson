@@ -7,10 +7,13 @@
 //
 
 import UIKit
+
+import Alamofire
+import AlamofireImage
 import RealmSwift
 
-class Song: Object {
-    
+public class Song: Object {
+
     dynamic var id = ""
     dynamic var name = ""
     dynamic var artworkURLString = ""
@@ -19,7 +22,11 @@ class Song: Object {
     dynamic var previewURLString = ""
     dynamic var audioFileURLString = ""
     
-    override static func primaryKey() -> String? {
+    override public var description: String {
+        return "id: \(id), name: \(name), artist: \(artist)"
+    }
+
+    override public static func primaryKey() -> String? {
         return "id"
     }
     
@@ -56,7 +63,7 @@ class Song: Object {
         }
         self.previewURLString = previewURL
     }
-    
+
     convenience init?(result item: NSDictionary) {
         self.init()
         guard
@@ -73,26 +80,42 @@ class Song: Object {
         artworkURLString = artworkURL
         previewURLString = previewURL
     }
-    
+
     var artworkURL: NSURL {
         return NSURL(string: artworkURLString)!
     }
     
     var artwork: UIImage? {
-        guard let data = artworkData else {
+        if let data = artworkData {
+            return UIImage(data: data)
+        } else {
             return nil
         }
-        return UIImage(data: data)
     }
-    
+
     var previewURL: NSURL {
         return NSURL(string: previewURLString)!
     }
-    
+
     var audioFileURL: NSURL? {
-        if NSFileManager().fileExistsAtPath(audioFileURLString) {
-            return NSURL(string: audioFileURLString)!
+        // TODO: ファイルの管理を整理する
+        guard let lastPathComponent = previewURL.lastPathComponent else {
+            return nil
         }
-        return nil
+        if #available(iOS 9, *) {
+            return NSURL(fileURLWithPath: lastPathComponent, isDirectory: false, relativeToURL: Directory.Temporary.URL)
+        } else {
+            return NSURL(string: lastPathComponent, relativeToURL: Directory.Temporary.URL)
+        }
     }
+
+    func save() {
+        DB.sharedInstance.save(self)
+    }
+
+}
+
+extension Song: Equatable {}
+public func ==(lhs: Song, rhs: Song) -> Bool {
+    return lhs.id == rhs.id
 }

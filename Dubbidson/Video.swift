@@ -1,33 +1,50 @@
 //
-//  Video.swift
-//  Dubski
+//  Movie.swift
+//  Dubbidson
 //
-//  Created by matsuosh on 2015/08/17.
-//  Copyright (c) 2015年 matsuosh. All rights reserved.
+//  Created by matsuosh on 2015/11/24.
+//  Copyright © 2015年 matsuosh. All rights reserved.
 //
-
-import Foundation
 
 import RealmSwift
+import XCGLogger
 
-final class Video: Object {
+class Video: Object {
 
     dynamic var id = ""
-    dynamic var name = ""
-    dynamic var artist = ""
-    dynamic var artworkImageURL = ""
-    dynamic var createdAt = NSDate()
+    dynamic var fileName = ""
+    dynamic var thumbnailData: NSData? = nil
+    dynamic var song: Song? = nil
+    dynamic var created = NSDate()
+
+    override internal var description: String {
+        return "id: \(id), song: \(song), created: \(created)"
+    }
+
 
     var fileURL: NSURL? {
-        return FileIO.sharedInstance.videoFileURL(self)
+        if #available(iOS 9.0, *) {
+            return NSURL(fileURLWithPath: "\(id).mp4", isDirectory: false, relativeToURL: Directory.Documents.URL)
+        } else {
+            return NSURL(string: "\(id).mp4", relativeToURL: Directory.Documents.URL)
+        }
     }
 
-    var thumbnailURL: NSURL? {
-        return FileIO.sharedInstance.thumbnailURL(self)
+    var thumbnail: UIImage {
+        return UIImage(data: thumbnailData!)!
     }
 
-    override class func primaryKey() -> String {
+    override static func primaryKey() -> String? {
         return "id"
+    }
+
+    func save() {
+        id = fileName.stringByReplacingOccurrencesOfString(".mp4", withString: "")
+        XCGLogger.defaultInstance().verbose("video: \(self)")
+        DB.sharedInstance.save(self)
+    }
+
+    func delete() {
     }
 
 }
@@ -35,40 +52,14 @@ final class Video: Object {
 extension Video {
 
     class func all() -> [Video] {
-        let results = try! Realm().objects(Video).sorted("createdAt", ascending: false)
-        var videos = [Video]()
-        for video in results {
-            videos.append(video)
-        }
-        return videos
-    }
-
-    class func create(id: String, song: Song) -> Video {
-        let video = Video()
-        video.id = id
-        video.name = song.name
-        video.artist = song.artist
-        video.artworkImageURL = song.artworkURL.absoluteString
-        let realm = try! Realm()
-        try! realm.write {
-            realm.add(video)
-        }
-
-        return video
-    }
-
-    class func destroy(videos: [Video]) {
-        let realm = try! Realm()
-        try! realm.write {
-            for video in videos {
-                if let fileURL = video.fileURL {
-                    FileIO.sharedInstance.delete(fileURL)
-                }
-                if let fileURL = video.thumbnailURL {
-                    FileIO.sharedInstance.delete(fileURL)
-                }
-                realm.delete(video)
-            }
+        XCGLogger.defaultInstance().verbose("")
+        do {
+            let realm = try Realm()
+            return realm.objects(Video).sorted("created", ascending: false).map { video in video }
+        } catch let error as NSError {
+            XCGLogger.defaultInstance().error(error.description)
+            return []
         }
     }
+
 }

@@ -1,5 +1,5 @@
 //
-//  RecordViewController.swift
+//  RecorderViewController.swift
 //  Dubski
 //
 //  Created by matsuosh on 2015/08/16.
@@ -16,10 +16,12 @@ import RealmSwift
 import Result
 import XCGLogger
 
-class RecordViewController: UIViewController {
+class RecorderViewController: UIViewController {
 
     @IBOutlet weak var durationLabel: UILabel! {
-        didSet { durationLabel.hidden = true }
+        didSet {
+            durationLabel.hidden = true
+        }
     }
 
     @IBOutlet weak var progressView: UIProgressView! {
@@ -29,16 +31,18 @@ class RecordViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var countdownView: CountdownView! {
+    @IBOutlet weak var songView: SongView! {
         didSet {
-            countdownView.hidden = true
+            songView.hidden = true
         }
     }
 
     @IBOutlet weak var captureView: GPUImageView!
 
-    @IBOutlet weak var songView: SongView! {
-        didSet { songView.delegate = self }
+    @IBOutlet weak var songButton: UIButton! {
+        didSet {
+            songButton.addTarget(self, action: "songButtonTapped", forControlEvents: .TouchUpInside)
+        }
     }
 
     @IBOutlet weak var recordButton: UIButton! {
@@ -49,7 +53,9 @@ class RecordViewController: UIViewController {
     }
 
     @IBOutlet weak var filterButton: UIButton! {
-        didSet { filterButton.addTarget(self, action: "filterButtonTapped", forControlEvents: .TouchUpInside) }
+        didSet {
+            filterButton.addTarget(self, action: "filterButtonTapped", forControlEvents: .TouchUpInside)
+        }
     }
 
     let logger = XCGLogger.defaultInstance()
@@ -61,32 +67,37 @@ class RecordViewController: UIViewController {
             if let prevFilter = oldValue {
                 prevFilter.removeTarget(captureView)
             }
+            filter.addTarget(captureView)
+            recorder.filter = filter
         }
     }
 
-    var writer: GPUImageMovieWriter!
+    let recorder = Recorder()
 
     var isRecording: Bool {
+        logger.verbose("recordButton.imageView?.image == R.image.recOn: \(recordButton.imageView?.image == R.image.recOn)")
         return recordButton.imageView?.image == R.image.recOn
     }
-
-    let audioPlayer = AudioPlayer.sharedInstance
 
 }
 
 // MARK: - View controller
-extension RecordViewController {
+extension RecorderViewController {
 
     override func viewDidLoad() {
+        logger.verbose("")
         super.viewDidLoad()
         // カメラのセットアップ
         filter = filters.first!
         camera.addTarget(filter)
         filter.addTarget(captureView)
         camera.startCapture()
+        // レコーダーのセットアップ
+        recorder.delegate = self
     }
 
     override func viewWillAppear(animated: Bool) {
+        logger.verbose("")
         super.viewWillAppear(animated)
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
     }
@@ -97,10 +108,20 @@ extension RecordViewController {
 
 }
 
-// MARK: - Actions
-extension RecordViewController {
+// MARK: - Actions & Navigation
+extension RecorderViewController {
+
+    func songButtonTapped() {
+        logger.verbose("")
+        // レコーディング中は無効にする。
+        if isRecording {
+            return
+        }
+        performSegueWithIdentifier(R.segue.selectSong, sender: nil)
+    }
 
     func recordButtonTapped() {
+        logger.verbose("")
         if isRecording == false {
             CountdownTimer.sharedInstance.showWithSeconds(4.0) { () in
                 self.startRecording()
@@ -111,17 +132,13 @@ extension RecordViewController {
     }
 
     func filterButtonTapped() {
+        logger.verbose("")
         // レコーディング中は無効にする。
         if isRecording {
             return
         }
         performSegueWithIdentifier(R.segue.selectFilter, sender: nil)
     }
-
-}
-
-// MARK: - Navigation
-extension RecordViewController {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         guard let identifier = segue.identifier else { return }
@@ -133,7 +150,9 @@ extension RecordViewController {
         case R.segue.selectFilter:
             let controller = segue.destinationViewController as! FiltersViewController
             controller.selectedFilter = filter
-            controller.blendImage = songView.artworkImage
+            if let song = recorder.song {
+                controller.blendImage = song.artwork
+            }
             controller.delegate = self
         case R.segue.watchVideo:
             let controller = segue.destinationViewController as! VideoViewController
@@ -146,13 +165,17 @@ extension RecordViewController {
 }
 
 // MARK: - ビデオの保存
-extension RecordViewController {
+extension RecorderViewController {
 
     func startRecording() {
         logger.verbose("")
+        recorder.startRecording(size: captureView.frame.size)
+        // ボタンの画像の変更
+        recordButton.setImage(R.image.recOn, forState: .Normal)
+        /*
         // Writerのの作成
         let fileURL = FileIO.sharedInstance.createRecordingFile()
-        writer = GPUImageMovieWriter(movieURL: fileURL, size: CGSize(width: captureView.frame.size.width, height: captureView.frame.size.width))
+        writer = GPUImageMovieWriter(movieURL: fileURL, size: captureView.frame.size)
         writer.delegate = self
         filter.addTarget(writer)
         // ボタンの画像の変更
@@ -160,81 +183,50 @@ extension RecordViewController {
         // ビデオの書き込みと音楽の再生と開始
         writer.startRecording()
         audioPlayer.startToPlay()
-    }
-
-    func finishRecording() {
-        // Writeの終了
-        writer.finishRecording()
-        filter.removeTarget(writer)
-        // ボタンの画像の変更
-        recordButton.setImage(R.image.recOff, forState: .Normal)
+        */
     }
 
     func stopRecording() {
-        audioPlayer.pause()
-        finishRecording()
+        recorder.stopRecording()
     }
 
 }
 
-// MARK: - Song view delegate
-extension RecordViewController: SongViewDelegate {
-
-    func songViewTapped() {
-        // レコーディング中は無効にする。
-        if isRecording {
-            return
-        }
-        performSegueWithIdentifier(R.segue.selectSong, sender: nil)
-    }
+// MARK: - Recorder Delegate
+extension RecorderViewController: RecorderDelegate {
     
-    func readyToPlay(song: Song) {
-        //prepareToRecord(audioURL: song.downloadFileURL!)
-        prepareToRecord(audioURL: song.audioFileURL!)
-    }
-
-}
-
-// MARK: - Songs view contorller delegate
-extension RecordViewController: SongsViewControllerDelegate {
-
-    func didSelectSong(song: Song) {
-        songView.song = song
-    }
-
-    func didNotSelectSong() {
-        if let song = songView.song {
-            didSelectSong(song)
-        }
-    }
-
-    func prepareToRecord(audioURL audioURL: NSURL) {
-        logger.debug("audioURL: \(audioURL)")
-        recordButton.enabled = true
-        audioPlayer.delegate = self
-        audioPlayer.prepareToPlay(audioURL)
-    }
-
-}
-
-// MARK: - Audio player delegate
-extension RecordViewController: AudioPlayerDelegate {
-
-    func readyToPlay(item item: AVPlayerItem) {
+    func readyToRecord(item: AVPlayerItem) {
+        logger.verbose("")
         durationLabel.text = formatTime(item.duration)
         durationLabel.hidden = false
         progressView.progress = 0.0
         progressView.hidden = false
+        recordButton.enabled = true
+    }
+
+    func startExporting() {
+        Notificator.sharedInstance.showLoading()
+    }
+
+    func recordingCompleted(video: Video) {
+        logger.verbose("")
+        Notificator.sharedInstance.dismissLoading()
+        recordButton.setImage(R.image.recOff, forState: .Normal)
+        self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
+    }
+
+    func recordingFailed(error: NSError) {
+        logger.verbose("")
+        Notificator.sharedInstance.dismissLoading()
+        recordButton.setImage(R.image.recOff, forState: .Normal)
+        Notificator.sharedInstance.showError(error)
     }
 
     func playbackTime(time: CMTime, duration: CMTime) {
+        // logger.verbose("")
         let remainingTime = CMTimeGetSeconds(duration) - CMTimeGetSeconds(time)
         durationLabel.text = formatTime(CMTimeMakeWithSeconds(remainingTime, Int32(NSEC_PER_SEC)))
         progressView.progress = Float(CMTimeGetSeconds(time)) / Float(CMTimeGetSeconds(duration))
-    }
-
-    func endTimeToPlay(item: AVPlayerItem) {
-        finishRecording()
     }
 
     private func formatTime(time: CMTime) -> String {
@@ -245,31 +237,54 @@ extension RecordViewController: AudioPlayerDelegate {
             return "0 sec"
         }
     }
+}
+
+// MARK: - Songs view contorller delegate
+extension RecorderViewController: SongsViewControllerDelegate {
+
+    func didSelectSong(song: Song) {
+        logger.verbose("")
+        songView.configure(song)
+        recorder.song = song
+    }
+
+    func didNotSelectSong() {
+        logger.verbose("")
+        if let song = recorder.song {
+            didSelectSong(song)
+        }
+        if songView.song == nil {
+            songView.hidden = true
+        }
+    }
 
 }
 
 // MARK: - Filters view controller delegate
-extension RecordViewController: FiltersViewControllerDeleage {
+extension RecorderViewController: FiltersViewControllerDeleage {
 
     func didSelectFilter(filter: Filterable) {
-        if self.filter.name != filter.name {
-            self.filter = filter
-            filter.addTarget(captureView)
+        logger.verbose("")
+        if self.filter.name == filter.name {
+            return
         }
+        self.filter = filter
     }
 
     func didDeselectFilter() {
+        logger.verbose("")
         filter.addTarget(captureView)
     }
 
 }
 
 // MARK: - GPU image movie writer delegate
-extension RecordViewController: GPUImageMovieWriterDelegate {
+/*
+extension RecorderViewController: GPUImageMovieWriterDelegate {
 
     func movieRecordingCompleted() {
         logger.verbose("")
-        let song = songView.song
+        let song = recorder.song
         guard let audioURL = song.audioFileURL else {
             let error = NSError.errorWithAppError(.OptionalValueIsNone)
             logger.error(error.description)
@@ -315,35 +330,5 @@ extension RecordViewController: GPUImageMovieWriterDelegate {
         Notificator.sharedInstance.showError(error)
     }
 
-    private func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
-        return Promise { (fulfill, reject) in
-            let asset = AVAsset(URL: videoURL)
-            let generator = AVAssetImageGenerator(asset: asset)
-            generator.appliesPreferredTrackTransform = true
-            do {
-                let image = try generator.copyCGImageAtTime(asset.duration, actualTime: nil)
-                fulfill(UIImage(CGImage: image))
-            } catch let error as NSError {
-                self.logger.error(error.localizedDescription)
-                reject(error)
-            }
-        }
-    }
-
 }
-
-/*
-カメラロールに保存する場合はこれらのメソッドを呼ぶ。
-
 */
-extension RecordViewController {
-
-    func saveToPhotos(videoURL: NSURL) {
-        UISaveVideoAtPathToSavedPhotosAlbum(videoURL.path!, self, "video:didFinishSavingWithError:contextInfo:", nil)
-    }
-
-    func video(videoPath: NSString, didFinishSavingWithError error: NSError!, contextInfo: UnsafeMutablePointer<Void>) {
-        logger.verbose("videoPath: \(videoPath)")
-    }
-
-}

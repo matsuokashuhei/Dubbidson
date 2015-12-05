@@ -1,7 +1,6 @@
 # Network
 github "Alamofire/Alamofire" ~> 3.0
 github "Alamofire/AlamofireImage" ~> 2.0
-#github "onevcat/Kingfisher" >= 1.5
 
 # Logging
 github "emaloney/CleanroomLogger"

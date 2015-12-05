@@ -13,14 +13,45 @@ import Result
 import PromiseKit
 import XCGLogger
 
-class VideoComposer: NSObject {
+class Composer: NSObject {
+
+    static let sharedInstance = Composer()
 
     let logger = XCGLogger.defaultInstance()
 
-    static let sharedInstance = VideoComposer()
+    func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime, handler: (Result<(videoURL: NSURL, thumbnailImage: UIImage), NSError>) -> ()) {
+        compose(videoURL: videoURL, audioURL: audioURL, duration: duration) { (result: Result<NSURL, NSError>) in
+            switch result {
+            case .Success(let fileURL):
+                self.generateThumbnail(fileURL) { result in
+                    switch result {
+                    case .Success(let thumbnailImage):
+                    handler(.Success(videoURL: fileURL, thumbnailImage: thumbnailImage))
+                    case .Failure(let error):
+                        handler(.Failure(error))
+                    }
+                }
+            case .Failure(let error):
+                handler(.Failure(error))
+            }
+        }
+    }
 
-    func mixdown(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime, handler: (Result<NSURL, NSError>) ->()) {
-        logger.verbose("videoURL: \(videoURL.path!), audioURL: \(audioURL.path!)")
+    func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime) -> Promise<(videoURL: NSURL, thumbnailImage: UIImage)> {
+        return Promise { fulfill, reject in
+            self.compose(videoURL: videoURL, audioURL: audioURL, duration: duration) { (result: Result<(videoURL: NSURL, thumbnailImage: UIImage), NSError>) in
+                switch result {
+                case .Success(let value):
+                    fulfill(value)
+                case .Failure(let error):
+                    reject(error)
+                }
+            }
+        }
+    }
+
+    private func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime, handler: (Result<NSURL, NSError>) ->()) {
+        logger.verbose("\nvideoURL: \(videoURL),\n audioURL: \(audioURL),\n duration: \(duration)")
 
         let composition = AVMutableComposition()
 
@@ -38,8 +69,9 @@ class VideoComposer: NSObject {
         let float1 = CMTimeGetSeconds(videoAsset.duration)
         let float2 = CMTimeGetSeconds(duration)
         let float3 = float1 - float2
-        logger.debug("float1: \(float1), float2: \(float2), float3: \(float3)")
-        let atTime = CMTimeMakeWithSeconds(float3, 30)
+        logger.verbose("float1: \(float1), float2: \(float2), float3: \(float3)")
+        //let atTime = CMTimeMakeWithSeconds(float3, 30)
+        let atTime = CMTimeMakeWithSeconds(float3, 60)
         let soundTrack = soundAsset.tracksWithMediaType(AVMediaTypeAudio).first!
         let compositionSoundTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
         try! compositionSoundTrack.insertTimeRange(soundRange, ofTrack: soundTrack, atTime: atTime)
@@ -80,14 +112,22 @@ class VideoComposer: NSObject {
         parentLayer.addSublayer(videoLayer)
         parentLayer.addSublayer(textLayer)
         
-        logger.debug("textLayer.frame: \(textLayer.frame)")
-        logger.debug("videoLayer.frame: \(videoLayer.frame)")
-        logger.debug("parentLayer.frame: \(parentLayer.frame)")
+        logger.verbose("textLayer.frame: \(textLayer.frame)")
+        logger.verbose("videoLayer.frame: \(videoLayer.frame)")
+        logger.verbose("parentLayer.frame: \(parentLayer.frame)")
         
         videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
 
         
-        let URL = FileIO.sharedInstance.createVideoFile()
+        // TODO: ファイル
+        let URL: NSURL
+        if #available(iOS 9, *) {
+            URL = NSURL(fileURLWithPath: videoURL.lastPathComponent!, isDirectory: false, relativeToURL: Directory.Documents.URL)
+        } else {
+            URL = NSURL(string: videoURL.lastPathComponent!, relativeToURL: Directory.Documents.URL)!
+        }
+        
+        //let URL = FileIO.sharedInstance.createVideoFile()
         let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)!
         session.outputURL = URL
         session.outputFileType = AVFileTypeQuickTimeMovie
@@ -97,27 +137,20 @@ class VideoComposer: NSObject {
             case .Completed:
                 handler(.Success(session.outputURL!))
             default:
-                // TODO: エラー処理
-                handler(.Failure(NSError(domain: "", code: 999, userInfo: nil)))
-            }
-            /*
-            if session.status == AVAssetExportSessionStatus.Completed {
-                handler(.Success(session.outputURL))
-            } else {
                 if let error = session.error {
-                    self.logger.error(error.localizedDescription)
+                    self.logger.error(error.description)
                     handler(.Failure(error))
                 } else {
-                    handler(.Failure(NSError()))
+                    self.logger.error("An unknown error has occurred")
+                    handler(.Failure(NSError(domain: "", code: 999, userInfo: nil)))
                 }
             }
-            */
         }
     }
 
-    func mixdown(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime) -> Promise<NSURL> {
+    private func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime) -> Promise<NSURL> {
         return Promise { fulfill, reject in
-            self.mixdown(videoURL: videoURL, audioURL: audioURL, duration: duration) { (result) in
+            self.compose(videoURL: videoURL, audioURL: audioURL, duration: duration) { (result: Result<NSURL, NSError>) in
                 switch result {
                 case .Success(let URL):
                     fulfill(URL)
@@ -128,4 +161,15 @@ class VideoComposer: NSObject {
         }
     }
 
+    private func generateThumbnail(videoURL: NSURL, handler: (Result<UIImage, NSError>) -> ()) {
+        let asset = AVAsset(URL: videoURL)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
+        do {
+            let thumbnail = try generator.copyCGImageAtTime(asset.duration, actualTime: nil)
+            handler(.Success(UIImage(CGImage: thumbnail)))
+        } catch let error as NSError {
+            handler(.Failure(error))
+        }
+    }
 }

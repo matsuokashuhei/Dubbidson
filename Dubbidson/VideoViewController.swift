@@ -43,17 +43,14 @@ class VideoViewController: UIViewController {
         didSet { actionButton.addTarget(self, action: "actionButtonTapped", forControlEvents: .TouchUpInside) }
     }
 
-    let logger: XCGLogger = {
-        let logger = XCGLogger.defaultInstance()
-        logger.setup(.Info, showLogIdentifier: true, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
-        return logger
-    }()
+    let logger = XCGLogger.defaultInstance()
 
     let player = VideoPlayer.sharedInstance
 
     var video: Video!
 
     override func viewDidLoad() {
+        logger.verbose("")
         super.viewDidLoad()
         if let fileURL = video.fileURL {
             player.delegate = self
@@ -62,11 +59,13 @@ class VideoViewController: UIViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
+        logger.verbose("")
         super.viewWillAppear(animated)
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: .None)
     }
 
     override func viewWillDisappear(animated: Bool) {
+        logger.verbose("")
         super.viewWillDisappear(animated)
         if player.state == .Playing {
             player.pause()
@@ -92,14 +91,16 @@ extension VideoViewController {
     }
 
     func actionButtonTapped() {
-        let message = "\(video.name) - \(video.artist)"
-        guard let fileURL = video.fileURL else {
+        guard
+            let song = video.song,
+            let fileURL = video.fileURL else {
             return
         }
+        let message = "\(song.name) - \(song.artist)"
         let controller = UIActivityViewController(activityItems: [message, fileURL], applicationActivities: nil)
         controller.completionWithItemsHandler = { (activityType, completed, info, error) in
             if let error = error {
-                self.logger.error(error.localizedDescription)
+                self.logger.error(error.description)
                 return
             }
             if completed {
@@ -198,8 +199,8 @@ extension VideoViewController: VideoPlayerDelegate {
 
     func readyToPlay(player: VideoPlayer) {
         playButton.enabled = true
-        songNameLabel.text = video.name
-        songArtistLabel.text = video.artist
+        songNameLabel.text = video.song!.name
+        songArtistLabel.text = video.song!.artist
     }
 
     func playbackTime(time: Double, duration: Double) {

@@ -50,7 +50,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
     func setupLogger() {
-        XCGLogger.defaultInstance().setup(.Verbose, showFunctionName: true, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, showDate: true, writeToFile: nil, fileLogLevel: nil)
+        XCGLogger.defaultInstance().setup(
+            .Verbose,
+            showFunctionName: true,
+            showThreadName: true,
+            showLogLevel: true,
+            showFileNames: true,
+            showLineNumbers: true,
+            showDate: true,
+            writeToFile: nil,
+            fileLogLevel: nil
+        )
     }
 
     func setupAppearance() {
