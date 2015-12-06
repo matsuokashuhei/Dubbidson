@@ -161,7 +161,7 @@ class CountdownTimer {
         window.backgroundColor = UIColor.clearColor()
         window.userInteractionEnabled = true
         window.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "stop"))
-        countdownView = CountdownView(frame: CGRect(x: window.bounds.width / 4, y: window.bounds.width / 4, width: window.bounds.width / 2, height: window.bounds.height / 2))
+        countdownView = CountdownView(frame: CGRect(x: window.bounds.width / 4, y: window.bounds.width / 4, width: window.bounds.width / 2, height: window.bounds.width / 2))
         window.addSubview(countdownView)
         window.makeKeyAndVisible()
         countdownView.startWithSeconds(4.0) { () -> () in
