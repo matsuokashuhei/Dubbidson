@@ -99,10 +99,13 @@ class Composer: NSObject {
         //let URL = FileIO.sharedInstance.createVideoFile()
         let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)!
         session.outputURL = URL
-        //session.outputFileType = AVFileTypeQuickTimeMovie
-        session.outputFileType = AVFileTypeMPEG4
+        session.outputFileType = AVFileTypeQuickTimeMovie
+        //session.outputFileType = AVFileTypeMPEG4
         session.videoComposition = videoComposition
         session.exportAsynchronouslyWithCompletionHandler { () -> Void in
+            do {
+                try NSFileManager.defaultManager().removeItemAtURL(videoURL)
+            } catch {}
             switch session.status {
             case .Completed:
                 handler(.Success(session.outputURL!))
