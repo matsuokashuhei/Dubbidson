@@ -143,6 +143,7 @@ extension Recorder: GPUImageMovieWriterDelegate {
         let videoURL = writer.assetWriter.outputURL
         let duration = audioPlayer.item.currentTime()
         delegate?.startExporting()
+        /*
         Composer.sharedInstance.compose(videoURL: videoURL, audioURL: audioURL, duration: duration).then { (videoURL, thumbnailImage) -> () in
             let video: Video = {
                 let video = Video()
@@ -159,6 +160,20 @@ extension Recorder: GPUImageMovieWriterDelegate {
             self.logger.error(error.description)
             self.movieRecordingFailedWithError(error)
         }
+        */
+        let video = Video()
+        video.song = song
+        Composer.sharedInstance.compose(videoURL: videoURL, audioURL: audioURL, duration: duration).then { (URL) in
+            video.fileName = URL.lastPathComponent!
+            return self.generateThumbnail(URL)
+        }.then { (image: UIImage) -> () in
+            video.thumbnailData = UIImagePNGRepresentation(image)
+            video.save()
+            self.delegate?.recordingCompleted(video)
+        }.catch_ { error in
+            self.logger.error(error.description)
+            self.movieRecordingFailedWithError(error)
+        }
     }
 
     func movieRecordingFailedWithError(error: NSError!) {
@@ -167,4 +182,28 @@ extension Recorder: GPUImageMovieWriterDelegate {
         delegate?.recordingFailed(error)
     }
 
+    private func generateThumbnail(videoURL: NSURL, handler: (Result<UIImage, NSError>) -> ()) {
+        let asset = AVAsset(URL: videoURL)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
+        do {
+            let thumbnail = try generator.copyCGImageAtTime(asset.duration, actualTime: nil)
+            handler(.Success(UIImage(CGImage: thumbnail)))
+        } catch let error as NSError {
+            handler(.Failure(error))
+        }
+    }
+
+    private func generateThumbnail(videoURL: NSURL) -> Promise<UIImage> {
+        return Promise { fulfill, reject in
+            generateThumbnail(videoURL) { (result) -> () in
+                switch result {
+                case .Success(let image):
+                    return fulfill(image)
+                case .Failure(let error):
+                    return reject(error)
+                }
+            }
+        }
+    }
 }

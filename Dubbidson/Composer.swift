@@ -19,38 +19,7 @@ class Composer: NSObject {
 
     let logger = XCGLogger.defaultInstance()
 
-    func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime, handler: (Result<(videoURL: NSURL, thumbnailImage: UIImage), NSError>) -> ()) {
-        compose(videoURL: videoURL, audioURL: audioURL, duration: duration) { (result: Result<NSURL, NSError>) in
-            switch result {
-            case .Success(let fileURL):
-                self.generateThumbnail(fileURL) { result in
-                    switch result {
-                    case .Success(let thumbnailImage):
-                    handler(.Success(videoURL: fileURL, thumbnailImage: thumbnailImage))
-                    case .Failure(let error):
-                        handler(.Failure(error))
-                    }
-                }
-            case .Failure(let error):
-                handler(.Failure(error))
-            }
-        }
-    }
-
-    func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime) -> Promise<(videoURL: NSURL, thumbnailImage: UIImage)> {
-        return Promise { fulfill, reject in
-            self.compose(videoURL: videoURL, audioURL: audioURL, duration: duration) { (result: Result<(videoURL: NSURL, thumbnailImage: UIImage), NSError>) in
-                switch result {
-                case .Success(let value):
-                    fulfill(value)
-                case .Failure(let error):
-                    reject(error)
-                }
-            }
-        }
-    }
-
-    private func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime, handler: (Result<NSURL, NSError>) ->()) {
+    func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime, handler: (Result<NSURL, NSError>) ->()) {
         logger.verbose("\nvideoURL: \(videoURL),\n audioURL: \(audioURL),\n duration: \(duration)")
 
         let composition = AVMutableComposition()
@@ -70,13 +39,11 @@ class Composer: NSObject {
         let float2 = CMTimeGetSeconds(duration)
         let float3 = float1 - float2
         logger.verbose("float1: \(float1), float2: \(float2), float3: \(float3)")
-        //let atTime = CMTimeMakeWithSeconds(float3, 30)
         let atTime = CMTimeMakeWithSeconds(float3, 60)
         let soundTrack = soundAsset.tracksWithMediaType(AVMediaTypeAudio).first!
         let compositionSoundTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
         try! compositionSoundTrack.insertTimeRange(soundRange, ofTrack: soundTrack, atTime: atTime)
 
-        
         var videoSize = videoTrack.naturalSize
         let transform = videoTrack.preferredTransform
         if transform.a == 0.0 && transform.d == 0.0 && (transform.b == 1.0 || transform.b == -1.0) && (transform.c == 1.0 || transform.c == -1.0) {
@@ -93,6 +60,7 @@ class Composer: NSObject {
         videoComposition.instructions = [instruction]
         videoComposition.frameDuration = CMTimeMake(1, 30)
 
+        /*
         let textLayer: CATextLayer = {
             let layer = CATextLayer()
             layer.string = "Dubbidson"
@@ -117,6 +85,7 @@ class Composer: NSObject {
         logger.verbose("parentLayer.frame: \(parentLayer.frame)")
         
         videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+        */
 
         
         // TODO: ファイル
@@ -130,7 +99,8 @@ class Composer: NSObject {
         //let URL = FileIO.sharedInstance.createVideoFile()
         let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)!
         session.outputURL = URL
-        session.outputFileType = AVFileTypeQuickTimeMovie
+        //session.outputFileType = AVFileTypeQuickTimeMovie
+        session.outputFileType = AVFileTypeMPEG4
         session.videoComposition = videoComposition
         session.exportAsynchronouslyWithCompletionHandler { () -> Void in
             switch session.status {
@@ -148,7 +118,7 @@ class Composer: NSObject {
         }
     }
 
-    private func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime) -> Promise<NSURL> {
+    func compose(videoURL videoURL: NSURL, audioURL: NSURL, duration: CMTime) -> Promise<NSURL> {
         return Promise { fulfill, reject in
             self.compose(videoURL: videoURL, audioURL: audioURL, duration: duration) { (result: Result<NSURL, NSError>) in
                 switch result {
@@ -158,18 +128,6 @@ class Composer: NSObject {
                     reject(error)
                 }
             }
-        }
-    }
-
-    private func generateThumbnail(videoURL: NSURL, handler: (Result<UIImage, NSError>) -> ()) {
-        let asset = AVAsset(URL: videoURL)
-        let generator = AVAssetImageGenerator(asset: asset)
-        generator.appliesPreferredTrackTransform = true
-        do {
-            let thumbnail = try generator.copyCGImageAtTime(asset.duration, actualTime: nil)
-            handler(.Success(UIImage(CGImage: thumbnail)))
-        } catch let error as NSError {
-            handler(.Failure(error))
         }
     }
 }
