@@ -24,9 +24,16 @@ class VideoViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var songNameLabel: UILabel!
-
-    @IBOutlet weak var songArtistLabel: UILabel!
+    @IBOutlet weak var songView: SongView! {
+        didSet {
+            guard let song = video.song else {
+                return
+            }
+            songView.artworkView.af_setImageWithURL(song.artworkURL)
+            songView.nameLabel.text = song.name
+            songView.artistLabel.text = song.artist
+        }
+    }
 
     @IBOutlet weak var backButton: UIButton! {
         didSet { backButton.addTarget(self, action: "backButtonTapped", forControlEvents: .TouchUpInside) }
@@ -199,8 +206,6 @@ extension VideoViewController: VideoPlayerDelegate {
 
     func readyToPlay(player: VideoPlayer) {
         playButton.enabled = true
-        songNameLabel.text = video.song!.name
-        songArtistLabel.text = video.song!.artist
     }
 
     func playbackTime(time: Double, duration: Double) {
