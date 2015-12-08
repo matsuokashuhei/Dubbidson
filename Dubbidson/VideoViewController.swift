@@ -87,6 +87,12 @@ class VideoViewController: UIViewController {
         }
     }
 
+    override func viewDidDisappear(animated: Bool) {
+        logger.verbose("")
+        super.viewDidDisappear(animated)
+        navigationController?.popViewControllerAnimated(true)
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
