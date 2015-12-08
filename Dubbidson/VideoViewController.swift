@@ -36,7 +36,15 @@ class VideoViewController: UIViewController {
     }
 
     @IBOutlet weak var backButton: UIButton! {
-        didSet { backButton.addTarget(self, action: "backButtonTapped", forControlEvents: .TouchUpInside) }
+        didSet {
+            backButton.addTarget(self, action: "backButtonTapped", forControlEvents: .TouchUpInside)
+        }
+    }
+
+    @IBOutlet weak var recordButton: UIButton! {
+        didSet {
+            recordButton.addTarget(self, action: "recordButtonTapped", forControlEvents: .TouchUpInside)
+        }
     }
 
     @IBOutlet weak var playButton: UIButton! {
@@ -87,6 +95,19 @@ class VideoViewController: UIViewController {
 
 // MARK: - Actions
 extension VideoViewController {
+
+    func recordButtonTapped() {
+        if let viewControllers = tabBarController?.viewControllers {
+            if let viewController = viewControllers.first as? UINavigationController {
+                for childViewController in viewController.childViewControllers {
+                    if let recorderViewController = childViewController as? RecorderViewController {
+                        recorderViewController.didSelectSong(video.song!)
+                    }
+                }
+            }
+        }
+        self.tabBarController?.selectedIndex = 0
+    }
 
     func playButtonTapped() {
         switch player.state {
@@ -141,6 +162,17 @@ extension VideoViewController {
 
     func backButtonTapped() {
         navigationController?.popViewControllerAnimated(true)
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let identifier = segue.identifier else { return }
+        switch identifier {
+        case R.segue.recordVideo:
+            let controller = segue.destinationViewController as! RecorderViewController
+            controller.video = video
+        default:
+            super.prepareForSegue(segue, sender: sender)
+        }
     }
 
     func beginSeeking(sender: UISlider) {
@@ -222,3 +254,4 @@ extension VideoViewController: VideoPlayerDelegate {
     }
 
 }
+

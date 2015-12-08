@@ -79,6 +79,7 @@ class RecorderViewController: UIViewController {
         return recordButton.imageView?.image == R.image.recOn
     }
 
+    var video: Video?
 }
 
 // MARK: - View controller

@@ -77,6 +77,7 @@ struct R {
   }
   
   struct segue {
+    static var recordVideo: String { return "recordVideo" }
     static var selectFilter: String { return "selectFilter" }
     static var selectSong: String { return "selectSong" }
     static var watchVideo: String { return "watchVideo" }
