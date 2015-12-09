@@ -60,23 +60,24 @@ class Composer: NSObject {
         videoComposition.instructions = [instruction]
         videoComposition.frameDuration = CMTimeMake(1, 30)
 
-        /*
         let textLayer: CATextLayer = {
             let layer = CATextLayer()
             layer.string = "Dubbidson"
-            layer.font = R.font.teXGyreAdventorRegular(size: 10.0)!
-            layer.fontSize = videoSize.width / 10.0
+            //layer.font = R.font.teXGyreAdventorRegular(size: 10.0)!
+            layer.font = UIFont(name: "Avenir Next", size: 12.0)!
+            layer.fontSize = videoSize.width / 15.0
             layer.opacity = 0.5
             layer.alignmentMode = kCAAlignmentRight
-            layer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height / 8.0)
+            layer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height / 13.0)
             //layer.bounds = CGRectMake(0, 0, videoSize.width, videoSize.height)
             return layer
         }()
-        let parentLayer = CALayer()
-        parentLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height)
-        
+    
         let videoLayer = CALayer()
         videoLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height)
+
+        let parentLayer = CALayer()
+        parentLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height)
         parentLayer.addSublayer(videoLayer)
         parentLayer.addSublayer(textLayer)
         
@@ -85,7 +86,6 @@ class Composer: NSObject {
         logger.verbose("parentLayer.frame: \(parentLayer.frame)")
         
         videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
-        */
 
         
         // TODO: ファイル
