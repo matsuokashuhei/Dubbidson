@@ -151,8 +151,8 @@ extension RecorderViewController {
         case R.segue.selectFilter:
             let controller = segue.destinationViewController as! FiltersViewController
             controller.selectedFilter = filter
-            if let song = recorder.song {
-                controller.blendImage = song.artwork
+            if let artwork = songView.artworkView.image {
+                controller.blendImage = artwork
             }
             controller.delegate = self
         case R.segue.watchVideo:
