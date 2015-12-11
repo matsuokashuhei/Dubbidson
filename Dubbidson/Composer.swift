@@ -29,7 +29,13 @@ class Composer: NSObject {
         let videoRange = CMTimeRangeMake(kCMTimeZero, videoAsset.duration)
         let videoTrack = videoAsset.tracksWithMediaType(AVMediaTypeVideo).first!
         let compositionVideoTrack = composition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: CMPersistentTrackID())
-        try! compositionVideoTrack.insertTimeRange(videoRange, ofTrack: videoTrack, atTime: kCMTimeZero)
+        do {
+            try compositionVideoTrack.insertTimeRange(videoRange, ofTrack: videoTrack, atTime: kCMTimeZero)
+        } catch let error as NSError {
+            logger.error(error.description)
+            handler(.Failure(error))
+            return
+        }
 
         // 音声のトラックの作成
         let soundAsset = AVURLAsset(URL: audioURL, options: nil)
@@ -42,7 +48,13 @@ class Composer: NSObject {
         let atTime = CMTimeMakeWithSeconds(float3, 60)
         let soundTrack = soundAsset.tracksWithMediaType(AVMediaTypeAudio).first!
         let compositionSoundTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
-        try! compositionSoundTrack.insertTimeRange(soundRange, ofTrack: soundTrack, atTime: atTime)
+        do {
+            try compositionSoundTrack.insertTimeRange(soundRange, ofTrack: soundTrack, atTime: atTime)
+        } catch let error as NSError {
+            logger.error(error.description)
+            handler(.Failure(error))
+            return
+        }
 
         var videoSize = videoTrack.naturalSize
         let transform = videoTrack.preferredTransform
@@ -105,7 +117,9 @@ class Composer: NSObject {
         session.exportAsynchronouslyWithCompletionHandler { () -> Void in
             do {
                 try NSFileManager.defaultManager().removeItemAtURL(videoURL)
-            } catch {}
+            } catch let error as NSError {
+                self.logger.error(error.description)
+            }
             switch session.status {
             case .Completed:
                 handler(.Success(session.outputURL!))
