@@ -90,7 +90,7 @@ class VideoViewController: UIViewController {
     override func viewDidDisappear(animated: Bool) {
         logger.verbose("")
         super.viewDidDisappear(animated)
-        navigationController?.popViewControllerAnimated(true)
+        //navigationController?.popViewControllerAnimated(true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -103,6 +103,14 @@ class VideoViewController: UIViewController {
 extension VideoViewController {
 
     func recordButtonTapped() {
+        logger.verbose("tabBarController?.selectedIndex: \(tabBarController?.selectedIndex)")
+        guard let selectedIndex = tabBarController?.selectedIndex else {
+            return
+        }
+        if selectedIndex == 0 {
+            backButtonTapped()
+            return
+        }
         if let viewControllers = tabBarController?.viewControllers {
             if let viewController = viewControllers.first as? UINavigationController {
                 for childViewController in viewController.childViewControllers {
@@ -112,7 +120,7 @@ extension VideoViewController {
                 }
             }
         }
-        self.tabBarController?.selectedIndex = 0
+        tabBarController?.selectedIndex = 0
     }
 
     func playButtonTapped() {
