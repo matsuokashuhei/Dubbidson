@@ -76,7 +76,7 @@ class SongsViewController: UIViewController {
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        Notificator.sharedInstance.dismissLoading()
+        HUD.sharedInstance.dismissLoading()
         player.pause()
     }
 
@@ -90,26 +90,26 @@ class SongsViewController: UIViewController {
 extension SongsViewController {
 
     func fetch() {
-        Notificator.sharedInstance.showLoading()
+        HUD.sharedInstance.showLoading()
         iTunesAPI.sharedInstance.topsongs().then { [weak self] songs -> () in
             self?.songs = songs
         }.finally {
-            Notificator.sharedInstance.dismissLoading()
+            HUD.sharedInstance.dismissLoading()
         }.catch_ { error in
             self.logger.error(error.localizedDescription)
-            Notificator.sharedInstance.showError(error)
+            HUD.sharedInstance.showError(error)
         }
     }
 
     func search(keyword: String) {
-        Notificator.sharedInstance.showLoading()
+        HUD.sharedInstance.showLoading()
         iTunesAPI.sharedInstance.search(keyword: keyword).then { [weak self] songs -> () in
             self?.songs = songs
         }.finally {
-            Notificator.sharedInstance.dismissLoading()
+            HUD.sharedInstance.dismissLoading()
         }.catch_ { error in
             self.logger.error(error.localizedDescription)
-            Notificator.sharedInstance.showError(error)
+            HUD.sharedInstance.showError(error)
         }
     }
 

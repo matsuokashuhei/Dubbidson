@@ -70,7 +70,8 @@ class CountdownView: UIView {
     }
 
     private func drawCircle(rect: CGRect) {
-        UIColor.redColor().setStroke()
+        //UIColor.redColor().setStroke()
+        UIColor.mainColor.setStroke()
         let lineWidth: CGFloat = 10.0
         let radius = CGRectGetWidth(rect) / 2.0 - lineWidth / 2.0
         let path = UIBezierPath(arcCenter: CGPoint(x: CGRectGetMidX(rect), y: CGRectGetMidY(rect)), radius: radius, startAngle: -CGFloat(M_PI_2), endAngle: CGFloat(degreesToRadians(degrees)), clockwise: true)
@@ -81,11 +82,12 @@ class CountdownView: UIView {
 
     private func drawTime(rect: CGRect) {
         let text: NSString = NSString(format: "%.0f", timeInSeconds)
-        let font = UIFont(name: "AvenirNext-Regular", size: 100.0)!
+        //let font = UIFont(name: "AvenirNext-Regular", size: 100.0)!
+        let font = UIFont.systemFontOfSize(100)
         let size = text.sizeWithAttributes([NSFontAttributeName: font])
         let attributes = [
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: UIColor.redColor(),
+            NSForegroundColorAttributeName: UIColor.mainColor,
             NSParagraphStyleAttributeName: NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as! NSMutableParagraphStyle
         ]
         let textRect = CGRectInset(rect, (CGRectGetWidth(rect) - size.width) / 2.0, (CGRectGetHeight(rect) - size.height) / 2.0)

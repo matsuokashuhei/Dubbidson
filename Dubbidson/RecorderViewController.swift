@@ -75,8 +75,8 @@ class RecorderViewController: UIViewController {
     let recorder = Recorder()
 
     var isRecording: Bool {
-        logger.verbose("recordButton.imageView?.image == R.image.recOn: \(recordButton.imageView?.image == R.image.recOn)")
-        return recordButton.imageView?.image == R.image.recOn
+        logger.verbose("recordButton.imageView?.image == R.image.recStopButton: \(recordButton.imageView?.image == R.image.recStopButton)")
+        return recordButton.imageView?.image == R.image.recStopButton
     }
 
     var video: Video?
@@ -172,7 +172,7 @@ extension RecorderViewController {
         logger.verbose("")
         recorder.startRecording(size: captureView.frame.size)
         // ボタンの画像の変更
-        recordButton.setImage(R.image.recOn, forState: .Normal)
+        recordButton.setImage(R.image.recStopButton, forState: .Normal)
         /*
         // Writerのの作成
         let fileURL = FileIO.sharedInstance.createRecordingFile()
@@ -206,21 +206,21 @@ extension RecorderViewController: RecorderDelegate {
     }
 
     func startExporting() {
-        Notificator.sharedInstance.showLoading()
+        HUD.sharedInstance.showLoading()
     }
 
     func recordingCompleted(video: Video) {
         logger.verbose("")
-        Notificator.sharedInstance.dismissLoading()
-        recordButton.setImage(R.image.recOff, forState: .Normal)
+        HUD.sharedInstance.dismissLoading()
+        recordButton.setImage(R.image.recStartButton, forState: .Normal)
         self.performSegueWithIdentifier(R.segue.watchVideo, sender: video)
     }
 
     func recordingFailed(error: NSError) {
         logger.verbose("")
-        Notificator.sharedInstance.dismissLoading()
-        recordButton.setImage(R.image.recOff, forState: .Normal)
-        Notificator.sharedInstance.showError(error)
+        HUD.sharedInstance.dismissLoading()
+        recordButton.setImage(R.image.recStartButton, forState: .Normal)
+        HUD.sharedInstance.showError(error)
     }
 
     func playbackTime(time: CMTime, duration: CMTime) {

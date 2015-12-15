@@ -16,54 +16,38 @@ struct R {
     static var lookup_miss_etikatePng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_miss_etikate", withExtension: "png") }
     static var lookup_soft_elegance_1Png: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_soft_elegance_1", withExtension: "png") }
     static var lookup_soft_elegance_2Png: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_soft_elegance_2", withExtension: "png") }
-    static var texgyreadventorBoldOtf: NSURL? { return NSBundle.mainBundle().URLForResource("texgyreadventor-bold", withExtension: "otf") }
-    static var texgyreadventorBolditalicOtf: NSURL? { return NSBundle.mainBundle().URLForResource("texgyreadventor-bolditalic", withExtension: "otf") }
-    static var texgyreadventorItalicOtf: NSURL? { return NSBundle.mainBundle().URLForResource("texgyreadventor-italic", withExtension: "otf") }
-    static var texgyreadventorRegularOtf: NSURL? { return NSBundle.mainBundle().URLForResource("texgyreadventor-regular", withExtension: "otf") }
   }
   
   struct font {
-    static func teXGyreAdventorBold(size size: CGFloat) -> UIFont? {
-      return UIFont(name: "TeXGyreAdventor-Bold", size: size)
-    }
     
-    static func teXGyreAdventorBolditalic(size size: CGFloat) -> UIFont? {
-      return UIFont(name: "TeXGyreAdventor-BoldItalic", size: size)
-    }
-    
-    static func teXGyreAdventorItalic(size size: CGFloat) -> UIFont? {
-      return UIFont(name: "TeXGyreAdventor-Italic", size: size)
-    }
-    
-    static func teXGyreAdventorRegular(size size: CGFloat) -> UIFont? {
-      return UIFont(name: "TeXGyreAdventor-Regular", size: size)
-    }
   }
   
   struct image {
-    static var action: UIImage? { return UIImage(named: "action") }
-    static var album: UIImage? { return UIImage(named: "album") }
+    static var actionButton: UIImage? { return UIImage(named: "action-button") }
+    static var appLogo: UIImage? { return UIImage(named: "app-logo") }
     static var bar: UIImage? { return UIImage(named: "bar") }
     static var check: UIImage? { return UIImage(named: "check") }
     static var chevron_left: UIImage? { return UIImage(named: "chevron_left") }
     static var close: UIImage? { return UIImage(named: "close") }
-    static var filter: UIImage? { return UIImage(named: "filter") }
+    static var filterButton: UIImage? { return UIImage(named: "filter-button") }
     static var lookup: UIImage? { return UIImage(named: "lookup") }
     static var lookup_amatorka: UIImage? { return UIImage(named: "lookup_amatorka") }
     static var lookup_miss_etikate: UIImage? { return UIImage(named: "lookup_miss_etikate") }
     static var lookup_soft_elegance_1: UIImage? { return UIImage(named: "lookup_soft_elegance_1") }
     static var lookup_soft_elegance_2: UIImage? { return UIImage(named: "lookup_soft_elegance_2") }
-    static var maximum_track: UIImage? { return UIImage(named: "maximum_track") }
+    static var maximumTrack: UIImage? { return UIImage(named: "maximum-track") }
+    static var minimumTrack: UIImage? { return UIImage(named: "minimum-track") }
     static var minimum_track: UIImage? { return UIImage(named: "minimum_track") }
-    static var music: UIImage? { return UIImage(named: "music") }
-    static var pause: UIImage? { return UIImage(named: "pause") }
-    static var play: UIImage? { return UIImage(named: "play") }
-    static var recOff: UIImage? { return UIImage(named: "rec-off") }
-    static var recOn: UIImage? { return UIImage(named: "rec-on") }
-    static var settings: UIImage? { return UIImage(named: "settings") }
-    static var thumb_track: UIImage? { return UIImage(named: "thumb_track") }
-    static var tv: UIImage? { return UIImage(named: "tv") }
-    static var videocam: UIImage? { return UIImage(named: "videocam") }
+    static var pauseButton: UIImage? { return UIImage(named: "pause-button") }
+    static var playButton: UIImage? { return UIImage(named: "play-button") }
+    static var reRecordButton: UIImage? { return UIImage(named: "re-record-button") }
+    static var recStartButton: UIImage? { return UIImage(named: "rec-start-button") }
+    static var recStopButton: UIImage? { return UIImage(named: "rec-stop-button") }
+    static var recordBarItem: UIImage? { return UIImage(named: "record-bar-item") }
+    static var settingsBarItem: UIImage? { return UIImage(named: "settings-bar-item") }
+    static var songButton: UIImage? { return UIImage(named: "song-button") }
+    static var thumbTrack: UIImage? { return UIImage(named: "thumb-track") }
+    static var watchBarItem: UIImage? { return UIImage(named: "watch-bar-item") }
   }
   
   struct nib {
@@ -90,18 +74,20 @@ struct R {
       static var suggestionsViewController: Dubbidson.SuggestionsViewController? { return instance.instantiateViewControllerWithIdentifier("SuggestionsViewController") as? Dubbidson.SuggestionsViewController }
       
       static func validateImages() {
-        assert(UIImage(named: "action") != nil, "[R.swift] Image named 'action' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "chevron_left") != nil, "[R.swift] Image named 'chevron_left' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "pause") != nil, "[R.swift] Image named 'pause' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "rec-off") != nil, "[R.swift] Image named 'rec-off' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "song-button") != nil, "[R.swift] Image named 'song-button' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "tv") != nil, "[R.swift] Image named 'tv' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "rec-start-button") != nil, "[R.swift] Image named 'rec-start-button' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "settings-bar-item") != nil, "[R.swift] Image named 'settings-bar-item' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "filter-button") != nil, "[R.swift] Image named 'filter-button' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "pause-button") != nil, "[R.swift] Image named 'pause-button' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "record-bar-item") != nil, "[R.swift] Image named 'record-bar-item' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "chevron_left") != nil, "[R.swift] Image named 'chevron_left' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "watch-bar-item") != nil, "[R.swift] Image named 'watch-bar-item' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "close") != nil, "[R.swift] Image named 'close' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "filter") != nil, "[R.swift] Image named 'filter' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "play") != nil, "[R.swift] Image named 'play' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "videocam") != nil, "[R.swift] Image named 'videocam' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "album") != nil, "[R.swift] Image named 'album' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "play-button") != nil, "[R.swift] Image named 'play-button' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "action-button") != nil, "[R.swift] Image named 'action-button' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "check") != nil, "[R.swift] Image named 'check' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "settings") != nil, "[R.swift] Image named 'settings' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "re-record-button") != nil, "[R.swift] Image named 're-record-button' is used in storyboard 'Main', but couldn't be loaded.")
       }
       
       static func validateViewControllers() {

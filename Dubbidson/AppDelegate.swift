@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         setupLogger()
-        setupAppearance()
+        Appearance.sharedInstance.apply()
         return true
     }
 
@@ -63,16 +63,4 @@ extension AppDelegate {
         )
     }
 
-    func setupAppearance() {
-        // Tab bar
-        UITabBar.appearance().backgroundColor = UIColor.whiteColor()
-        UITabBar.appearance().backgroundImage = UIImage()
-        UITabBar.appearance().shadowImage = UIImage()
-        // Navigation bar
-        UINavigationBar.appearance().backgroundColor = UIColor.whiteColor()
-        // Slider
-        UISlider.appearance().setMinimumTrackImage(R.image.minimum_track?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        UISlider.appearance().setMaximumTrackImage(R.image.maximum_track, forState: .Normal)
-        UISlider.appearance().setThumbImage(R.image.thumb_track?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-    }
 }

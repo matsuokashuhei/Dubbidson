@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C2FFA4E2ADFBB9D46D0D688 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4ABA285C2C5B782DDC6701D /* Pods.framework */; };
 		A80A8F9D1BBEF6860087383C /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = A80A8F9C1BBEF6860087383C /* Cartfile */; };
+		A81824C21C1F162000D5DF91 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81824C11C1F162000D5DF91 /* Appearance.swift */; };
 		A8237BD71B88700F00ED8BA1 /* NetworkIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */; };
 		A86FA8F91C12CE3D004C733C /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86FA8F81C12CE3D004C733C /* File.swift */; };
 		A87016411C019EED003C4983 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A87016341C019EED003C4983 /* Alamofire.framework */; };
@@ -76,10 +77,6 @@
 		A87F47581B824D7300A71E82 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87F47571B824D7300A71E82 /* VideosViewController.swift */; };
 		A888D0FF1B99DF83007964E8 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A888D0FE1B99DF83007964E8 /* BannerView.swift */; };
 		A88916A41B91EA620065E1D2 /* SuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88916A31B91EA620065E1D2 /* SuggestionsViewController.swift */; };
-		A8895F861B8F6B7E00AFC153 /* texgyreadventor-bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F821B8F6B3C00AFC153 /* texgyreadventor-bold.otf */; };
-		A8895F871B8F6B7E00AFC153 /* texgyreadventor-bolditalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F831B8F6B3C00AFC153 /* texgyreadventor-bolditalic.otf */; };
-		A8895F881B8F6B7E00AFC153 /* texgyreadventor-italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F841B8F6B3C00AFC153 /* texgyreadventor-italic.otf */; };
-		A8895F891B8F6B7E00AFC153 /* texgyreadventor-regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8895F851B8F6B3C00AFC153 /* texgyreadventor-regular.otf */; };
 		A8A68CB01C0C8D3300DB83F2 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A68CAF1C0C8D3300DB83F2 /* Platform.swift */; };
 		A8AE79E31B92162A009D337E /* Notificator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AE79E21B92162A009D337E /* Notificator.swift */; };
 		A8AEE9261C02E68900700FDD /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AEE9251C02E68900700FDD /* Recorder.swift */; };
@@ -131,6 +128,7 @@
 /* Begin PBXFileReference section */
 		4AF7E5E89765120C201C4C07 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A80A8F9C1BBEF6860087383C /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		A81824C11C1F162000D5DF91 /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkIndicator.swift; sourceTree = "<group>"; };
 		A86FA8F81C12CE3D004C733C /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		A87016341C019EED003C4983 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
@@ -178,10 +176,6 @@
 		A87F47571B824D7300A71E82 /* VideosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		A888D0FE1B99DF83007964E8 /* BannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		A88916A31B91EA620065E1D2 /* SuggestionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewController.swift; sourceTree = "<group>"; };
-		A8895F821B8F6B3C00AFC153 /* texgyreadventor-bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-bold.otf"; sourceTree = "<group>"; };
-		A8895F831B8F6B3C00AFC153 /* texgyreadventor-bolditalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-bolditalic.otf"; sourceTree = "<group>"; };
-		A8895F841B8F6B3C00AFC153 /* texgyreadventor-italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-italic.otf"; sourceTree = "<group>"; };
-		A8895F851B8F6B3C00AFC153 /* texgyreadventor-regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "texgyreadventor-regular.otf"; sourceTree = "<group>"; };
 		A8A68CAF1C0C8D3300DB83F2 /* Platform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		A8AE79E21B92162A009D337E /* Notificator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notificator.swift; sourceTree = "<group>"; };
 		A8AEE9251C02E68900700FDD /* Recorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
@@ -270,6 +264,13 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A81824C01C1F152700D5DF91 /* Appearanc */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Appearanc;
+			sourceTree = "<group>";
+		};
 		A87F46F11B820E9100A71E82 = {
 			isa = PBXGroup;
 			children = (
@@ -348,7 +349,6 @@
 		A87F47201B8211DD00A71E82 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A8895F811B8F6B2C00AFC153 /* Fonts */,
 				A87F474B1B82131200A71E82 /* Filter Images */,
 				A8C07C441B83812200CB244A /* Main.storyboard */,
 				A87F47061B820E9100A71E82 /* Images.xcassets */,
@@ -375,6 +375,7 @@
 		A87F47221B8211F800A71E82 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A81824C01C1F152700D5DF91 /* Appearanc */,
 				A87F472A1B82126400A71E82 /* FiltersView.swift */,
 				A87F472B1B82126400A71E82 /* FilterView.swift */,
 				A87F472C1B82126400A71E82 /* SongView.swift */,
@@ -423,6 +424,7 @@
 				A8AE79E21B92162A009D337E /* Notificator.swift */,
 				A8A68CAF1C0C8D3300DB83F2 /* Platform.swift */,
 				A86FA8F81C12CE3D004C733C /* File.swift */,
+				A81824C11C1F162000D5DF91 /* Appearance.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -437,17 +439,6 @@
 				A87F47451B82130D00A71E82 /* lookup.png */,
 			);
 			name = "Filter Images";
-			sourceTree = "<group>";
-		};
-		A8895F811B8F6B2C00AFC153 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				A8895F821B8F6B3C00AFC153 /* texgyreadventor-bold.otf */,
-				A8895F831B8F6B3C00AFC153 /* texgyreadventor-bolditalic.otf */,
-				A8895F841B8F6B3C00AFC153 /* texgyreadventor-italic.otf */,
-				A8895F851B8F6B3C00AFC153 /* texgyreadventor-regular.otf */,
-			);
-			name = Fonts;
 			sourceTree = "<group>";
 		};
 		A8906B911B95DEF700E31244 /* Extensions */ = {
@@ -554,10 +545,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8895F861B8F6B7E00AFC153 /* texgyreadventor-bold.otf in Resources */,
-				A8895F871B8F6B7E00AFC153 /* texgyreadventor-bolditalic.otf in Resources */,
-				A8895F881B8F6B7E00AFC153 /* texgyreadventor-italic.otf in Resources */,
-				A8895F891B8F6B7E00AFC153 /* texgyreadventor-regular.otf in Resources */,
 				A80A8F9D1BBEF6860087383C /* Cartfile in Resources */,
 				A87F470A1B820E9100A71E82 /* LaunchScreen.xib in Resources */,
 				A8C07C451B83812200CB244A /* Main.storyboard in Resources */,
@@ -680,6 +667,7 @@
 				A87F47291B82125300A71E82 /* SongsViewController.swift in Sources */,
 				A8BB5D791C03789500EF6060 /* Video.swift in Sources */,
 				A87F47561B8236F600A71E82 /* R.generated.swift in Sources */,
+				A81824C21C1F162000D5DF91 /* Appearance.swift in Sources */,
 				A86FA8F91C12CE3D004C733C /* File.swift in Sources */,
 				A874F24F1C0194CD00108B08 /* Song.swift in Sources */,
 				A87F47531B8232DE00A71E82 /* VideoPlayer.swift in Sources */,

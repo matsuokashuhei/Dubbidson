@@ -10,9 +10,9 @@ import Foundation
 
 import SVProgressHUD
 
-class Notificator {
+class HUD {
 
-    static let sharedInstance = Notificator()
+    static let sharedInstance = HUD()
 
     var isRunning = false
 

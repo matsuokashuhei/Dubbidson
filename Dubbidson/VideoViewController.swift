@@ -218,9 +218,9 @@ extension VideoViewController: VideoPlayerDelegate {
     func playbackState(state: MPMoviePlaybackState) {
         switch state {
         case .Playing:
-            playButton.setImage(R.image.pause, forState: .Normal)
+            playButton.setImage(R.image.pauseButton, forState: .Normal)
         default:
-            playButton.setImage(R.image.play, forState: .Normal)
+            playButton.setImage(R.image.playButton, forState: .Normal)
         }
     }
 

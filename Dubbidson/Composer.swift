@@ -74,9 +74,10 @@ class Composer: NSObject {
 
         let textLayer: CATextLayer = {
             let layer = CATextLayer()
-            layer.string = "Dubbidson"
+            //layer.string = "Dubbidson"
+            layer.string = "DUBBIDSON"
             //layer.font = R.font.teXGyreAdventorRegular(size: 10.0)!
-            layer.font = UIFont(name: "Avenir Next", size: 12.0)!
+            //layer.font = UIFont(name: "Avenir Next", size: 12.0)!
             layer.fontSize = videoSize.width / 15.0
             layer.opacity = 0.5
             layer.alignmentMode = kCAAlignmentRight
@@ -128,8 +129,9 @@ class Composer: NSObject {
                     self.logger.error(error.description)
                     handler(.Failure(error))
                 } else {
-                    self.logger.error("An unknown error has occurred")
-                    handler(.Failure(NSError(domain: "", code: 999, userInfo: nil)))
+                    let error = NSError.errorWithAppError(.Unknown)
+                    self.logger.error(error.description)
+                    handler(.Failure(error))
                 }
             }
         }
