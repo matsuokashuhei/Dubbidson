@@ -11,6 +11,7 @@ github "BradLarson/GPUImage"
 
 # UI
 github "TransitApp/SVProgressHUD"
+github "ninjaprox/NVActivityIndicatorView"
 
 # DB
 github "realm/realm-cocoa"
