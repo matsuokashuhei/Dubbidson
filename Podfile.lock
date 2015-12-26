@@ -2,18 +2,15 @@ PODS:
   - AsyncSwift (1.6.4)
   - Google-Mobile-Ads-SDK (7.5.2)
   - R.swift (0.10.0)
-  - XCGLogger (3.1.1)
 
 DEPENDENCIES:
   - AsyncSwift
   - Google-Mobile-Ads-SDK (~> 7.0)
   - R.swift
-  - XCGLogger
 
 SPEC CHECKSUMS:
   AsyncSwift: 3c90beed237324f1b57e1f1c414dc5501985d208
   Google-Mobile-Ads-SDK: 24a8ddfc0bcfec281960c5d88f75327df0d86b00
   R.swift: 35b88417f9f9ef7f5f9af4ec775df5e38fa1565a
-  XCGLogger: e111a313f609432394c3ae378d99511634fd2e3c
 
 COCOAPODS: 0.39.0

@@ -4,7 +4,7 @@ github "Alamofire/AlamofireImage" ~> 2.0
 
 # Logging
 github "emaloney/CleanroomLogger"
-#github "DaveWoodCom/XCGLogger"
+github "DaveWoodCom/XCGLogger"
 
 # AV
 github "BradLarson/GPUImage"

@@ -9,7 +9,7 @@
 import Foundation
 
 import SVProgressHUD
-import NVActivityIndicatorView
+//import NVActivityIndicatorView
 
 class HUD {
 
