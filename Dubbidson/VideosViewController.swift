@@ -2,57 +2,85 @@
 //  VideosViewController.swift
 //  Dubbidson
 //
-//  Created by matsuosh on 2015/08/18.
-//  Copyright (c) 2015年 matsuosh. All rights reserved.
+//  Created by matsuosh on 2015/12/16.
+//  Copyright © 2015年 matsuosh. All rights reserved.
 //
 
 import UIKit
+
 import XCGLogger
 
 class VideosViewController: UIViewController {
-
+    
     let logger = XCGLogger.defaultInstance()
-
-    @IBOutlet weak var tableView: UITableView! {
+    
+    @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            tableView.delegate = self
-            tableView.dataSource = self
-            tableView.tableFooterView = UIToolbar(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 44))
-            tableView.allowsMultipleSelectionDuringEditing = true
+            collectionView.dataSource = self
+            collectionView.delegate = self
+            collectionView.allowsMultipleSelection = true
         }
     }
 
     var videos = [Video]() {
         didSet {
-            tableView.reloadData()
+            collectionView.reloadData()
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "showBanner:", name: BannerViewShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "hideBanner:", name: BannerViewHideNotification, object: nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: "showBanner:", name: BannerViewShowNotification, object: nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: "hideBanner:", name: BannerViewHideNotification, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .None)
+        navigationController?.setNavigationBarHidden(false, animated: false)
         setEditing(false, animated: true)
         fetch()
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .None)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    // MARK: - Navigation
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if editing {
+            navigationItem.setLeftBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelEditing"), animated: true)
+            navigationItem.rightBarButtonItem = nil
+        } else {
+            navigationItem.leftBarButtonItem = nil
+            navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "startEditing"), animated: true)
+        }
+    }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    func startEditing() {
+        setEditing(true, animated: true)
+    }
+
+    func finishEditing() {
+        HUD.sharedInstance.showLoading()
+        collectionView.indexPathsForSelectedItems()?.forEach({ (indexPath) -> () in
+            //DB.sharedInstance.delete(self.videos[indexPath.row])
+            // TODO: エラー処理
+            self.videos[indexPath.row].delete()
+        })
+        HUD.sharedInstance.dismissLoading()
+        fetch()
+        setEditing(false, animated: true)
+    }
+
+    func cancelEditing() {
+        fetch()
+        setEditing(false, animated: true)
+    }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let identifier = segue.identifier {
             switch identifier {
@@ -65,112 +93,87 @@ class VideosViewController: UIViewController {
         }
     }
 
-    var edited = false
-
-    override func setEditing(editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        guard let toolBar = tableView.tableFooterView as? UIToolbar else {
-            return
-        }
-        tableView.setEditing(editing, animated: animated)
-        if editing {
-            let cancel = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelEditing")
-            let space = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-            let trash = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "endEditing")
-            toolBar.setItems([cancel, space, trash], animated: true)
-        } else {
-            let space = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-            let edit = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "startEditing")
-            toolBar.setItems([space, edit], animated: true)
-        }
-        edited = false
-    }
-
-    func startEditing() {
-        setEditing(true, animated: true)
-    }
-
-    func endEditing() {
-        tableView.indexPathsForSelectedRows?.map { (indexPath) -> Video in
-            return self.videos[indexPath.row]
-        }.forEach { (video) -> () in
-            DB.sharedInstance.delete(video)
-        }
-        fetch()
-        setEditing(false, animated: true)
-    }
-
-    func cancelEditing() {
-        if edited {
-            fetch()
-        }
-        setEditing(false, animated: true)
-    }
-
-    func showBanner(notification: NSNotification) {
-        NSNotificationCenter.defaultCenter().removeObserver(notification)
-        tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 20.0, right: 0.0)
-        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 20.0, right: 0.0)
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
-    }
-    
-    func hideBanner(notification: NSNotification) {
-        NSNotificationCenter.defaultCenter().removeObserver(notification)
-        tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 50.0, right: 0.0)
-        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 50.0, right: 0.0)
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
-    }
 }
 
-// MARK: - DB
 extension VideosViewController {
 
     func fetch() {
+        HUD.sharedInstance.showLoading()
         videos = Video.all()
+        HUD.sharedInstance.dismissLoading()
     }
 
 }
 
-// MARK: - Table view delegate
-extension VideosViewController: UITableViewDelegate {
+extension VideosViewController: UICollectionViewDataSource {
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        logger.verbose("")
-        if tableView.editing {
-            return
-        } else {
-            let video = videos[indexPath.row]
-            performSegueWithIdentifier(R.segue.watchVideo, sender: video)
-        }
-    }
-
-}
-
-// MARK: - Table view data source
-extension VideosViewController: UITableViewDataSource {
-
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return videos.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let video = videos[indexPath.row]
-        let cell = tableView.dequeueReusableCellWithIdentifier(R.reuseIdentifier.videoTableViewCell, forIndexPath: indexPath)!
-        cell.configure(video)
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(R.reuseIdentifier.videoViewCell, forIndexPath: indexPath)!
+        cell.configure(videos[indexPath.row])
+        cell.backgroundView = {
+            let view = UIView(frame: cell.bounds)
+            view.backgroundColor = UIColor.clearColor()
+            return view
+        }()
+        cell.selectedBackgroundView = {
+            let view = UIView(frame: cell.bounds)
+            view.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.3)
+            return view
+        }()
         return cell
     }
 
 }
 
-class VideoTableViewCell: UITableViewCell {
+extension VideosViewController: UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        logger.verbose("indexPath.row: \(indexPath.row)")
+        if editing {
+            if collectionView.indexPathsForSelectedItems()?.count > 0 {
+                navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "finishEditing"), animated: true)
+            } else {
+                navigationItem.rightBarButtonItem = nil
+            }
+        } else {
+            performSegueWithIdentifier(R.segue.watchVideo, sender: videos[indexPath.row])
+        }
+    }
+
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        if editing {
+            if collectionView.indexPathsForSelectedItems()?.count > 0 {
+                navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "finishEditing"), animated: true)
+            } else {
+                navigationItem.rightBarButtonItem = nil
+            }
+        }
+    }
+}
+
+extension VideosViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let width = UIScreen.mainScreen().bounds.width / 2 - 2
+        let height = 8 + (width - 16) + 8 + (width - 16) * 0.25
+        logger.verbose("UIScreen.mainScreen().bounds.width: \(UIScreen.mainScreen().bounds.width), width: \(width), height: \(height)")
+        return CGSize(width: width, height: height)
+    }
+
+}
+
+class VideoViewCell: UICollectionViewCell {
 
     @IBOutlet weak var thumbnailView: UIImageView!
     @IBOutlet weak var artworkView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
-    @IBOutlet weak var createdLabel: UILabel!
+    //@IBOutlet weak var createdLabel: UILabel!
+    //@IBOutlet weak var checkView: UIImageView!
 
     func configure(video: Video) {
         guard let song = video.song else {
@@ -180,7 +183,7 @@ class VideoTableViewCell: UITableViewCell {
         nameLabel.text = song.name
         artistLabel.text = song.artist
         artworkView.af_setImageWithURL(song.artworkURL)
-        createdLabel.text = formatDate(video.created)
+        //createdLabel.text = formatDate(video.created)
     }
 
     func formatDate(date: NSDate) -> String {
@@ -189,4 +192,5 @@ class VideoTableViewCell: UITableViewCell {
         formatter.timeStyle = .MediumStyle
         return formatter.stringFromDate(date)
     }
+
 }

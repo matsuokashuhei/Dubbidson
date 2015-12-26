@@ -42,6 +42,9 @@ class DB {
         }
     }
 
+    func delete(objects: [Object]) {
+        objects.forEach { delete($0) }
+    }
     /*
     func all<T: Object>(type: T.Type) -> [T] {
         do {

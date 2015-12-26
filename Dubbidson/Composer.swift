@@ -72,17 +72,20 @@ class Composer: NSObject {
         videoComposition.instructions = [instruction]
         videoComposition.frameDuration = CMTimeMake(1, 30)
 
-        let textLayer: CATextLayer = {
-            let layer = CATextLayer()
-            //layer.string = "Dubbidson"
-            layer.string = "DUBBIDSON"
-            //layer.font = R.font.teXGyreAdventorRegular(size: 10.0)!
-            //layer.font = UIFont(name: "Avenir Next", size: 12.0)!
-            layer.fontSize = videoSize.width / 15.0
-            layer.opacity = 0.5
-            layer.alignmentMode = kCAAlignmentRight
-            layer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height / 13.0)
-            //layer.bounds = CGRectMake(0, 0, videoSize.width, videoSize.height)
+//        let textLayer: CATextLayer = {
+//            let layer = CATextLayer()
+//            layer.string = "DUBBIDSON"
+//            layer.fontSize = videoSize.width / 15.0
+//            layer.opacity = 0.5
+//            layer.alignmentMode = kCAAlignmentRight
+//            layer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height / 13.0)
+//            //layer.bounds = CGRectMake(0, 0, videoSize.width, videoSize.height)
+//            return layer
+//        }()
+        let imageLayer: CALayer = {
+            let layer = CALayer()
+            layer.frame = CGRectMake(videoSize.width - 70, 10, 60, 60)
+            layer.contents = R.image.appLogo!.CGImage!
             return layer
         }()
     
@@ -92,9 +95,11 @@ class Composer: NSObject {
         let parentLayer = CALayer()
         parentLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height)
         parentLayer.addSublayer(videoLayer)
-        parentLayer.addSublayer(textLayer)
+        //parentLayer.addSublayer(textLayer)
+        parentLayer.addSublayer(imageLayer)
+        //parentLayer.addSublayer(UIImageView(image: R.image.appLogo!).layer)
         
-        logger.verbose("textLayer.frame: \(textLayer.frame)")
+//        logger.verbose("textLayer.frame: \(textLayer.frame)")
         logger.verbose("videoLayer.frame: \(videoLayer.frame)")
         logger.verbose("parentLayer.frame: \(parentLayer.frame)")
         

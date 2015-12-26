@@ -28,8 +28,10 @@ struct R {
     static var bar: UIImage? { return UIImage(named: "bar") }
     static var check: UIImage? { return UIImage(named: "check") }
     static var chevron_left: UIImage? { return UIImage(named: "chevron_left") }
+    static var circleCheck: UIImage? { return UIImage(named: "circle-check") }
     static var close: UIImage? { return UIImage(named: "close") }
     static var filterButton: UIImage? { return UIImage(named: "filter-button") }
+    static var icon60: UIImage? { return UIImage(named: "Icon-60") }
     static var lookup: UIImage? { return UIImage(named: "lookup") }
     static var lookup_amatorka: UIImage? { return UIImage(named: "lookup_amatorka") }
     static var lookup_miss_etikate: UIImage? { return UIImage(named: "lookup_miss_etikate") }
@@ -57,7 +59,7 @@ struct R {
   struct reuseIdentifier {
     static var songTableViewCell: ReuseIdentifier<Dubbidson.SongTableViewCell> { return ReuseIdentifier(identifier: "SongTableViewCell") }
     static var suggestionTableViewCell: ReuseIdentifier<Dubbidson.SuggestionTableViewCell> { return ReuseIdentifier(identifier: "SuggestionTableViewCell") }
-    static var videoTableViewCell: ReuseIdentifier<Dubbidson.VideoTableViewCell> { return ReuseIdentifier(identifier: "VideoTableViewCell") }
+    static var videoViewCell: ReuseIdentifier<Dubbidson.VideoViewCell> { return ReuseIdentifier(identifier: "VideoViewCell") }
   }
   
   struct segue {

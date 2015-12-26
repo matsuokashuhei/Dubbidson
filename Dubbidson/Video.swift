@@ -45,6 +45,14 @@ class Video: Object {
     }
 
     func delete() {
+        if let fileURL = fileURL where NSFileManager.defaultManager().fileExistsAtPath(fileURL.absoluteString) {
+            do {
+                try NSFileManager.defaultManager().removeItemAtURL(fileURL)
+            } catch let error as NSError {
+                XCGLogger.defaultInstance().error(error.description)
+            }
+        }
+        DB.sharedInstance.delete(self)
     }
 
 }

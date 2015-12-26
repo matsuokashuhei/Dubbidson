@@ -71,7 +71,6 @@ class SongsViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .None)
     }
 
     override func viewWillDisappear(animated: Bool) {
