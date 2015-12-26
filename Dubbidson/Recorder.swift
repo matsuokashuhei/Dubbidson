@@ -64,7 +64,7 @@ class Recorder: NSObject {
     func stopRecording() {
         logger.verbose("")
         // 音楽の停止
-        audioPlayer.pause()
+        audioPlayer.stop()
         // レコーディングの終了
         finishRecording()
     }
