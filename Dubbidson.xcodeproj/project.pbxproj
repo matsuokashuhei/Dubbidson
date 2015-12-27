@@ -253,6 +253,7 @@
 				A870163C1C019EED003C4983 /* Realm.framework */,
 				A870163D1C019EED003C4983 /* RealmSwift.framework */,
 				A870163E1C019EED003C4983 /* Result.framework */,
+				A893C9FB1C2EFF8A003D470A /* XCGLogger.framework */,
 				B4ABA285C2C5B782DDC6701D /* Pods.framework */,
 			);
 			name = Frameworks;
@@ -277,7 +278,6 @@
 		A87F46F11B820E9100A71E82 = {
 			isa = PBXGroup;
 			children = (
-				A893C9FB1C2EFF8A003D470A /* XCGLogger.framework */,
 				A87F46FC1B820E9100A71E82 /* Dubbidson */,
 				A87F47121B820E9100A71E82 /* DubbidsonTests */,
 				A87F46FB1B820E9100A71E82 /* Products */,
