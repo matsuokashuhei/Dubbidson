@@ -58,6 +58,22 @@ class FilterSelectionView: UIView {
         }
     }
 
+    var selectedFilterView: FilterView? {
+        return filterViews.filter { (filterView) -> Bool in
+                return filterView.selected
+            }.first
+    }
+
+    var indexOfSelectedFilterView: Int {
+        guard let selectedFilterView = selectedFilterView else {
+            return 0
+        }
+        guard let index = filterViews.indexOf(selectedFilterView) else {
+            return 0
+        }
+        return index
+    }
+
     func startOutput() {
         for filterView in filterViews {
             filterView.startOutput()
@@ -71,6 +87,7 @@ class FilterSelectionView: UIView {
     }
 
     override func layoutSubviews() {
+        logger.verbose("")
         let height = self.frame.size.height - 8.0
         let width = height
         let margin: CGFloat = 8.0
@@ -83,6 +100,26 @@ class FilterSelectionView: UIView {
             }
         }
         scrollView.contentSize.width = x
+        let contentOffset: CGPoint = {
+            let contentOffset = margin
+                + (width * CGFloat(indexOfSelectedFilterView))
+                + (margin * CGFloat(indexOfSelectedFilterView))
+                + (width / 2)
+            let x: CGFloat = {
+                if contentOffset < self.scrollView.frame.width / 2 {
+                    logger.verbose("contentOffset < 0")
+                    return 0
+                }
+                if contentOffset > self.scrollView.contentSize.width - self.scrollView.frame.width / 2 {
+                    logger.verbose("contentOffset > self.scrollView.contentSize.width - self.scrollView.frame.width / 2")
+                    return self.scrollView.contentSize.width - self.scrollView.frame.width
+                }
+                return contentOffset - self.scrollView.frame.width / 2
+            }()
+            return CGPoint(x: x, y: scrollView.contentOffset.y)
+        }()
+        logger.verbose("contentOffset: \(contentOffset)")
+        scrollView.setContentOffset(contentOffset, animated: true)
     }
 
     func filterViewTapped(sender: UITapGestureRecognizer) {
@@ -90,6 +127,7 @@ class FilterSelectionView: UIView {
         for view in filterViews {
             view.selected = view == selectedView
         }
+        setNeedsLayout()
         delegate?.filtersViewDidSelect(selectedView.filter)
     }
 

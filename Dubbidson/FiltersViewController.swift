@@ -31,15 +31,6 @@ class FiltersViewController: UIViewController {
         }
     }
 
-    /*
-    @IBOutlet weak var slider: UISlider! {
-        didSet {
-            slider.addTarget(self, action: "sliderValueChanged", forControlEvents: .ValueChanged)
-            slider.hidden = true
-        }
-    }
-    */
-
     @IBOutlet weak var selectionView: FilterSelectionView! {
         didSet {
             selectionView.delegate = self
@@ -73,19 +64,6 @@ class FiltersViewController: UIViewController {
             }
         }
     }
-
-    /*
-    var filter: Filterable! {
-        didSet {
-            if let prevFilter = oldValue {
-                prevFilter.removeTarget(captureView)
-            }
-            if let label = filterNameLabel {
-                label.text = filter.name
-            }
-        }
-    }
-    */
 
     var blendImage: UIImage?
 
@@ -129,35 +107,12 @@ extension FiltersViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
-    /*
-    func sliderValueChanged() {
-        switch filterOperator.sliderConfiguration {
-        case let .Enabled(minimumValue, maximumValue, initialValue):
-            filterOperator.updateBasedOnSlider(value: CGFloat(slider.value))
-        case .Disabled:
-            break
-        }
-    }
-    */
-
 }
 
 // MARK: - Filters view delegate
 extension FiltersViewController: FilterSelectionViewDelegate {
 
     func filtersViewDidSelect(filter: Filterable) {
-        /*
-        self.filterOperator = filterOperator
-        switch filterOperator.sliderConfiguration {
-        case .Disabled:
-            slider.hidden = true
-        case let .Enabled(minimumValue, maximumValue, initialValue):
-            slider.minimumValue = minimumValue
-            slider.maximumValue = maximumValue
-            slider.value = initialValue
-            slider.hidden = false
-        }
-        */
         //self.filter = filter
         self.capturedFilter = filter
         camera.addTarget(filter)
