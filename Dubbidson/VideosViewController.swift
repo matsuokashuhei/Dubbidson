@@ -22,6 +22,11 @@ class VideosViewController: UIViewController {
         }
     }
 
+    @IBOutlet weak var toolbar: UIToolbar! {
+        didSet {
+        }
+    }
+
     var videos = [Video]() {
         didSet {
             collectionView.reloadData()
@@ -36,7 +41,7 @@ class VideosViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.setNavigationBarHidden(true, animated: false)
         setEditing(false, animated: true)
         fetch()
     }
@@ -52,12 +57,25 @@ class VideosViewController: UIViewController {
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if editing {
+            let cancel = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelEditing")
+            let space = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+            toolbar.setItems([cancel, space], animated: true)
+            //let trash = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "finishEditing")
+            //toolbar.setItems([cancel, space, trash], animated: true)
+        } else {
+            let space = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+            let edit = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "startEditing")
+            toolbar.setItems([space, edit], animated: true)
+        }
+        /*
+        if editing {
             navigationItem.setLeftBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelEditing"), animated: true)
             navigationItem.rightBarButtonItem = nil
         } else {
             navigationItem.leftBarButtonItem = nil
             navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "startEditing"), animated: true)
         }
+        */
     }
 
     func startEditing() {
@@ -135,9 +153,19 @@ extension VideosViewController: UICollectionViewDelegate {
         logger.verbose("indexPath.row: \(indexPath.row)")
         if editing {
             if collectionView.indexPathsForSelectedItems()?.count > 0 {
-                navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "finishEditing"), animated: true)
+                /*
+                let cancel = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelEditing")
+                let space = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+                let trash = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "endEditing")
+                toolbar.setItems([cancel, space, trash], animated: true)
+                */
+                if toolbar.items?.count < 3 {
+                    toolbar.items?.append(UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "finishEditing"))
+                }
+                //navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "finishEditing"), animated: true)
             } else {
-                navigationItem.rightBarButtonItem = nil
+                toolbar.items?.removeLast()
+                //navigationItem.rightBarButtonItem = nil
             }
         } else {
             performSegueWithIdentifier(R.segue.watchVideo, sender: videos[indexPath.row])
@@ -147,9 +175,19 @@ extension VideosViewController: UICollectionViewDelegate {
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         if editing {
             if collectionView.indexPathsForSelectedItems()?.count > 0 {
-                navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "finishEditing"), animated: true)
+                /*
+                let cancel = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelEditing")
+                let space = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+                let trash = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "endEditing")
+                toolbar.setItems([cancel, space, trash], animated: true)
+                */
+                if toolbar.items?.count < 3 {
+                    toolbar.items?.append(UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "finishEditing"))
+                }
+                //navigationItem.setRightBarButtonItem(UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "finishEditing"), animated: true)
             } else {
-                navigationItem.rightBarButtonItem = nil
+                toolbar.items?.removeLast()
+                //navigationItem.rightBarButtonItem = nil
             }
         }
     }
