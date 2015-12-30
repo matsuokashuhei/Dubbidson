@@ -35,6 +35,12 @@ class Recorder: NSObject {
     var filter: Filterable!
     var writer: GPUImageMovieWriter!
 
+    func prepareToRecord() {
+        guard let song = self.song else {
+            return
+        }
+        prepareToRecord(song)
+    }
     func prepareToRecord(song: Song) {
         logger.verbose("song: \(song)")
         self.song = song
