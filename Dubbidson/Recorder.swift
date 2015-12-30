@@ -170,6 +170,8 @@ extension Recorder: GPUImageMovieWriterDelegate {
         let video = Video()
         video.song = song
         Composer.sharedInstance.compose(videoURL: videoURL, audioURL: audioURL, duration: duration).then { (URL) in
+//            return Composer.sharedInstance.overlayLogoOnVideo(URL)
+//        }.then { (URL) in
             video.fileName = URL.lastPathComponent!
             return self.generateThumbnail(URL)
         }.then { (image: UIImage) -> () in

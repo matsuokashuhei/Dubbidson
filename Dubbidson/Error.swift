@@ -29,7 +29,7 @@ extension NSError {
 }
 
 enum AppError: ErrorType {
-    case OptionalValueIsNone
+    case OptionalIsNil(String)
     case UIImagePNGRepresentationIsFailed
     case Unknown
     case JSONParseFailed
@@ -38,8 +38,8 @@ enum AppError: ErrorType {
 extension AppError: CustomStringConvertible {
     var description: String {
         switch self {
-        case .OptionalValueIsNone:
-            return "Optional value is none"
+        case .OptionalIsNil(let expression):
+            return "\(expression) return nil"
         case .UIImagePNGRepresentationIsFailed:
             return "UIImagePNGRepresentation is failed"
         case .JSONParseFailed:

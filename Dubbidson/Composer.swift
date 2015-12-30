@@ -25,9 +25,12 @@ class Composer: NSObject {
         let composition = AVMutableComposition()
 
         // ビデオのトラックの作成
-        let videoAsset = AVURLAsset(URL: videoURL, options: nil)
+        let videoAsset = AVURLAsset(URL: videoURL)
         let videoRange = CMTimeRangeMake(kCMTimeZero, videoAsset.duration)
-        let videoTrack = videoAsset.tracksWithMediaType(AVMediaTypeVideo).first!
+        guard let videoTrack = videoAsset.tracksWithMediaType(AVMediaTypeVideo).first else {
+            handler(.Failure(NSError.errorWithAppError(AppError.OptionalIsNil("videoAsset.tracksWithMediaType(AVMediaTypeVideo).first"))))
+            return
+        }
         let compositionVideoTrack = composition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: CMPersistentTrackID())
         do {
             try compositionVideoTrack.insertTimeRange(videoRange, ofTrack: videoTrack, atTime: kCMTimeZero)
@@ -38,18 +41,24 @@ class Composer: NSObject {
         }
 
         // 音声のトラックの作成
-        let soundAsset = AVURLAsset(URL: audioURL, options: nil)
-        let soundRange = CMTimeRangeMake(kCMTimeZero, duration)
-
+        let audioAsset = AVURLAsset(URL: audioURL)
+        let audioRange = CMTimeRangeMake(kCMTimeZero, duration)
+        /*
         let float1 = CMTimeGetSeconds(videoAsset.duration)
         let float2 = CMTimeGetSeconds(duration)
         let float3 = float1 - float2
         logger.verbose("float1: \(float1), float2: \(float2), float3: \(float3)")
         let atTime = CMTimeMakeWithSeconds(float3, 60)
-        let soundTrack = soundAsset.tracksWithMediaType(AVMediaTypeAudio).first!
-        let compositionSoundTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
+        */
+        let atTime = CMTimeMakeWithSeconds(
+            CMTimeGetSeconds(videoAsset.duration) - CMTimeGetSeconds(duration), 60)
+        guard let audioTrack = audioAsset.tracksWithMediaType(AVMediaTypeAudio).first else {
+            handler(.Failure(NSError.errorWithAppError(AppError.OptionalIsNil("audioAsset.tracksWithMediaType(AVMediaTypeAudio).first"))))
+            return
+        }
+        let compositionAudioTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
         do {
-            try compositionSoundTrack.insertTimeRange(soundRange, ofTrack: soundTrack, atTime: atTime)
+            try compositionAudioTrack.insertTimeRange(audioRange, ofTrack: audioTrack, atTime: atTime)
         } catch let error as NSError {
             logger.error(error.description)
             handler(.Failure(error))
@@ -61,6 +70,42 @@ class Composer: NSObject {
         if transform.a == 0.0 && transform.d == 0.0 && (transform.b == 1.0 || transform.b == -1.0) && (transform.c == 1.0 || transform.c == -1.0) {
             videoSize = CGSizeMake(videoSize.height, videoSize.width)
         }
+
+        let videoComposition: AVMutableVideoComposition = {
+            let videoComposition = AVMutableVideoComposition()
+            videoComposition.renderSize = videoSize
+            videoComposition.frameDuration = CMTimeMake(1, 30)
+            // ロゴの埋め込み
+            videoComposition.animationTool = {
+                let videoLayer: CALayer = {
+                    let layer = CALayer()
+                    layer.frame = CGRect(origin: CGPointZero, size: videoSize)
+                    return layer
+                }()
+                let parentLayer: CALayer = {
+                    let layer = CALayer()
+                    layer.frame = CGRect(origin: CGPointZero, size: videoSize)
+                    layer.addSublayer(videoLayer)
+                    layer.addSublayer({
+                        let layer = CALayer()
+                        layer.contents = R.image.appLogo!.CGImage!
+                        layer.frame = CGRectMake(videoSize.width - 70, 10, 60, 60)
+                        layer.opacity = 0.5
+                        return layer
+                    }())
+                    return layer
+                }()
+                return AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+            }()
+            videoComposition.instructions = {
+                let instruction = AVMutableVideoCompositionInstruction()
+                instruction.timeRange = videoRange
+                instruction.layerInstructions = [AVMutableVideoCompositionLayerInstruction(assetTrack: compositionVideoTrack)]
+                return [instruction]
+            }()
+            return videoComposition
+        }()
+        /*
         let instruction = AVMutableVideoCompositionInstruction()
         instruction.timeRange = videoRange
         let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: compositionVideoTrack)
@@ -71,17 +116,9 @@ class Composer: NSObject {
         videoComposition.renderSize = videoSize
         videoComposition.instructions = [instruction]
         videoComposition.frameDuration = CMTimeMake(1, 30)
+        */
 
-//        let textLayer: CATextLayer = {
-//            let layer = CATextLayer()
-//            layer.string = "DUBBIDSON"
-//            layer.fontSize = videoSize.width / 15.0
-//            layer.opacity = 0.5
-//            layer.alignmentMode = kCAAlignmentRight
-//            layer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height / 13.0)
-//            //layer.bounds = CGRectMake(0, 0, videoSize.width, videoSize.height)
-//            return layer
-//        }()
+        /*
         let imageLayer: CALayer = {
             let layer = CALayer()
             layer.frame = CGRectMake(videoSize.width - 70, 10, 60, 60)
@@ -104,6 +141,7 @@ class Composer: NSObject {
         logger.verbose("parentLayer.frame: \(parentLayer.frame)")
         
         videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+        */
 
         
         // TODO: ファイル
@@ -114,8 +152,10 @@ class Composer: NSObject {
             URL = NSURL(string: videoURL.lastPathComponent!, relativeToURL: Directory.Documents.URL)!
         }
         
-        //let URL = FileIO.sharedInstance.createVideoFile()
-        let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)!
+        guard let session = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {
+            handler(.Failure(NSError.errorWithAppError(AppError.OptionalIsNil("AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality)"))))
+            return
+        }
         session.outputURL = URL
         session.outputFileType = AVFileTypeQuickTimeMovie
         //session.outputFileType = AVFileTypeMPEG4
@@ -152,6 +192,127 @@ class Composer: NSObject {
                     reject(error)
                 }
             }
+        }
+    }
+
+    func overlayLogoOnVideo(URL: NSURL, handler: (Result<NSURL, NSError>) -> ()) {
+        do {
+            let composition = AVMutableComposition()
+
+            let asset = AVURLAsset(URL: URL)
+            let range = CMTimeRange(start: kCMTimeZero, duration: asset.duration)
+            
+            guard
+                let videoTrack = asset.tracksWithMediaType(AVMediaTypeVideo).first,
+                let audioTrack = asset.tracksWithMediaType(AVMediaTypeAudio).first else {
+                handler(.Failure(NSError.errorWithAppError(AppError.Unknown)))
+                return
+            }
+            let compositionVideoTrack = composition.addMutableTrackWithMediaType(AVMediaTypeVideo, preferredTrackID: CMPersistentTrackID())
+            try compositionVideoTrack.insertTimeRange(range, ofTrack: videoTrack, atTime: kCMTimeZero)
+            
+            let compositionAudioTrack = composition.addMutableTrackWithMediaType(AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
+            try compositionAudioTrack.insertTimeRange(range, ofTrack: audioTrack, atTime: kCMTimeZero)
+            
+        
+            compositionVideoTrack.preferredTransform = videoTrack.preferredTransform
+            
+            let videoComposition: AVMutableVideoComposition = {
+                let videoComposition = AVMutableVideoComposition()
+                videoComposition.renderSize = compositionVideoTrack.naturalSize
+                videoComposition.frameDuration = CMTimeMake(1, 60)
+                videoComposition.animationTool = {
+//                    let imageLayer: CALayer = {
+//                        let layer = CALayer()
+//                        layer.contents = R.image.appLogo!.CGImage!
+//                        layer.frame = CGRectMake(10, 10, 60, 60)
+//                        layer.opacity = 0.9
+//                        return layer
+//                    }()
+                    let videoLayer: CALayer = {
+                        let layer = CALayer()
+                        layer.frame = CGRect(origin: CGPointMake(0, 0), size: videoTrack.naturalSize)
+                        return layer
+                    }()
+                    let parentLayer: CALayer = {
+                        let layer = CALayer()
+                        layer.frame = CGRect(origin: CGPointMake(0, 0), size: videoTrack.naturalSize)
+                        layer.addSublayer(videoLayer)
+                        //layer.addSublayer(imageLayer)
+                        layer.addSublayer({
+                            let layer = CALayer()
+                            layer.contents = R.image.appLogo!.CGImage!
+                            layer.frame = CGRectMake(10, 10, 60, 60)
+                            layer.opacity = 0.9
+                            return layer
+                        }())
+                        return layer
+                    }()
+                    return AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, inLayer: parentLayer)
+                }()
+                videoComposition.instructions = {
+                    let instruction = AVMutableVideoCompositionInstruction()
+                    instruction.timeRange = CMTimeRange(start: kCMTimeZero, duration: composition.duration)
+                    instruction.layerInstructions = {
+                        let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: compositionVideoTrack)
+                        return [layerInstruction]
+                    }()
+                    return [instruction]
+                }()
+                return videoComposition
+            }()
+
+            guard let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {
+                handler(.Failure(NSError.errorWithAppError(AppError.Unknown)))
+                return
+            }
+            exportSession.videoComposition = videoComposition
+            exportSession.outputFileType = AVFileTypeQuickTimeMovie
+            exportSession.outputURL = touchMovieURL()!
+            exportSession.shouldOptimizeForNetworkUse = true
+            exportSession.exportAsynchronouslyWithCompletionHandler { () -> Void in
+                switch exportSession.status {
+                case .Completed:
+                    handler(.Success(exportSession.outputURL!))
+                default:
+                    if let error = exportSession.error {
+                        self.logger.error(error.description)
+                        handler(.Failure(error))
+                    } else {
+                        let error = NSError.errorWithAppError(.Unknown)
+                        self.logger.error(error.description)
+                        handler(.Failure(error))
+                    }
+                }
+            }
+        } catch let error as NSError {
+            handler(.Failure(error))
+        }
+    }
+
+    func overlayLogoOnVideo(URL: NSURL) -> Promise<NSURL> {
+        return Promise { fulfill, reject in
+            self.overlayLogoOnVideo(URL) { result in
+                switch result {
+                case .Success(let URL):
+                    return fulfill(URL)
+                case .Failure(let error):
+                    reject(error)
+                }
+            }
+        }
+    }
+
+    private func touchMovieURL() -> NSURL? {
+        // TODO: ファイルの管理を整理する
+        logger.verbose("")
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyyMMddHHmmss"
+        let fileName = "\(formatter.stringFromDate(NSDate())).mp4"
+        if #available(iOS 9, *) {
+            return NSURL(fileURLWithPath: fileName, isDirectory: false, relativeToURL: Directory.Documents.URL)
+        } else {
+            return NSURL(string: fileName, relativeToURL: Directory.Documents.URL)
         }
     }
 }
