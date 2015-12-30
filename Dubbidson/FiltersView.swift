@@ -100,10 +100,13 @@ class FilterSelectionView: UIView {
             }
         }
         scrollView.contentSize.width = x
+        logger.verbose("scrollView.contentSize.width: \(scrollView.contentSize.width)")
         let contentOffset: CGPoint = {
+            let index = CGFloat(indexOfSelectedFilterView)
+            logger.verbose("index: \(index)")
             let contentOffset = margin
-                + (width * CGFloat(indexOfSelectedFilterView))
-                + (margin * CGFloat(indexOfSelectedFilterView))
+                + (width * index)
+                + (margin * index)
                 + (width / 2)
             let x: CGFloat = {
                 if contentOffset < self.scrollView.frame.width / 2 {
