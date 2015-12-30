@@ -21,7 +21,6 @@ class Video: Object {
         return "id: \(id), song: \(song), created: \(created)"
     }
 
-
     var fileURL: NSURL? {
         if #available(iOS 9.0, *) {
             return NSURL(fileURLWithPath: "\(id).mp4", isDirectory: false, relativeToURL: Directory.Documents.URL)

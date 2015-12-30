@@ -15,6 +15,22 @@ class DB {
     
     let logger = XCGLogger.defaultInstance()
 
+    func clear() {
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.objects(Song).forEach { song in
+                    if song.videos.count == 0 {
+                        logger.verbose("realm.delete(\(song))")
+                        realm.delete(song)
+                    }
+                }
+            }
+        } catch let error as NSError {
+            logger.error(error.description)
+        }
+    }
+
     static let sharedInstance = DB()
 
     func save(object: Object) {
@@ -56,5 +72,6 @@ class DB {
         }
     }
     */
+
 
 }

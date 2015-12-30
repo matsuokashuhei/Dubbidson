@@ -29,6 +29,10 @@ public class Song: Object {
     override public static func primaryKey() -> String? {
         return "id"
     }
+
+    var videos: [Video] {
+        return linkingObjects(Video.self, forProperty: "song")
+    }
     
     convenience init?(entry item: NSDictionary) {
         self.init()
