@@ -31,7 +31,7 @@ struct R {
     static var circleCheck: UIImage? { return UIImage(named: "circle-check") }
     static var close: UIImage? { return UIImage(named: "close") }
     static var filterButton: UIImage? { return UIImage(named: "filter-button") }
-    static var icon60: UIImage? { return UIImage(named: "Icon-60") }
+    static var infoBarItem: UIImage? { return UIImage(named: "info-bar-item") }
     static var lookup: UIImage? { return UIImage(named: "lookup") }
     static var lookup_amatorka: UIImage? { return UIImage(named: "lookup_amatorka") }
     static var lookup_miss_etikate: UIImage? { return UIImage(named: "lookup_miss_etikate") }
@@ -78,8 +78,8 @@ struct R {
       static func validateImages() {
         assert(UIImage(named: "song-button") != nil, "[R.swift] Image named 'song-button' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "tv") != nil, "[R.swift] Image named 'tv' is used in storyboard 'Main', but couldn't be loaded.")
+        assert(UIImage(named: "info-bar-item") != nil, "[R.swift] Image named 'info-bar-item' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "rec-start-button") != nil, "[R.swift] Image named 'rec-start-button' is used in storyboard 'Main', but couldn't be loaded.")
-        assert(UIImage(named: "settings-bar-item") != nil, "[R.swift] Image named 'settings-bar-item' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "filter-button") != nil, "[R.swift] Image named 'filter-button' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "pause-button") != nil, "[R.swift] Image named 'pause-button' is used in storyboard 'Main', but couldn't be loaded.")
         assert(UIImage(named: "record-bar-item") != nil, "[R.swift] Image named 'record-bar-item' is used in storyboard 'Main', but couldn't be loaded.")

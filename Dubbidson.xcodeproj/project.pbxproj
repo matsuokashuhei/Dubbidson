@@ -88,6 +88,7 @@
 		A8C07C4B1B84D9AD00CB244A /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C07C4A1B84D9AD00CB244A /* Filter.swift */; };
 		A8DCCEB11BA40155004BBB9D /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DCCEB01BA40155004BBB9D /* CountdownView.swift */; };
 		A8E7CF651B91B9F700A14374 /* GoogleAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E7CF641B91B9F700A14374 /* GoogleAPI.swift */; };
+		A8EA98121C34627300BA7555 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EA98111C34627300BA7555 /* SettingsViewController.swift */; };
 		A8F9C8011B88E34400A8244C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F9C8001B88E34400A8244C /* Error.swift */; };
 /* End PBXBuildFile section */
 
@@ -190,6 +191,7 @@
 		A8D9D3A71BE881F40092CE24 /* Dubbidson-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dubbidson-Bridging-Header.h"; sourceTree = "<group>"; };
 		A8DCCEB01BA40155004BBB9D /* CountdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
 		A8E7CF641B91B9F700A14374 /* GoogleAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleAPI.swift; sourceTree = "<group>"; };
+		A8EA98111C34627300BA7555 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A8F9C8001B88E34400A8244C /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		B4ABA285C2C5B782DDC6701D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6335BED45FD80631594E4CB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -268,13 +270,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		A81824C01C1F152700D5DF91 /* Appearanc */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Appearanc;
-			sourceTree = "<group>";
-		};
 		A87F46F11B820E9100A71E82 = {
 			isa = PBXGroup;
 			children = (
@@ -345,7 +340,6 @@
 				A87F47311B82127100A71E82 /* AV */,
 				A8E7CF631B91B9E400A14374 /* API */,
 				A87F47321B82129100A71E82 /* Utils */,
-				A8906B911B95DEF700E31244 /* Extensions */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -372,6 +366,7 @@
 				A87F47501B822B4000A71E82 /* VideoViewController.swift */,
 				A88916A31B91EA620065E1D2 /* SuggestionsViewController.swift */,
 				A8B640031B9C7F81007B3842 /* BannerViewController.swift */,
+				A8EA98111C34627300BA7555 /* SettingsViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -379,7 +374,6 @@
 		A87F47221B8211F800A71E82 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A81824C01C1F152700D5DF91 /* Appearanc */,
 				A87F472A1B82126400A71E82 /* FiltersView.swift */,
 				A87F472B1B82126400A71E82 /* FilterView.swift */,
 				A87F472C1B82126400A71E82 /* SongView.swift */,
@@ -443,13 +437,6 @@
 				A87F47451B82130D00A71E82 /* lookup.png */,
 			);
 			name = "Filter Images";
-			sourceTree = "<group>";
-		};
-		A8906B911B95DEF700E31244 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Extensions;
 			sourceTree = "<group>";
 		};
 		A8E7CF631B91B9E400A14374 /* API */ = {
@@ -671,6 +658,7 @@
 				A87F474E1B82137700A71E82 /* AudioPlayer.swift in Sources */,
 				A87F47291B82125300A71E82 /* SongsViewController.swift in Sources */,
 				A8BB5D791C03789500EF6060 /* Video.swift in Sources */,
+				A8EA98121C34627300BA7555 /* SettingsViewController.swift in Sources */,
 				A87F47561B8236F600A71E82 /* R.generated.swift in Sources */,
 				A81824C21C1F162000D5DF91 /* Appearance.swift in Sources */,
 				A86FA8F91C12CE3D004C733C /* File.swift in Sources */,
