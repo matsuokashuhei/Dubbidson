@@ -43,15 +43,7 @@ class Composer: NSObject {
         // 音声のトラックの作成
         let audioAsset = AVURLAsset(URL: audioURL)
         let audioRange = CMTimeRangeMake(kCMTimeZero, duration)
-        /*
-        let float1 = CMTimeGetSeconds(videoAsset.duration)
-        let float2 = CMTimeGetSeconds(duration)
-        let float3 = float1 - float2
-        logger.verbose("float1: \(float1), float2: \(float2), float3: \(float3)")
-        let atTime = CMTimeMakeWithSeconds(float3, 60)
-        */
-        let atTime = CMTimeMakeWithSeconds(
-            CMTimeGetSeconds(videoAsset.duration) - CMTimeGetSeconds(duration), 60)
+        let atTime = CMTimeMakeWithSeconds(CMTimeGetSeconds(videoAsset.duration) - CMTimeGetSeconds(duration), 60)
         guard let audioTrack = audioAsset.tracksWithMediaType(AVMediaTypeAudio).first else {
             handler(.Failure(NSError.errorWithAppError(AppError.OptionalIsNil("audioAsset.tracksWithMediaType(AVMediaTypeAudio).first"))))
             return
@@ -90,7 +82,7 @@ class Composer: NSObject {
                         let layer = CALayer()
                         layer.contents = R.image.appLogo!.CGImage!
                         layer.frame = CGRectMake(videoSize.width - 70, 10, 60, 60)
-                        layer.opacity = 0.5
+                        layer.opacity = 0.4
                         return layer
                     }())
                     return layer
