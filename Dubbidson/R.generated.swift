@@ -11,6 +11,7 @@ struct R {
   
   struct file {
     static var cartfile: NSURL? { return NSBundle.mainBundle().URLForResource("Cartfile", withExtension: "") }
+    static var lICENSESHtml: NSURL? { return NSBundle.mainBundle().URLForResource("LICENSES", withExtension: "html") }
     static var lookupPng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup", withExtension: "png") }
     static var lookup_amatorkaPng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_amatorka", withExtension: "png") }
     static var lookup_miss_etikatePng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_miss_etikate", withExtension: "png") }
@@ -66,6 +67,7 @@ struct R {
     static var recordVideo: String { return "recordVideo" }
     static var selectFilter: String { return "selectFilter" }
     static var selectSong: String { return "selectSong" }
+    static var showLicense: String { return "showLicense" }
     static var watchVideo: String { return "watchVideo" }
   }
   

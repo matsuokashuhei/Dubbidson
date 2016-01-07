@@ -23,3 +23,6 @@ github "mxcl/PromiseKit" "swift-2.0-minimal-changes"
 github "ViccAlexander/Chameleon"
 #github "duemunk/Async" ~> 1.4
 github "antitypical/Result" ~> 0.6
+
+# Other
+github "venmo/Markingbird" ~> 1.13

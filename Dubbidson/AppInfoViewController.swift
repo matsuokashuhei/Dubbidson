@@ -1,5 +1,5 @@
 //
-//  SettingsViewController.swift
+//  InfoViewController.swift
 //  Dubbidson
 //
 //  Created by matsuosh on 2015/12/31.
@@ -9,8 +9,10 @@
 import UIKit
 import XCGLogger
 import Social
+import WebKit
+import SafariServices
 
-class SettingsViewController: UITableViewController {
+class AppInfoViewController: UITableViewController {
 
     let logger = XCGLogger.defaultInstance()
 
@@ -39,7 +41,7 @@ class SettingsViewController: UITableViewController {
 
 }
 
-extension SettingsViewController {
+extension AppInfoViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch (indexPath.section, indexPath.row) {
@@ -67,6 +69,7 @@ extension SettingsViewController {
             showAppStore()
         case (1, 0):
             logger.verbose("2")
+            showOpenSourceLicenses()
         case (1, 1):
             logger.verbose("3")
         default:
@@ -109,7 +112,56 @@ extension SettingsViewController {
     }
 
     func showAppStore() {
-        let URL = "itms-apps://itunes.apple.com/app/id978972681"
+        let URL = "itms-apps://itunes.apple.com/app/id1031230674"
         UIApplication.sharedApplication().openURL(NSURL(string: URL)!)
+    }
+
+    func showOpenSourceLicenses() {
+        performSegueWithIdentifier(R.segue.showLicense, sender: nil)
+    }
+
+    /*
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let identifier = segue.identifier {
+            switch identifier {
+            case R.segue.showLicense:
+                let controller = segue.destinationViewController as! OpenSourceLicensesViewController
+            default:
+                super.prepareForSegue(segue, sender: sender)
+            }
+        }
+    }
+    */
+}
+
+class OpenSourceLicensesViewController: UIViewController {
+
+    let logger = XCGLogger.defaultInstance()
+
+    override func viewDidLoad() {
+        guard
+            let resource = NSBundle.mainBundle().pathForResource("LICENSES", ofType: "html"),
+            let HTML = try? String(contentsOfFile: resource, encoding: NSUTF8StringEncoding)
+        else {
+            fatalError("LISENCES.html not found.")
+        }
+        //let webView = WKWebView(frame: self.view.bounds, configuration: WKWebViewConfiguration())
+        let webView = WKWebView(frame: CGRectZero, configuration: WKWebViewConfiguration())
+        webView.loadHTMLString(HTML, baseURL: nil)
+        self.view.addSubview(webView)
+
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addConstraints([
+            NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: webView, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: webView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: webView, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: webView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0.0),
+        ])
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        logger.verbose("")
+        super.viewWillAppear(animated)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
     }
 }
