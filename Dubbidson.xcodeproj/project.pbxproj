@@ -10,8 +10,6 @@
 		0C2FFA4E2ADFBB9D46D0D688 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4ABA285C2C5B782DDC6701D /* Pods.framework */; };
 		A80A8F9D1BBEF6860087383C /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = A80A8F9C1BBEF6860087383C /* Cartfile */; };
 		A81824C21C1F162000D5DF91 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81824C11C1F162000D5DF91 /* Appearance.swift */; };
-		A81824C41C206BE500D5DF91 /* NVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A81824C31C206BE500D5DF91 /* NVActivityIndicatorView.framework */; };
-		A81824C51C206BE500D5DF91 /* NVActivityIndicatorView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A81824C31C206BE500D5DF91 /* NVActivityIndicatorView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A8237BD71B88700F00ED8BA1 /* NetworkIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */; };
 		A86FA8F91C12CE3D004C733C /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86FA8F81C12CE3D004C733C /* File.swift */; };
 		A87016411C019EED003C4983 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A87016341C019EED003C4983 /* Alamofire.framework */; };
@@ -115,7 +113,6 @@
 				A893C9FD1C2EFF8A003D470A /* XCGLogger.framework in Embed Frameworks */,
 				A870164E1C019EEE003C4983 /* OMGHTTPURLRQ.framework in Embed Frameworks */,
 				A87016421C019EED003C4983 /* Alamofire.framework in Embed Frameworks */,
-				A81824C51C206BE500D5DF91 /* NVActivityIndicatorView.framework in Embed Frameworks */,
 				A87016441C019EED003C4983 /* AlamofireImage.framework in Embed Frameworks */,
 				A870164A1C019EED003C4983 /* CleanroomLogger.framework in Embed Frameworks */,
 				A87016481C019EED003C4983 /* CleanroomASL.framework in Embed Frameworks */,
@@ -133,7 +130,6 @@
 		4AF7E5E89765120C201C4C07 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		A80A8F9C1BBEF6860087383C /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		A81824C11C1F162000D5DF91 /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
-		A81824C31C206BE500D5DF91 /* NVActivityIndicatorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NVActivityIndicatorView.framework; path = Carthage/Build/iOS/NVActivityIndicatorView.framework; sourceTree = "<group>"; };
 		A8237BD61B88700F00ED8BA1 /* NetworkIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkIndicator.swift; sourceTree = "<group>"; };
 		A86FA8F81C12CE3D004C733C /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		A87016341C019EED003C4983 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
@@ -212,7 +208,6 @@
 				A870164B1C019EEE003C4983 /* GPUImage.framework in Frameworks */,
 				A87016551C019EEE003C4983 /* Result.framework in Frameworks */,
 				A87016491C019EED003C4983 /* CleanroomLogger.framework in Frameworks */,
-				A81824C41C206BE500D5DF91 /* NVActivityIndicatorView.framework in Frameworks */,
 				A870164F1C019EEE003C4983 /* PromiseKit.framework in Frameworks */,
 				A87016451C019EED003C4983 /* Chameleon.framework in Frameworks */,
 				A870164D1C019EEE003C4983 /* OMGHTTPURLRQ.framework in Frameworks */,
@@ -245,7 +240,6 @@
 		00CB7DD33FFD7A1B1154EB3D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A81824C31C206BE500D5DF91 /* NVActivityIndicatorView.framework */,
 				A87016341C019EED003C4983 /* Alamofire.framework */,
 				A87016351C019EED003C4983 /* AlamofireImage.framework */,
 				A87016361C019EED003C4983 /* Chameleon.framework */,
@@ -811,7 +805,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -836,7 +830,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
