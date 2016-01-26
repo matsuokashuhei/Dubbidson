@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Fabric
+import Crashlytics
 import XCGLogger
 
 @UIApplicationMain
@@ -21,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupLogger()
         DB.sharedInstance.clear()
         Appearance.sharedInstance.apply()
+        Fabric.with([Crashlytics.self])
         return true
     }
 

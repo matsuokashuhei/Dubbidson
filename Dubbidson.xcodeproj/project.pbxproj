@@ -85,6 +85,8 @@
 		A8C07C451B83812200CB244A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8C07C441B83812200CB244A /* Main.storyboard */; };
 		A8C07C4B1B84D9AD00CB244A /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C07C4A1B84D9AD00CB244A /* Filter.swift */; };
 		A8DCCEB11BA40155004BBB9D /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8DCCEB01BA40155004BBB9D /* CountdownView.swift */; };
+		A8DD47EC1C57CED900FAE308 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8DD47EA1C57CED900FAE308 /* Fabric.framework */; };
+		A8DD47ED1C57CED900FAE308 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8DD47EB1C57CED900FAE308 /* Crashlytics.framework */; };
 		A8E7CF651B91B9F700A14374 /* GoogleAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E7CF641B91B9F700A14374 /* GoogleAPI.swift */; };
 		A8EA98121C34627300BA7555 /* AppInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EA98111C34627300BA7555 /* AppInfoViewController.swift */; };
 		A8EA981B1C3C18C600BA7555 /* LICENSES.html in Resources */ = {isa = PBXBuildFile; fileRef = A8EA981A1C3C18C600BA7555 /* LICENSES.html */; };
@@ -187,6 +189,8 @@
 		A8C07C4A1B84D9AD00CB244A /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		A8D9D3A71BE881F40092CE24 /* Dubbidson-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dubbidson-Bridging-Header.h"; sourceTree = "<group>"; };
 		A8DCCEB01BA40155004BBB9D /* CountdownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
+		A8DD47EA1C57CED900FAE308 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		A8DD47EB1C57CED900FAE308 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		A8E7CF641B91B9F700A14374 /* GoogleAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleAPI.swift; sourceTree = "<group>"; };
 		A8EA98111C34627300BA7555 /* AppInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoViewController.swift; sourceTree = "<group>"; };
 		A8EA981A1C3C18C600BA7555 /* LICENSES.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = LICENSES.html; sourceTree = "<group>"; };
@@ -201,12 +205,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A87016411C019EED003C4983 /* Alamofire.framework in Frameworks */,
+				A8DD47ED1C57CED900FAE308 /* Crashlytics.framework in Frameworks */,
 				A87016531C019EEE003C4983 /* RealmSwift.framework in Frameworks */,
 				A87016431C019EED003C4983 /* AlamofireImage.framework in Frameworks */,
 				A893C9FC1C2EFF8A003D470A /* XCGLogger.framework in Frameworks */,
 				A87016471C019EED003C4983 /* CleanroomASL.framework in Frameworks */,
 				A870164B1C019EEE003C4983 /* GPUImage.framework in Frameworks */,
 				A87016551C019EEE003C4983 /* Result.framework in Frameworks */,
+				A8DD47EC1C57CED900FAE308 /* Fabric.framework in Frameworks */,
 				A87016491C019EED003C4983 /* CleanroomLogger.framework in Frameworks */,
 				A870164F1C019EEE003C4983 /* PromiseKit.framework in Frameworks */,
 				A87016451C019EED003C4983 /* Chameleon.framework in Frameworks */,
@@ -269,6 +275,8 @@
 		A87F46F11B820E9100A71E82 = {
 			isa = PBXGroup;
 			children = (
+				A8DD47EA1C57CED900FAE308 /* Fabric.framework */,
+				A8DD47EB1C57CED900FAE308 /* Crashlytics.framework */,
 				A87F46FC1B820E9100A71E82 /* Dubbidson */,
 				A87F47121B820E9100A71E82 /* DubbidsonTests */,
 				A87F46FB1B820E9100A71E82 /* Products */,
@@ -461,6 +469,7 @@
 				36947115E6A5C8D3C7DC58AF /* Copy Pods Resources */,
 				A80A8F991BBEF25A0087383C /* Embed Frameworks */,
 				A878ECBC1BA6F01F00C1D124 /* ShellScript */,
+				A8DD47E91C57CE5300FAE308 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -611,6 +620,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$PODS_ROOT/R.swift/rswift\" \"$SRCROOT/Dubbidson\"";
+		};
+		A8DD47E91C57CE5300FAE308 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run fa80467db09f8f0804482b62295c68e13f7f2cec a43fb21ef50dd9fcd5889a710d3618eb16d36ca6c33cdd7a7cb08607d1cdeacb";
 		};
 		B13BBC352EAA461CF99F0242 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -811,6 +833,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Dubbidson/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -836,6 +859,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Dubbidson/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
