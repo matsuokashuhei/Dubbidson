@@ -48,7 +48,7 @@ class BannerView: UIView {
         */
         adMobView = {
             let view = GADBannerView(adSize: kGADAdSizeBanner)
-            view.adUnitID = "ca-app-pub-5621609150019172/8896291645"
+            view.adUnitID = "ca-app-pub-5621609150019172/4483051644"
             view.rootViewController = rootViewController
             view.delegate = self
             return view
