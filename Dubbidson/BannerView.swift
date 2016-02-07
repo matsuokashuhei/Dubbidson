@@ -35,17 +35,6 @@ class BannerView: UIView {
         iAdView.delegate = self
         addSubview(iAdView)
         // AdMob
-        /*
-        adMobView = GADBannerView(adSize: kGADAdSizeBanner)
-        adMobView.adUnitID = "ca-app-pub-5621609150019172/8896291645"
-        adMobView.rootViewController = rootViewController
-        //request.testDevices = @[ @"c9281a800055c835ded25fdd531b18a5"
-        adMobView.delegate = self
-        addSubview(adMobView)
-        let request = GADRequest()
-        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
-        adMobView.loadRequest(request)
-        */
         adMobView = {
             let view = GADBannerView(adSize: kGADAdSizeBanner)
             view.adUnitID = "ca-app-pub-5621609150019172/4483051644"
@@ -55,7 +44,11 @@ class BannerView: UIView {
         }()
         addSubview(adMobView)
         let request = GADRequest()
-        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
+        if Platform.isSimulator {
+            request.testDevices = [kGADSimulatorID];
+        } else {
+            request.testDevices = ["d2e66d2385b86a98f0f635545a058f37"]
+        }
         adMobView.loadRequest(request)
     }
 
@@ -81,14 +74,6 @@ class BannerView: UIView {
         bannerLoaded = true
         bringSubviewToFront(bannerView)
         delegate?.showBanner()
-        /*
-        if iAdView.hidden && adMobView.hidden {
-            userInteractionEnabled = true
-            delegate?.showBanner()
-        }
-        bannerView.frame.origin.y = 0.0
-        bannerView.hidden = false
-        */
     }
 
     private func hide(bannerView: UIView) {
@@ -109,7 +94,11 @@ extension BannerView: ADBannerViewDelegate {
         logger.verbose("")
         hide(iAdView)
         let request = GADRequest()
-        request.testDevices = ["c9281a800055c835ded25fdd531b18a5"]
+        if Platform.isSimulator {
+            request.testDevices = [kGADSimulatorID];
+        } else {
+            request.testDevices = ["d2e66d2385b86a98f0f635545a058f37"]
+        }
         adMobView.loadRequest(request)
     }
 
