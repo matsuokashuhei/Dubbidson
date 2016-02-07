@@ -246,6 +246,8 @@
 		00CB7DD33FFD7A1B1154EB3D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A8DD47EA1C57CED900FAE308 /* Fabric.framework */,
+				A8DD47EB1C57CED900FAE308 /* Crashlytics.framework */,
 				A87016341C019EED003C4983 /* Alamofire.framework */,
 				A87016351C019EED003C4983 /* AlamofireImage.framework */,
 				A87016361C019EED003C4983 /* Chameleon.framework */,
@@ -275,8 +277,6 @@
 		A87F46F11B820E9100A71E82 = {
 			isa = PBXGroup;
 			children = (
-				A8DD47EA1C57CED900FAE308 /* Fabric.framework */,
-				A8DD47EB1C57CED900FAE308 /* Crashlytics.framework */,
 				A87F46FC1B820E9100A71E82 /* Dubbidson */,
 				A87F47121B820E9100A71E82 /* DubbidsonTests */,
 				A87F46FB1B820E9100A71E82 /* Products */,
