@@ -28,7 +28,7 @@
 
 /* Class = "UILabel"; text = "apply
 filter"; ObjectID = "Ik2-HQ-4D2"; */
-"Ik2-HQ-4D2.text" = "フィルターを\nする";
+"Ik2-HQ-4D2.text" = "フィルターをする";
 
 /* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "MAF-wB-ltv"; */
 "MAF-wB-ltv.title" = "Item";
@@ -44,7 +44,7 @@ filter"; ObjectID = "Ik2-HQ-4D2"; */
 
 /* Class = "UILabel"; text = "pick
 music"; ObjectID = "WzF-HV-DC8"; */
-"WzF-HV-DC8.text" = "歌を\nえらぶ";
+"WzF-HV-DC8.text" = "歌をえらぶ";
 
 /* Class = "UINavigationItem"; title = "DUBBIDSON"; ObjectID = "YIa-u0-9Cq"; */
 "YIa-u0-9Cq.title" = "DUBBIDSON";
