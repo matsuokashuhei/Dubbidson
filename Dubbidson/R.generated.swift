@@ -12,11 +12,13 @@ struct R {
   struct file {
     static var cartfile: NSURL? { return NSBundle.mainBundle().URLForResource("Cartfile", withExtension: "") }
     static var lICENSESHtml: NSURL? { return NSBundle.mainBundle().URLForResource("LICENSES", withExtension: "html") }
+    static var launchScreenStrings: NSURL? { return NSBundle.mainBundle().URLForResource("LaunchScreen", withExtension: "strings") }
     static var lookupPng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup", withExtension: "png") }
     static var lookup_amatorkaPng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_amatorka", withExtension: "png") }
     static var lookup_miss_etikatePng: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_miss_etikate", withExtension: "png") }
     static var lookup_soft_elegance_1Png: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_soft_elegance_1", withExtension: "png") }
     static var lookup_soft_elegance_2Png: NSURL? { return NSBundle.mainBundle().URLForResource("lookup_soft_elegance_2", withExtension: "png") }
+    static var mainStrings: NSURL? { return NSBundle.mainBundle().URLForResource("Main", withExtension: "strings") }
   }
   
   struct font {

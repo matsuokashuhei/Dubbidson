@@ -1,0 +1,92 @@
+
+/* Class = "UITableViewSection"; headerTitle = "SHARE&RATE"; ObjectID = "1fi-nH-N4c"; */
+"1fi-nH-N4c.headerTitle" = "SHARE&RATE";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "4bF-z4-TlF"; */
+"4bF-z4-TlF.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "5JA-3W-IlK"; */
+"5JA-3W-IlK.text" = "Label";
+
+/* Class = "UILabel"; text = "RATE THIS APP"; ObjectID = "A7X-Yu-bJj"; */
+"A7X-Yu-bJj.text" = "アプリをレビューする";
+
+/* Class = "UILabel"; text = "SHARE THIS APP"; ObjectID = "AvO-jb-L12"; */
+"AvO-jb-L12.text" = "アプリをシェアする";
+
+/* Class = "UILabel"; text = "30 sec"; ObjectID = "Bzo-f9-xOX"; */
+"Bzo-f9-xOX.text" = "30 sec";
+
+/* Class = "UILabel"; text = "1.0.0"; ObjectID = "G9O-Mh-XhE"; */
+"G9O-Mh-XhE.text" = "1.0.0";
+
+/* Class = "UITableViewSection"; headerTitle = "ABOUT"; ObjectID = "HP9-sP-PjZ"; */
+"HP9-sP-PjZ.headerTitle" = "ABOUT";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "HPH-70-jxA"; */
+"HPH-70-jxA.text" = "Label";
+
+/* Class = "UILabel"; text = "apply
+filter"; ObjectID = "Ik2-HQ-4D2"; */
+"Ik2-HQ-4D2.text" = "フィルターをする";
+
+/* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "MAF-wB-ltv"; */
+"MAF-wB-ltv.title" = "Item";
+
+/* Class = "UITabBarItem"; title = "DUB"; ObjectID = "QAg-VW-N4e"; */
+"QAg-VW-N4e.title" = "ビデオをとる";
+
+/* Class = "UILabel"; text = "reshoot"; ObjectID = "StV-MX-6RK"; */
+"StV-MX-6RK.text" = "ビデオをとる";
+
+/* Class = "UITabBarItem"; title = "WATCH"; ObjectID = "WwM-qn-joI"; */
+"WwM-qn-joI.title" = "ビデオをみる";
+
+/* Class = "UILabel"; text = "pick
+music"; ObjectID = "WzF-HV-DC8"; */
+"WzF-HV-DC8.text" = "歌をえらぶ";
+
+/* Class = "UINavigationItem"; title = "DUBBIDSON"; ObjectID = "YIa-u0-9Cq"; */
+"YIa-u0-9Cq.title" = "DUBBIDSON";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Z0U-oA-XxE"; */
+"Z0U-oA-XxE.text" = "Label";
+
+/* Class = "UILabel"; text = "SHOOT"; ObjectID = "Zde-M4-uzO"; */
+"Zde-M4-uzO.text" = "ビデオをとる";
+
+/* Class = "UILabel"; text = "OPEN SOURCE LICENSE"; ObjectID = "aO0-Cg-fdp"; */
+"aO0-Cg-fdp.text" = "オープンソースライセンス";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "cjG-Yh-cV3"; */
+"cjG-Yh-cV3.text" = "Label";
+
+/* Class = "UITabBarItem"; title = "INFO"; ObjectID = "eW0-e2-hE8"; */
+"eW0-e2-hE8.title" = "アプリについて";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "eqs-fA-QeN"; */
+"eqs-fA-QeN.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "gaL-DA-33D"; */
+"gaL-DA-33D.text" = "Label";
+
+/* Class = "UILabel"; text = "PLAY"; ObjectID = "ipu-if-nd2"; */
+"ipu-if-nd2.text" = "プレイ";
+
+/* Class = "UILabel"; text = "share"; ObjectID = "l5O-YR-Knc"; */
+"l5O-YR-Knc.text" = "シェアする";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "no4-zb-pxM"; */
+"no4-zb-pxM.text" = "Label";
+
+/* Class = "UILabel"; text = "VERSION"; ObjectID = "ou8-5D-vK2"; */
+"ou8-5D-vK2.text" = "アプリのバージョン";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "t5j-aQ-6Tm"; */
+"t5j-aQ-6Tm.text" = "Label";
+
+/* Class = "UITabBarItem"; title = "WATCH"; ObjectID = "ufh-Tg-PbW"; */
+"ufh-Tg-PbW.title" = "ビデオをみる";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "z6k-1T-dxE"; */
+"z6k-1T-dxE.text" = "Label";
