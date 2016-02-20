@@ -6,7 +6,7 @@
 //  Copyright © 2015年 matsuosh. All rights reserved.
 //
 
-import Async
+//import Async
 import RealmSwift
 //import CleanroomLogger
 import XCGLogger
@@ -34,6 +34,17 @@ class DB {
     static let sharedInstance = DB()
 
     func save(object: Object) {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            do {
+                let realm = try Realm()
+                try realm.write {
+                    realm.add(object, update: true)
+                }
+            } catch let error as NSError {
+                self.logger.error(error.description)
+            }
+        }
+        /*
         Async.main {
             do {
                 let realm = try Realm()
@@ -44,6 +55,7 @@ class DB {
                 self.logger.error(error.description)
             }
         }
+        */
     }
 
     func delete(object: Object) {

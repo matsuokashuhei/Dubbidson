@@ -11,7 +11,7 @@ import UIKit
 import AVFoundation
 import UIKit
 
-import Async
+//import Async
 import XCGLogger
 
 protocol SongsViewControllerDelegate {
