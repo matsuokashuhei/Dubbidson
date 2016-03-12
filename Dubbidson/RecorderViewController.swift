@@ -9,7 +9,7 @@
 import AVKit
 import UIKit
 
-import Async
+//import Async
 import GPUImage
 import PromiseKit
 import RealmSwift
@@ -86,6 +86,7 @@ class RecorderViewController: UIViewController {
 extension RecorderViewController {
 
     override func viewDidLoad() {
+        
         logger.verbose("")
         super.viewDidLoad()
         // カメラのセットアップ

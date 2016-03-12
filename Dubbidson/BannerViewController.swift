@@ -30,12 +30,12 @@ class BannerViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        logger.verbose("view.bounds: \(view.bounds)")
+        //logger.verbose("view.bounds: \(view.bounds)")
         var contentFrame = view.bounds
         var bannerFrame = CGRectZero
         bannerFrame.size = bannerView.sizeThatFits(contentFrame.size)
-        logger.verbose("bannerFrame: \(bannerFrame)")
-        logger.verbose("bannerView.bannerLoaded: \(bannerView.bannerLoaded)")
+        //logger.verbose("bannerFrame: \(bannerFrame)")
+        //logger.verbose("bannerView.bannerLoaded: \(bannerView.bannerLoaded)")
         if bannerView.bannerLoaded {
             contentFrame.size.height -= (bannerFrame.size.height + 49.0)
             bannerFrame.origin.y = contentFrame.size.height
@@ -44,8 +44,8 @@ class BannerViewController: UIViewController {
         }
         contentController.view.frame = contentFrame
         bannerView.frame = bannerFrame
-        logger.verbose("contentFrame: \(contentFrame)")
-        logger.verbose("bannerFrame: \(bannerFrame)")
+        //logger.verbose("contentFrame: \(contentFrame)")
+        //logger.verbose("bannerFrame: \(bannerFrame)")
     }
 
     override func didReceiveMemoryWarning() {
