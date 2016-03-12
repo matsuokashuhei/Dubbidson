@@ -17,13 +17,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         setupLogger()
         DB.sharedInstance.clear()
         Appearance.sharedInstance.apply()
         Fabric.with([Crashlytics.self])
+        
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+        if let controller = storyboard.instantiateInitialViewController() as? UITabBarController {
+            CJPAdController.sharedInstance().adPosition = .Bottom
+            CJPAdController.sharedInstance().initialDelay = 2.0
+            CJPAdController.sharedInstance().adMobUnitID = "ca-app-pub-5621609150019172/4483051644"
+            CJPAdController.sharedInstance().testDeviceIDs = ["d2e66d2385b86a98f0f635545a058f37"]
+            CJPAdController.sharedInstance().startWithViewController(controller)
+            window?.rootViewController = CJPAdController.sharedInstance()
+        }
+
         return true
     }
 

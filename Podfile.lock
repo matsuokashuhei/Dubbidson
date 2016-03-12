@@ -1,15 +1,12 @@
 PODS:
-  - AsyncSwift (1.6.4)
   - Google-Mobile-Ads-SDK (7.6.0)
   - R.swift (0.10.0)
 
 DEPENDENCIES:
-  - AsyncSwift
   - Google-Mobile-Ads-SDK (~> 7.0)
   - R.swift (= 0.10.0)
 
 SPEC CHECKSUMS:
-  AsyncSwift: 3c90beed237324f1b57e1f1c414dc5501985d208
   Google-Mobile-Ads-SDK: 0290020329c61183c4685304264b73382bc49fb4
   R.swift: 35b88417f9f9ef7f5f9af4ec775df5e38fa1565a
 
